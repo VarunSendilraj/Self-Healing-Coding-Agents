@@ -6,6 +6,28 @@ from abc import ABC, abstractmethod
 import io # Added for capturing stdout
 import sys # Added for capturing stderr (though exec captures it directly)
 import traceback # Added for formatting exceptions
+import subprocess
+import tempfile
+import os
+import logging
+import importlib.util
+import inspect
+import dataclasses # Add this import
+
+from self_healing_agents.schemas import (
+    PlannerOutput,
+    ExecutorOutput,
+    CriticReport, # Base report
+    EnhancedCriticReport, # New enhanced report
+    TaskDefinition
+)
+from self_healing_agents.error_types import ErrorType, AgentType # New enums
+from self_healing_agents.classifiers import ErrorClassifier # Classifier interface and base
+from self_healing_agents.classifiers.rule_based import RuleBasedErrorClassifier
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 # Define constants for overall status
 STATUS_CRITICAL_SYNTAX_ERROR = "CRITICAL_SYNTAX_ERROR"
@@ -91,11 +113,23 @@ class Critic(Agent):
         super().__init__(name, llm_service)
         self.system_prompt = system_prompt # system_prompt is now an instance variable
         self.test_generation_system_prompt = CRITIC_TEST_GENERATION_SYSTEM_PROMPT # Store the new prompt
+        # Always use RuleBasedErrorClassifier for now, regardless of llm_service presence.
+        # This can be updated if an LLM-based classifier is introduced.
+        self.error_classifier = RuleBasedErrorClassifier()
 
     def _execute_sandboxed_code(self, code_string: str) -> Dict[str, Any]:
         """
         Executes the provided Python code string in a sandboxed environment (code env).
         Captures stdout, stderr, and any exceptions.
+        
+        Returns:
+            Dict containing:
+            - stdout: Captured standard output
+            - stderr: Captured standard error or formatted exception
+            - error_type: Type of error if any (None if successful)
+            - error_message: Error message if any (empty if successful)
+            - traceback: Formatted traceback if error (empty if successful)
+            - success: Boolean indicating if execution succeeded
         """
         # --- Start of Addition: Strip markdown fences ---
         processed_code_string = code_string.strip()
@@ -108,8 +142,6 @@ class Critic(Agent):
 
         # Prepare a dictionary of allowed globals.
         # This is crucial for sandboxing. Only explicitly allow what's needed.
-        # For now, we allow 'print' and basic builtins.
-        # We can expand this carefully if specific math functions etc. are required.
         allowed_globals = {
             "__builtins__": {
                 "print": print,
@@ -132,34 +164,39 @@ class Critic(Agent):
                 "KeyError": KeyError,
                 "ZeroDivisionError": ZeroDivisionError,
                 "AttributeError": AttributeError,
-                "NameError": NameError, # Allow NameError to be caught if code tries to use undefined vars
-                "__import__": __import__, # Allow import statements
-                "__build_class__": __build_class__, # Allow class definitions
-                "repr": repr, # Add repr function for string representation in tests
-                "isinstance": isinstance, # Add isinstance function for type checking in tests
+                "NameError": NameError,
+                "__import__": __import__,
+                "__build_class__": __build_class__,
+                "repr": repr,
+                "isinstance": isinstance,
             },
-            "__build_class__": __build_class__, # Also add here for broader visibility to exec
-            # Custom functions or modules could be injected here if safe and necessary
+            "__build_class__": __build_class__,
+            # Add current package modules to the sandbox if needed
+            "self_healing_agents": self_healing_agents if 'self_healing_agents' in sys.modules else None,
         }
-        # No external modules like 'os' or 'sys' are provided by default.
-
-        # Add common module-level attributes
-        allowed_globals["__name__"] = "__main__" # Add this directly to allowed_globals
         
-        # Add debug logging
-        print(f"DEBUG: allowed_globals keys: {list(allowed_globals.keys())}")
-        print(f"DEBUG: __builtins__ keys: {list(allowed_globals['__builtins__'].keys())}")
+        # Add module-level attributes
+        allowed_globals["__name__"] = "__main__"
+        
+        # Configure Python module import path 
+        original_path = list(sys.path)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        src_dir = os.path.dirname(current_dir)
+        
+        # Add src directory to path to resolve imports
+        if src_dir not in sys.path:
+            sys.path.insert(0, src_dir)
         
         captured_stdout = io.StringIO()
-        # stderr from exec is typically captured by the try-except block for Exception
         
         execution_result = {
             "stdout": "",
-            "stderr": "", # Will store formatted exception info
+            "stderr": "",
             "error_type": None,
             "error_message": "",
             "traceback": "",
-            "success": False
+            "success": False,
+            "raw_exception": None  # Store the actual exception object
         }
 
         # Redirect stdout
@@ -168,321 +205,294 @@ class Critic(Agent):
         
         try:
             # Execute the code with restricted globals and locals
-            # Using an empty dict for locals ensures no unexpected local variables are present.
-            print(f"DEBUG: About to execute code:\n{processed_code_string[:200]}...")
             exec(processed_code_string, allowed_globals, {})
             execution_result["success"] = True
         except SyntaxError as e:
             execution_result["error_type"] = "SyntaxError"
             execution_result["error_message"] = str(e)
+            execution_result["raw_exception"] = e
             # This format is already quite simplified and directly useful.
             simplified_traceback = f"SyntaxError at line {e.lineno}, offset {e.offset}: {e.msg}"
             execution_result["traceback"] = simplified_traceback
-            execution_result["stderr"] = simplified_traceback # For SyntaxError, stderr can be the simplified traceback too
         except Exception as e:
+            # Handle any other exception
             execution_result["error_type"] = e.__class__.__name__
             execution_result["error_message"] = str(e)
+            execution_result["raw_exception"] = e
             
-            # Additional debug logging for errors
-            print(f"DEBUG: Exception occurred: {e.__class__.__name__}: {str(e)}")
-            print(f"DEBUG: Exception line: {traceback.extract_tb(e.__traceback__)[-1].lineno}, code: {traceback.extract_tb(e.__traceback__)[-1].line}")
-            
-            full_traceback_str = traceback.format_exc()
-            execution_result["stderr"] = full_traceback_str # Store the full traceback in stderr field
-
-            # Simplify traceback for the 'traceback' field using traceback.extract_tb
-            simplified_tb_lines = []
-            # extracted_tb is a list of FrameSummary objects: (filename, lineno, name, line)
-            extracted_frames = traceback.extract_tb(e.__traceback__)
-            for frame in extracted_frames:
-                if frame.filename == "<string>":
-                    # Format: "  File "<string>", line X, in Y"
-                    # The 'name' is the function name, or <module> for top-level
-                    simplified_tb_lines.append(f'  File "{frame.filename}", line {frame.lineno}, in {frame.name}')
-                    if frame.line: # The actual line of code from the <string>
-                        simplified_tb_lines.append(f'    {frame.line.strip()}')
-            
-            # Add the error type and message as the final part of the simplified traceback
-            simplified_tb_lines.append(f"{e.__class__.__name__}: {str(e)}")
-            
-            # Fallback if no <string> frames were found but there was an error
-            if not any('File "<string>"' in line for line in simplified_tb_lines) and simplified_tb_lines:
-                 # If only "ErrorType: ErrorMessage" is present, it's fine.
-                 # If extract_tb returned nothing for <string> but it's not a SyntaxError,
-                 # this means the error didn't originate directly in <string> frames that extract_tb picked up
-                 # in which case, the simple "ErrorType: ErrorMessage" is the best simplified form.
-                 pass # The last line (ErrorType: ErrorMessage) is already what we want
-            elif not simplified_tb_lines: # Should not happen if an exception occurred
-                simplified_tb_lines.append(f"{e.__class__.__name__}: {str(e)}")
-
-            execution_result["traceback"] = "\\n".join(simplified_tb_lines)
+            # Get traceback but skip the exec call frame from the traceback
+            # as it's not relevant to the executed code
+            # This provides a cleaner traceback focused on the executed code
+            tb = traceback.format_exc()
+            execution_result["traceback"] = tb
         finally:
             # Restore stdout
             sys.stdout = original_stdout
             execution_result["stdout"] = captured_stdout.getvalue()
-            captured_stdout.close()
-
+            
+            # Reset the sys.path to avoid side effects
+            sys.path = original_path
+        
         return execution_result
 
-    def _generate_test_cases(self, task_description: str, generated_code: str) -> Tuple[Optional[str], List[Dict[str, Any]]]:
+    def _execute_test_cases(self, code_string: str, test_case_strings: List[str]) -> List[Dict[str, Any]]:
+        """
+        Executes a list of test case strings against the provided code string.
+
+        Args:
+            code_string: The Python code (e.g., function definitions) to test.
+            test_case_strings: A list of strings, where each string is an executable
+                               Python statement, typically an assertion (e.g., "assert func(1) == 2").
+
+        Returns:
+            A list of dictionaries, each containing:
+            - test_case_str: The original test case string.
+            - passed: Boolean indicating if the test passed.
+            - stdout: Captured standard output during the test.
+            - stderr: Captured standard error during the test (empty if passed and no other output).
+        """
+        results = []
+        if not test_case_strings:
+            logger.info("No test case strings provided to _execute_test_cases.")
+            return results
+
+        for test_str in test_case_strings:
+            # Combine the original code with the current test case string
+            # This ensures any functions defined in code_string are available to the test_str
+            full_script_to_run = f"{code_string}\n{test_str}"
+            
+            logger.debug(f"Executing test case: {test_str} with combined script.")
+            execution_details = self._execute_sandboxed_code(full_script_to_run)
+            
+            passed = execution_details["success"] and not execution_details["stderr"] # An assertion error would put info in stderr
+            
+            # If an assertion fails, it raises an AssertionError, which _execute_sandboxed_code captures.
+            # So, 'success' might be False if an assertion fails.
+            # A clearer check for assertion-based tests: if stderr is empty after exec, it implies assertion passed or no error.
+            # However, _execute_sandboxed_code sets success=False on any exception.
+            # If it's an AssertionError, it's a test failure. Any other error is also a test failure.
+            # So, execution_details["success"] being True is a good indicator of a pass here,
+            # assuming test_str is an assertion. If stderr is present despite success=True,
+            # it might be print statements, which are fine.
+            # Let's refine 'passed': A test fails if an error occurs (stderr is populated by _execute_sandboxed_code for exceptions).
+            
+            passed = not execution_details["stderr"] # Simpler: if stderr is not empty, it's a fail (either runtime error or assertion error)
+
+            results.append({
+                "test_case_str": test_str,
+                "passed": passed,
+                "stdout": execution_details["stdout"],
+                "stderr": execution_details["stderr"],
+                "raw_result": execution_details # For more detailed analysis later if needed
+            })
+            logger.debug(f"Test case result: {'Passed' if passed else 'Failed'}. Stderr: {execution_details['stderr']}")
+        
+        return results
+
+    def _generate_test_cases(self, task_description: str, generated_code: str) -> Tuple[Optional[str], List[str]]:
         """
         Generates test cases for the given code and task description using an LLM call.
-        Returns a tuple: (Optional[str], List[Dict[str, Any]]).
-        """
-        print(f"Critic '{self.name}': Generating test cases for task: '{task_description[:50]}...'")
         
-        user_prompt_content = self.test_generation_system_prompt.format(
-            task_description=task_description,
-            generated_code=generated_code
-        )
-        # The CRITIC_TEST_GENERATION_SYSTEM_PROMPT itself is the main content after formatting.
-        # We are framing it as a system message that contains the user's request details embedded within it.
-        # Or, more accurately, the prompt is a single detailed message to the LLM.
-        # Let's use it as the user message, with a minimal system message if needed by LLMService, or just this.
-        # For simplicity, if LLMService expects system/user, we can make this the user part.
-        # Given the prompt asks for "Output ONLY the JSON", it's acting like a direct instruction.
-
-        messages = [
-            # A minimal system message can sometimes help frame the LLM's role if the main prompt is complex.
-            # However, our CRITIC_TEST_GENERATION_SYSTEM_PROMPT is already quite directive.
-            # Let's assume for now the LLMService handles a single detailed message well, 
-            # or the test_generation_prompt itself can be the "user" part of a system/user pair.
-            # For self_healing_agents.llm_service.LLMService structure:
-            {"role": "system", "content": "You are a helpful AI assistant responding in JSON as requested." }, # Generic system prompt
-            {"role": "user", "content": user_prompt_content}
-        ]
-
-        try:
-            # Expecting a dictionary: {"function_to_test": "func_name", "test_cases": [...]}
-            response_data = self.llm_service.invoke(messages, expect_json=True)
+        Args:
+            task_description: The original task description
+            generated_code: The Python code to generate tests for
             
-            if not isinstance(response_data, dict):
-                print(f"Critic '{self.name}': Warning - LLM test case generation did not return a dictionary as expected. Response: {response_data}")
-                return None, [] # Return None for function name, empty list for tests
-
-            function_name = response_data.get("function_to_test")
-            generated_test_cases = response_data.get("test_cases")
-
-            if not isinstance(function_name, str) or not function_name.strip():
-                print(f"Critic '{self.name}': Warning - LLM did not provide a valid 'function_to_test' string. Response: {response_data}")
-                function_name = None # Or handle as an error preventing test execution
-            
-            if not isinstance(generated_test_cases, list):
-                print(f"Critic '{self.name}': Warning - LLM did not provide 'test_cases' as a list. Response: {response_data}")
-                return function_name, [] # Return potentially valid function name, but empty tests
-
-            # Basic validation: check if it's a list of dictionaries with required keys
-            valid_test_cases = []
-            for item in generated_test_cases:
-                if isinstance(item, dict) and all(key in item for key in ["test_case_name", "inputs", "expected_output"]):
-                    valid_test_cases.append(item)
-                else:
-                    print(f"Critic '{self.name}': Warning - LLM returned a list item not matching test case structure: {item}")
-            
-            if not valid_test_cases and generated_test_cases: # LLM returned a list, but none were valid test cases
-                print(f"Critic '{self.name}': Warning - LLM returned a list for 'test_cases', but no valid test cases found in it.")
-            
-            return function_name, valid_test_cases # Return both function name and the list of test cases
-            
-        except json.JSONDecodeError as e:
-            print(f"Critic '{self.name}': Error decoding JSON from LLM for test cases: {e}")
+        Returns:
+            A tuple containing:
+            - function_name: The name of the primary function to test (or None if not identifiable)
+            - test_cases: A list of test case strings
+        """
+        if not generated_code or not generated_code.strip():
+            logging.warning("Cannot generate test cases for empty code")
             return None, []
+        
+        # Construct the prompt for the LLM
+        # Assuming CRITIC_TEST_GENERATION_SYSTEM_PROMPT guides the LLM
+        # to produce a list of assertion strings.
+        prompt_content = (
+            f"Original Task Description:\n{task_description}\n\n"
+            f"Generated Python Code:\n```python\n{generated_code}\n```\n\n"
+            f"Please generate a list of Python assertion strings that can be used to test the correctness "
+            f"of the 'solution' function (or the primary function if named differently) in the generated code. "
+            f"Focus on validating key aspects of the task description. "
+            f"Output ONLY a Python list of strings, where each string is a valid assertion. "
+            f"Example: ['assert solution(1, 2) == 3', 'assert solution(\"test\") == \"TEST_PASSED\"']"
+        )
+        
+        messages = [
+            {"role": "system", "content": self.test_generation_system_prompt}, # Use the dedicated prompt
+            {"role": "user", "content": prompt_content}
+        ]
+        
+        try:
+            # We expect the LLM to return a string representation of a list of strings.
+            # E.g., "['assert func(1)==1', 'assert func(2)==2']"
+            raw_llm_output = self.llm_service.invoke(messages, expect_json=False) # Get as string
+            
+            if not raw_llm_output or not raw_llm_output.strip().startswith('[') or not raw_llm_output.strip().endswith(']'):
+                logger.warning(f"LLM test case generation did not return a valid list-like string: {raw_llm_output}")
+                # Attempt to wrap in list if it's a single assertion string not in a list
+                if isinstance(raw_llm_output, str) and raw_llm_output.strip().startswith("assert"):
+                    logger.info("Attempting to wrap single assertion string in a list.")
+                    raw_llm_output = f"[{repr(raw_llm_output.strip())}]" # repr to handle quotes correctly
+                else:
+                    return None, []
+
+
+            # Attempt to parse the string into a Python list of strings
+            # Using ast.literal_eval for safety over eval()
+            import ast
+            try:
+                parsed_test_cases = ast.literal_eval(raw_llm_output.strip())
+                if not isinstance(parsed_test_cases, list) or not all(isinstance(tc, str) for tc in parsed_test_cases):
+                    logger.warning(f"LLM test case generation parsed, but not a list of strings: {parsed_test_cases}")
+                    return None, []
+                
+                # For now, we assume the LLM correctly identifies/uses the function name like 'solution'
+                # or the test assertions are self-contained.
+                # A more advanced version might try to parse the function name from `generated_code`.
+                # For this MVP, we'll assume the generated assertions are directly executable with the code.
+                logger.info(f"Successfully generated and parsed {len(parsed_test_cases)} test cases.")
+                return "solution", parsed_test_cases # Assuming 'solution' or handled by assertion string
+
+            except (ValueError, SyntaxError) as e:
+                logger.error(f"Error parsing LLM-generated test cases string '{raw_llm_output}': {e}")
+                return None, []
+
         except Exception as e:
-            print(f"Critic '{self.name}': Unexpected error during test case generation: {e}")
+            logger.error(f"Error during LLM call for test case generation: {e}")
             return None, []
 
     def evaluate_code(self, code: str, task_description: str) -> Dict[str, Any]:
         """
-        Evaluates code by executing it in a sandbox, generating test cases, 
-        and (eventually) running them.
+        Evaluates the given Python code.
+        1. Executes the code to check for syntax and basic runtime errors.
+        2. Generates test cases based on the task description and code.
+        3. Executes the generated test cases against the code.
+        4. Classifies errors and provides a structured report.
         """
-        print(f"Critic '{self.name}': Attempting to execute code in sandbox.")
-        execution_details = self._execute_sandboxed_code(code)
-        print(f"Critic '{self.name}': Sandbox execution details: {execution_details}")
-
-        # Initialise test case variables
-        function_to_test: Optional[str] = None
-        generated_test_specs: List[Dict[str, Any]] = []
-        test_results: List[Dict[str, Any]] = [] # This will store results of actual test runs
-        num_tests_passed = 0
-        num_tests_total = 0
+        logger.info(f"Critic evaluating code for task: {task_description[:100]}...")
         
-        # Variables to hold report details, to be populated within try or except block
-        report_status = ""
-        report_score = 0.0
-        report_summary = ""
+        # Initialize parts of the report
+        raw_execution_details: Optional[Dict[str, Any]] = None
+        test_generation_results: Tuple[Optional[str], List[str]] = (None, [])
+        test_execution_results: List[Dict[str, Any]] = [] # Initialize here
+        error_classification: Optional[Dict[str, Any]] = None
+        overall_status: str = STATUS_CRITICAL_RUNTIME_ERROR # Default to an error state
+        score: float = 0.0
+        feedback: str = "Evaluation incomplete."
 
-        try:
-            # If code execution was successful, proceed to generate and run test cases
-            if execution_details["success"]:
-                function_to_test, generated_test_specs = self._generate_test_cases(task_description, code)
-                print(f"Critic '{self.name}': Generated {len(generated_test_specs)} test specifications for function '{function_to_test}'.")
+        # Step 1: Initial code execution for syntax and immediate runtime errors
+        logger.debug("Step 1: Initial code execution...")
+        raw_execution_details = self._execute_sandboxed_code(code)
+        
+        if not raw_execution_details["success"]:
+            logger.warning(f"Initial code execution failed. Error type: {raw_execution_details.get('error_type')}")
+            # Error already captured, proceed to classification
+            error_classification = self.error_classifier.classify(
+                raw_execution_details.get("raw_exception"), # Pass the actual exception object
+                raw_execution_details.get("traceback", ""),
+                raw_execution_details.get("error_type", "UnknownError"),
+                AgentType.EXECUTOR # Error occurred in Executor's code
+            )
+            overall_status = STATUS_CRITICAL_RUNTIME_ERROR if raw_execution_details.get('error_type') != "SyntaxError" else STATUS_CRITICAL_SYNTAX_ERROR
+            feedback = f"Code execution failed: {raw_execution_details.get('error_message', 'Unknown error')}"
+            # Score will be calculated later based on this status
+        else:
+            logger.info("Initial code execution successful.")
+            # Step 2: Generate test cases only if initial execution is successful
+            logger.debug("Step 2: Generating test cases...")
+            # Assuming 'code' is the string of the generated Python code
+            function_name, test_case_strings = self._generate_test_cases(task_description, code)
+            test_generation_results = (function_name, test_case_strings)
 
-                num_tests_total = len(generated_test_specs)
-                if function_to_test and generated_test_specs:
-                    print(f"Critic '{self.name}': Attempting to run {num_tests_total} test cases...")
-                    for test_spec in generated_test_specs:
-                        test_case_name = test_spec.get("test_case_name", "unnamed_test")
-                        inputs = test_spec.get("inputs", {})
-                        expected_output = test_spec.get("expected_output")
-
-                        input_args_str = ""
-                        if isinstance(inputs, dict):
-                            if len(inputs) == 1 and 'lists' in inputs:
-                                input_args_str = f"lists={repr(inputs['lists'])}"
-                            else:
-                                input_args_str = ", ".join(f"{k}={repr(v)}" for k, v in inputs.items())
-                        else:
-                            print(f"Critic '{self.name}': Warning - test inputs for '{test_case_name}' is not a dict: {inputs}")
-                            input_args_str = repr(inputs)
-
-                        # Strip markdown fences from the code before including it in the test script
-                        processed_code = code.strip()
-                        if processed_code.startswith("```python") and processed_code.endswith("```"):
-                            processed_code = processed_code[len("```python"):-(len("```"))].strip()
-                        elif processed_code.startswith("```") and processed_code.endswith("```"):
-                            processed_code = processed_code[len("```"):-(len("```"))].strip()
-
-                        test_execution_script = f'''
-# --- Start of Generated Code from Executor ---
-{processed_code}
-# --- End of Generated Code from Executor ---
-
-# --- Test Execution for: {test_case_name} ---
-actual_output = None
-test_passed = False
-error_occurred = False
-error_message = ""
-comparison_error_message = ""
-
-print(f"DEBUG_TEST_SCRIPT: Executing test: {test_case_name}")
-print(f"DEBUG_TEST_SCRIPT: Inputs prepared as: {input_args_str}")
-print(f"DEBUG_TEST_SCRIPT: Expected output: {repr(expected_output)}")
-
-try:
-    actual_output = {function_to_test}({input_args_str})
-    # Compare with expected_output_spec directly instead of using expected_output variable
-    if repr(actual_output) == repr({repr(expected_output)}):
-        test_passed = True
-    else:
-        comparison_error_message = f"Expected: {repr(expected_output)}, Got: {{repr(actual_output)}}" 
-
-except Exception as e:
-    error_occurred = True
-    error_message = str(e)
-    print(f"DEBUG_TEST_SCRIPT: Exception during test execution: {{error_message}}")
-
-print("__TEST_RESULT_START__")
-print(f"test_case_name={test_case_name}")
-print(f"test_passed={{test_passed}}")
-print(f"actual_output={{repr(actual_output)}}")
-print(f"expected_output={repr(expected_output)}")
-print(f"error_occurred={{error_occurred}}")
-print(f"error_message={{error_message}}")
-print(f"comparison_error_message={{comparison_error_message}}")
-print("__TEST_RESULT_END__")
-'''
-                        print(f"Critic '{self.name}': Executing test script for '{test_case_name}'...")
-                        single_test_exec_details = self._execute_sandboxed_code(test_execution_script)
-                        
-                        current_test_result = {
-                            "name": test_case_name,
-                            "inputs": inputs,
-                            "expected_output_spec": expected_output,
-                            "status": "error_running_test",
-                            "actual_output": None,
-                            "stdout": single_test_exec_details.get("stdout", ""),
-                            "stderr": single_test_exec_details.get("stderr", ""),
-                            "error_message": single_test_exec_details.get("error_message", "Unknown error during test script execution")
-                        }
-
-                        if single_test_exec_details["success"]:
-                            stdout_lines = single_test_exec_details.get("stdout", "").splitlines()
-                            test_data = {}
-                            in_test_block = False
-                            for line in stdout_lines:
-                                if line == "__TEST_RESULT_START__":
-                                    in_test_block = True
-                                    continue
-                                if line == "__TEST_RESULT_END__":
-                                    in_test_block = False
-                                    break
-                                if in_test_block and '=' in line:
-                                    key_val = line.split('=', 1)
-                                    if len(key_val) == 2:
-                                        test_data[key_val[0].strip()] = key_val[1].strip()
-                            
-                            if test_data.get("test_passed") == "True":
-                                current_test_result["status"] = "passed"
-                                num_tests_passed += 1
-                            else:
-                                current_test_result["status"] = "failed"
-                                current_test_result["error_message"] = test_data.get("error_message") or test_data.get("comparison_error_message")
-                            current_test_result["actual_output"] = test_data.get("actual_output")
-                        else:
-                            current_test_result["status"] = "framework_error"
-                            current_test_result["error_message"] = f"Sandbox execution of test script failed. Type: {single_test_exec_details.get('error_type')}, Msg: {single_test_exec_details.get('error_message')}"
-                        
-                        test_results.append(current_test_result)
-                    print(f"Critic '{self.name}': Finished running tests. Passed: {num_tests_passed}/{num_tests_total}")
-                else:
-                    if not function_to_test:
-                        print(f"Critic '{self.name}': Skipping test execution as no function_to_test was identified.")
-                    if not generated_test_specs:
-                        print(f"Critic '{self.name}': Skipping test execution as no test specifications were generated.")
-
-            # Determine report status, score, and summary based on execution and tests
-            if not execution_details["success"]:
-                report_status = f"FAILURE_{execution_details.get('error_type', 'UNKNOWN_EXECUTION_ERROR').upper()}"
-                report_score = 0.0
-                report_summary = f"Code execution failed in sandbox: {execution_details.get('error_type', 'Unknown error')}. No test cases generated or run."
+            if not test_case_strings:
+                logger.warning("No test cases were generated by the LLM.")
+                overall_status = NO_TESTS_FOUND # Or could be SUCCESS if code ran but no tests made
+                feedback = "Code executed successfully, but no test cases were generated to verify logic."
+                # Score might be moderate in this case
             else:
-                if num_tests_total == 0:
-                    report_status = "SUCCESS_EXECUTION_NO_TESTS"
-                    report_score = 0.7 
-                    report_summary = f"Code executed successfully. No test cases were generated or run for function '{function_to_test}'."
-                elif num_tests_passed == num_tests_total:
-                    report_status = "SUCCESS"
-                    report_score = 1.0
-                    report_summary = f"Code executed successfully. All {num_tests_passed}/{num_tests_total} tests passed for function '{function_to_test}'."
+                logger.info(f"Successfully generated {len(test_case_strings)} test cases for function '{function_name or 'unknown'}'.")
+                # Step 3: Execute generated test cases
+                logger.debug("Step 3: Executing generated test cases...")
+                test_execution_results = self._execute_test_cases(code, test_case_strings)
+                
+                num_tests_total = len(test_execution_results)
+                num_tests_passed = sum(1 for res in test_execution_results if res["passed"])
+                
+                if num_tests_passed == num_tests_total:
+                    overall_status = STATUS_SUCCESS
+                    feedback = f"All {num_tests_total} generated test(s) passed."
+                    logger.info(feedback)
                 else:
-                    report_status = "FAILURE_LOGIC"
-                    report_score = 0.2 + 0.5 * (num_tests_passed / num_tests_total)
-                    report_summary = f"Code executed successfully, but {num_tests_total - num_tests_passed}/{num_tests_total} tests failed for function '{function_to_test}'."
+                    overall_status = STATUS_LOGICAL_ERROR
+                    failed_tests_summary = [
+                        f"Test: '{res['test_case_str']}' Failed. Stderr: {res['stderr']}" 
+                        for res in test_execution_results if not res["passed"]
+                    ]
+                    feedback = f"{num_tests_passed}/{num_tests_total} test(s) passed. Failures:\n" + "\n".join(failed_tests_summary)
+                    logger.warning(feedback)
+                    # Find the first failed test's execution details for error classification
+                    # This assumes the error in the test is representative.
+                    first_failed_test_raw_result = next((res["raw_result"] for res in test_execution_results if not res["passed"]), None)
+                    if first_failed_test_raw_result and not first_failed_test_raw_result.get("success"):
+                         error_classification = self.error_classifier.classify(
+                            first_failed_test_raw_result.get("raw_exception"),
+                            first_failed_test_raw_result.get("traceback", ""),
+                            first_failed_test_raw_result.get("error_type", "AssertionError"), # Default to AssertionError if it's a logical fail
+                            AgentType.EXECUTOR # Error is in executor's code logic
+                        )
 
-        except Exception as e: # Catch exceptions during the test case generation or execution loop
-            print(f"CRITIC_ERROR: Unexpected error in evaluate_code: {e.__class__.__name__}: {e}")
-            print(f"CRITIC_ERROR_TRACEBACK: {traceback.format_exc()}")
-            report_status = f"FAILURE_CRITIC_INTERNAL_ERROR"
-            report_score = 0.0
-            report_summary = f"Critic agent encountered an internal error during test processing: {e}"
-            # Ensure execution_details is not None for report structure; it might be if error is before its first assignment
-            if execution_details is None: # This implies error happened before main code exec details were known
-                execution_details = { 
-                    "stdout": "", 
-                    "stderr": f"Critic internal error: {e}", 
-                    "error_type": e.__class__.__name__, 
-                    "error_message": str(e), 
-                    "traceback": traceback.format_exc(), 
-                    "success": False 
-                }
-        
-        report = {
-            "status": report_status,
-            "score": round(report_score, 4),
-            "execution_stdout": execution_details["stdout"],
-            "execution_stderr": execution_details["stderr"],
-            "error_details": None if execution_details["success"] else {
-                "type": execution_details["error_type"],
-                "message": execution_details["error_message"],
-                "traceback": execution_details["traceback"]
+
+        # Calculate score (placeholder for now, will be refined in Task 2.6)
+        # For now, a simple score based on status and test pass rate
+        # This will be replaced by _calculate_score method call later
+        # Placeholder score calculation:
+        num_total_from_exec = len(test_execution_results) if test_execution_results else 0
+        num_passed_from_exec = sum(1 for res in test_execution_results if res["passed"]) if test_execution_results else 0
+
+        if overall_status == STATUS_SUCCESS:
+            score = 1.0
+        elif overall_status == STATUS_LOGICAL_ERROR:
+            score = 0.2 + 0.5 * (num_passed_from_exec / num_total_from_exec if num_total_from_exec > 0 else 0)
+        elif overall_status == NO_TESTS_FOUND and raw_execution_details and raw_execution_details["success"]:
+            score = 0.4 # Code ran, but no tests to confirm logic
+        elif overall_status == STATUS_CRITICAL_RUNTIME_ERROR:
+            score = 0.1
+        elif overall_status == STATUS_CRITICAL_SYNTAX_ERROR:
+            score = 0.0
+        else:
+            score = 0.0 # Default for unhandled status
+
+
+        # Construct the final report
+        # Using EnhancedCriticReport structure
+        report = EnhancedCriticReport(
+            evaluator_name=self.name,
+            task_description=task_description,
+            generated_code=code,
+            raw_execution_details=raw_execution_details if raw_execution_details else {},
+            # test_generation_details needs to be structured. For now, a summary.
+            test_generation_details={
+                "function_name": test_generation_results[0] if test_generation_results else None,
+                "generated_test_case_strings": test_generation_results[1] if test_generation_results else [],
+                "status": "Generated" if test_generation_results and test_generation_results[1] else "Not Generated/Failed"
             },
-            "test_results": test_results,
-            "generated_test_specifications": generated_test_specs,
-            "function_to_test": function_to_test,
-            "summary": report_summary
-        }
-        return report
+            test_execution_results=test_execution_results if test_execution_results else [],
+            error_classification=error_classification if error_classification else {},
+            overall_status=overall_status,
+            feedback=feedback,
+            score=score # Will be refined by Task 2.6
+        )
+        
+        logger.info(f"Critic evaluation complete. Overall Status: {overall_status}, Score: {score:.2f}")
+        # Return as dict as per original method signature
+        if hasattr(report, 'model_dump'): # Pydantic models
+            return report.model_dump()
+        elif dataclasses.is_dataclass(report): # Python dataclasses
+            return dataclasses.asdict(report)
+        else: # Fallback, though might not be ideal for custom objects
+            return dict(report)
 
     def run(self, generated_code: str, task_description: str, plan: Dict) -> Dict:
         """
