@@ -1,0 +1,12 @@
+[
+  {
+    "name": "test_greet_function",
+    "inputs": {},
+    "expected_output_spec": null,
+    "status": "passed",
+    "actual_output": "None",
+    "stdout": "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef greet():\n    print('Hello, World!')\n# --- End of Generated Code from Executor ---\n\n# --- Test Execution for: test_greet_function ---\nactual_output =...\nDEBUG_TEST_SCRIPT: Executing test: test_greet_function\nDEBUG_TEST_SCRIPT: Inputs prepared as: \nDEBUG_TEST_SCRIPT: Expected output: None\nHello, World!\n__TEST_RESULT_START__\ntest_case_name=test_greet_function\ntest_passed=True\nactual_output=None\nexpected_output=None\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n",
+    "stderr": "",
+    "error_message": ""
+  }
+]

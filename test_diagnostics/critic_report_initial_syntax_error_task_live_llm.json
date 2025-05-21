@@ -1,0 +1,15 @@
+{
+  "status": "FAILURE_SYNTAXERROR",
+  "score": 0.0,
+  "execution_stdout": "DEBUG: About to execute code:\ndef greet():\n    print('Hello, World!'...\n",
+  "execution_stderr": "SyntaxError at line 2, offset 10: '(' was never closed",
+  "error_details": {
+    "type": "SyntaxError",
+    "message": "'(' was never closed (<string>, line 2)",
+    "traceback": "SyntaxError at line 2, offset 10: '(' was never closed"
+  },
+  "test_results": [],
+  "generated_test_specifications": [],
+  "function_to_test": null,
+  "summary": "Code execution failed in sandbox: SyntaxError. No test cases generated or run."
+}

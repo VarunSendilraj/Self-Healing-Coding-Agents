@@ -1,0 +1,1 @@
+Write a Python function `add_numbers(a, b)` that returns their sum, but accidentally use an undefined variable 'c' instead of 'b' in the sum.

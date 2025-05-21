@@ -1,0 +1,22 @@
+Your previous attempt to generate code resulted in the following error:
+
+### ERROR DETAILS ###
+Traceback:
+SyntaxError at line 2, offset 10: '(' was never closed
+
+Code Snippet with Error (around line 2):
+```python
+1:     def greet():
+2: >>>     print('Hello, World!'
+```
+
+### TASK: CORRECT THE CODE ###
+The original plan/request was:
+'''Define a function named `greet` with no parameters.
+Inside the function, write a print statement that outputs 'Hello, World!' but intentionally omit the closing parenthesis.
+Ensure the function is syntactically incorrect to demonstrate the error.'''
+
+Please analyze the error and fix the code.
+Make sure all parentheses, brackets, and quotes are properly closed.
+Output ONLY the complete, corrected Python code block.
+Do not include markdown code fences (```), explanations, or any text other than the Python code itself.

@@ -1,0 +1,7 @@
+{
+  "plan_steps": [
+    "Define a function `add_numbers` that takes two parameters, `a` and `b`.",
+    "Inside the function, attempt to calculate the sum of `a` and an undefined variable `c` instead of `b`.",
+    "Return the incorrect sum that uses the undefined variable."
+  ]
+}

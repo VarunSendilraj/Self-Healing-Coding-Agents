@@ -1,0 +1,118 @@
+{
+  "status": "FAILURE_LOGIC",
+  "score": 0.2,
+  "execution_stdout": "DEBUG: About to execute code:\ndef add_numbers(a, b):\n    return a + c...\n",
+  "execution_stderr": "",
+  "error_details": null,
+  "test_results": [
+    {
+      "name": "test_positive_numbers",
+      "inputs": {
+        "a": 1,
+        "b": 2
+      },
+      "expected_output_spec": "raises NameError",
+      "status": "failed",
+      "actual_output": "None",
+      "stdout": "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef add_numbers(a, b):\n    return a + c\n# --- End of Generated Code from Executor ---\n\n# --- Test Execution for: test_positive_numbers ---\nactual_output...\nDEBUG_TEST_SCRIPT: Executing test: test_positive_numbers\nDEBUG_TEST_SCRIPT: Inputs prepared as: a=1, b=2\nDEBUG_TEST_SCRIPT: Expected output: 'raises NameError'\nDEBUG_TEST_SCRIPT: Exception during test execution: name 'c' is not defined\n__TEST_RESULT_START__\ntest_case_name=test_positive_numbers\ntest_passed=False\nactual_output=None\nexpected_output='raises NameError'\nerror_occurred=True\nerror_message=name 'c' is not defined\ncomparison_error_message=\n__TEST_RESULT_END__\n",
+      "stderr": "",
+      "error_message": "name 'c' is not defined"
+    },
+    {
+      "name": "test_negative_numbers",
+      "inputs": {
+        "a": -1,
+        "b": -2
+      },
+      "expected_output_spec": "raises NameError",
+      "status": "failed",
+      "actual_output": "None",
+      "stdout": "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef add_numbers(a, b):\n    return a + c\n# --- End of Generated Code from Executor ---\n\n# --- Test Execution for: test_negative_numbers ---\nactual_output...\nDEBUG_TEST_SCRIPT: Executing test: test_negative_numbers\nDEBUG_TEST_SCRIPT: Inputs prepared as: a=-1, b=-2\nDEBUG_TEST_SCRIPT: Expected output: 'raises NameError'\nDEBUG_TEST_SCRIPT: Exception during test execution: name 'c' is not defined\n__TEST_RESULT_START__\ntest_case_name=test_negative_numbers\ntest_passed=False\nactual_output=None\nexpected_output='raises NameError'\nerror_occurred=True\nerror_message=name 'c' is not defined\ncomparison_error_message=\n__TEST_RESULT_END__\n",
+      "stderr": "",
+      "error_message": "name 'c' is not defined"
+    },
+    {
+      "name": "test_zero_values",
+      "inputs": {
+        "a": 0,
+        "b": 0
+      },
+      "expected_output_spec": "raises NameError",
+      "status": "failed",
+      "actual_output": "None",
+      "stdout": "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef add_numbers(a, b):\n    return a + c\n# --- End of Generated Code from Executor ---\n\n# --- Test Execution for: test_zero_values ---\nactual_output = No...\nDEBUG_TEST_SCRIPT: Executing test: test_zero_values\nDEBUG_TEST_SCRIPT: Inputs prepared as: a=0, b=0\nDEBUG_TEST_SCRIPT: Expected output: 'raises NameError'\nDEBUG_TEST_SCRIPT: Exception during test execution: name 'c' is not defined\n__TEST_RESULT_START__\ntest_case_name=test_zero_values\ntest_passed=False\nactual_output=None\nexpected_output='raises NameError'\nerror_occurred=True\nerror_message=name 'c' is not defined\ncomparison_error_message=\n__TEST_RESULT_END__\n",
+      "stderr": "",
+      "error_message": "name 'c' is not defined"
+    },
+    {
+      "name": "test_mixed_numbers",
+      "inputs": {
+        "a": -1,
+        "b": 1
+      },
+      "expected_output_spec": "raises NameError",
+      "status": "failed",
+      "actual_output": "None",
+      "stdout": "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef add_numbers(a, b):\n    return a + c\n# --- End of Generated Code from Executor ---\n\n# --- Test Execution for: test_mixed_numbers ---\nactual_output = ...\nDEBUG_TEST_SCRIPT: Executing test: test_mixed_numbers\nDEBUG_TEST_SCRIPT: Inputs prepared as: a=-1, b=1\nDEBUG_TEST_SCRIPT: Expected output: 'raises NameError'\nDEBUG_TEST_SCRIPT: Exception during test execution: name 'c' is not defined\n__TEST_RESULT_START__\ntest_case_name=test_mixed_numbers\ntest_passed=False\nactual_output=None\nexpected_output='raises NameError'\nerror_occurred=True\nerror_message=name 'c' is not defined\ncomparison_error_message=\n__TEST_RESULT_END__\n",
+      "stderr": "",
+      "error_message": "name 'c' is not defined"
+    },
+    {
+      "name": "test_large_numbers",
+      "inputs": {
+        "a": 1000000,
+        "b": 2000000
+      },
+      "expected_output_spec": "raises NameError",
+      "status": "failed",
+      "actual_output": "None",
+      "stdout": "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef add_numbers(a, b):\n    return a + c\n# --- End of Generated Code from Executor ---\n\n# --- Test Execution for: test_large_numbers ---\nactual_output = ...\nDEBUG_TEST_SCRIPT: Executing test: test_large_numbers\nDEBUG_TEST_SCRIPT: Inputs prepared as: a=1000000, b=2000000\nDEBUG_TEST_SCRIPT: Expected output: 'raises NameError'\nDEBUG_TEST_SCRIPT: Exception during test execution: name 'c' is not defined\n__TEST_RESULT_START__\ntest_case_name=test_large_numbers\ntest_passed=False\nactual_output=None\nexpected_output='raises NameError'\nerror_occurred=True\nerror_message=name 'c' is not defined\ncomparison_error_message=\n__TEST_RESULT_END__\n",
+      "stderr": "",
+      "error_message": "name 'c' is not defined"
+    }
+  ],
+  "generated_test_specifications": [
+    {
+      "test_case_name": "test_positive_numbers",
+      "inputs": {
+        "a": 1,
+        "b": 2
+      },
+      "expected_output": "raises NameError"
+    },
+    {
+      "test_case_name": "test_negative_numbers",
+      "inputs": {
+        "a": -1,
+        "b": -2
+      },
+      "expected_output": "raises NameError"
+    },
+    {
+      "test_case_name": "test_zero_values",
+      "inputs": {
+        "a": 0,
+        "b": 0
+      },
+      "expected_output": "raises NameError"
+    },
+    {
+      "test_case_name": "test_mixed_numbers",
+      "inputs": {
+        "a": -1,
+        "b": 1
+      },
+      "expected_output": "raises NameError"
+    },
+    {
+      "test_case_name": "test_large_numbers",
+      "inputs": {
+        "a": 1000000,
+        "b": 2000000
+      },
+      "expected_output": "raises NameError"
+    }
+  ],
+  "function_to_test": "add_numbers",
+  "summary": "Code executed successfully, but 5/5 tests failed for function 'add_numbers'."
+}

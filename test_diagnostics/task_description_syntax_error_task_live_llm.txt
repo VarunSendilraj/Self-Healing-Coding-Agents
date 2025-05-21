@@ -1,0 +1,1 @@
+Write a Python function `greet` that prints 'Hello, World!' but accidentally include a syntax error (e.g., missing a closing parenthesis on the print statement).
