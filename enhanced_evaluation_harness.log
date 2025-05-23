@@ -1,0 +1,269 @@
+2025-05-22 21:50:43,678 - self_healing_agents.evaluation.enhanced_harness - INFO - Starting Enhanced Evaluation Harness at 2025-05-22 21:50:43
+2025-05-22 21:50:43,679 - self_healing_agents.evaluation.enhanced_harness - INFO - Using LLM provider: deepseek, model: deepseek-coder
+2025-05-22 21:50:43,831 - self_healing_agents.evaluation.enhanced_harness - INFO - LLM service initialized successfully.
+2025-05-22 21:50:43,831 - self_healing_agents.evaluation.enhanced_harness - INFO - 🏗️  CREATING AGENTS...
+2025-05-22 21:50:43,831 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ PLANNER CREATED: Planner
+2025-05-22 21:50:43,832 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ EXECUTOR CREATED: Executor with initial system_prompt: 'You are a complete beginner at Python who makes lots of mistakes. Write broken Python code with thes...'
+2025-05-22 21:50:43,832 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ CRITIC CREATED: Critic
+2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - Agents initialized successfully.
+2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - --- Starting Task: [95mWildcard Matching[0m ---
+2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - Description: [96mGiven an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*' where:
+
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
+The matching should cover the entire input string (not partial).
+
+Example 1:
+Input: s = "aa", p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".
+
+Example 2:
+Input: s = "aa", p = "*"
+Output: true
+Explanation: '*' matches any sequence.
+
+Example 3:
+Input: s = "cb", p = "?a"
+Output: false
+Explanation: '?' matches 'c', but the second letter is 'a', which does not match 'b'.
+
+            [0m
+2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are a complete beginner at Python who makes lots of mistakes. Write broken Python code with thes...
+2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ EXECUTOR PROMPT SET TO: You are a complete beginner at Python who makes lots of mistakes. Write broken Python code with thes...
+2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - 
+=== PHASE 1: Initial Run with Direct Fix for Task '[94mWildcard Matching[0m' ===
+2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  1. Planning:[0m
+2025-05-22 21:50:44,412 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-22 21:50:58,306 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mPlanner Output:[0m
+{'plan_steps': ['Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching results.', 'Set DP[0][0] to True since empty string matches empty pattern.', "Handle the case where pattern starts with '*' by setting DP[0][j] to True for all '*' prefixes in the pattern.", 'Iterate through each character in the string and pattern to fill the DP table.', "For each character in the string and pattern, check if the current pattern character is '?', '*', or a regular character.", "If the current pattern character is '?', match it with any single character in the string.", "If the current pattern character is '*', consider it matching zero or more characters in the string.", 'If the current pattern character is a regular character, check for an exact match with the string character.', 'Update the DP table based on the matching conditions above.', 'Return the value in DP[len(s)][len(p)] which indicates if the entire string matches the entire pattern.']}
+2025-05-22 21:50:58,306 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  2. Execution:[0m
+2025-05-22 21:50:58,598 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-22 21:51:12,280 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mExecutor Output (initial code):[0m
+```python
+def isMatch(s, p):
+    i = 0
+    j = 0
+    star = -1
+    match = 0
+    
+    while i < len(s):
+        if j < len(p) and (p[j] == '?' or p[j] == s[i]):
+            i += 1
+            j += 1
+        elif j < len(p) and p[j] == '*':
+            star = j
+            match = i
+            j += 1
+        elif star != -1:
+            j = star + 1
+            match += 1
+            i = match
+        else:
+            return False
+    
+    while j < len(p) and p[j] == '*':
+        j += 1
+    
+    return j = len(p)
+
+def main():
+    print(isMatch("aa", "a"))  # Should be False
+    print(isMatch("aa", "*"))  # Should be True
+    print(isMatch("cb", "?a")) # Should be False
+
+if __name__ == "__main__":
+    main()
+```
+2025-05-22 21:51:12,280 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  3. Initial Evaluation:[0m
+2025-05-22 21:51:12,582 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-22 21:51:35,698 - self_healing_agents.evaluation.enhanced_harness - INFO -     Critique Keys: dict_keys(['status', 'score', 'summary', 'error_details', 'test_results', 'generated_code_for_report', 'execution_time_ms', 'memory_usage_mb', 'recommendations'])
+2025-05-22 21:51:35,698 - self_healing_agents.evaluation.enhanced_harness - INFO -     [96mFull Initial Critique:[0m
+{'status': 'FAILURE_EVALUATION', 'score': 0.0, 'summary': 'Failed 10 out of 10 test cases.', 'error_details': '', 'test_results': [{'test_case': 1, 'passed': False, 'input': {'s': 'aa', 'p': 'aa'}, 'expected': True, 'actual': None, 'execution_time_ms': 3.39, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 2, 'passed': False, 'input': {'s': 'aa', 'p': '*'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.93, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 3, 'passed': False, 'input': {'s': 'cb', 'p': '?b'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.96, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 4, 'passed': False, 'input': {'s': 'a', 'p': 'a*'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.98, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 5, 'passed': False, 'input': {'s': '', 'p': ''}, 'expected': True, 'actual': None, 'execution_time_ms': 2.98, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 6, 'passed': False, 'input': {'s': '', 'p': '*'}, 'expected': True, 'actual': None, 'execution_time_ms': 3.01, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 7, 'passed': False, 'input': {'s': 'aa', 'p': ''}, 'expected': False, 'actual': None, 'execution_time_ms': 2.95, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 8, 'passed': False, 'input': {'s': 'abcde', 'p': 'a*e'}, 'expected': True, 'actual': None, 'execution_time_ms': 3.01, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 9, 'passed': False, 'input': {'s': 'abc', 'p': 'a?c'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.99, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 10, 'passed': False, 'input': {'s': 'abc', 'p': 'a?*'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.92, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}], 'generated_code_for_report': '```python\ndef isMatch(s, p):\n    i = 0\n    j = 0\n    star = -1\n    match = 0\n    \n    while i < len(s):\n        if j < len(p) and (p[j] == \'?\' or p[j] == s[i]):\n            i += 1\n            j += 1\n        elif j < len(p) and p[j] == \'*\':\n            star = j\n            match = i\n            j += 1\n        elif star != -1:\n            j = star + 1\n            match += 1\n            i = match\n        else:\n            return False\n    \n    while j < len(p) and p[j] == \'*\':\n        j += 1\n    \n    return j = len(p)\n\ndef main():\n    print(isMatch("aa", "a"))  # Should be False\n    print(isMatch("aa", "*"))  # Should be True\n    print(isMatch("cb", "?a")) # Should be False\n\nif __name__ == "__main__":\n    main()\n```', 'execution_time_ms': 0, 'memory_usage_mb': 0, 'recommendations': []}
+2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mCritic Status:[0m FAILURE_EVALUATION
+2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mCritic Score:[0m 0.0
+2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  4. Direct Fix Attempt:[0m
+2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO -     Attempting direct fix of code based on error report...
+2025-05-22 21:51:35,991 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-22 21:51:49,400 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mDirect Fix Output:[0m
+```python
+def isMatch(s, p):
+    i = 0
+    j = 0
+    star = -1
+    match = 0
+    
+    while i < len(s):
+        if j < len(p) and (p[j] == '?' or p[j] == s[i]):
+            i += 1
+            j += 1
+        elif j < len(p) and p[j] == '*':
+            star = j
+            match = i
+            j += 1
+        elif star != -1:
+            j = star + 1
+            match += 1
+            i = match
+        else:
+            return False
+    
+    while j < len(p) and p[j] == '*':
+        j += 1
+    
+    return j == len(p)
+
+def main():
+    print(isMatch("aa", "a"))  # Should be False
+    print(isMatch("aa", "*"))  # Should be True
+    print(isMatch("cb", "?a")) # Should be False
+
+if __name__ == "__main__":
+    main()
+```
+2025-05-22 21:51:49,400 - self_healing_agents.evaluation.enhanced_harness - INFO -     Re-evaluating directly fixed code...
+2025-05-22 21:51:49,785 - self_healing_agents.evaluation.enhanced_harness - INFO -     [96mFull Direct Fix Critique:[0m
+{'status': 'SUCCESS', 'score': 1.0, 'summary': 'All 10 test cases passed successfully.', 'error_details': '', 'test_results': [{'test_case': 1, 'passed': True, 'input': {'s': 'aa', 'p': 'aa'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 2, 'passed': True, 'input': {'s': 'aa', 'p': '*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.39, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 3, 'passed': True, 'input': {'s': 'cb', 'p': '?b'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 4, 'passed': True, 'input': {'s': 'a', 'p': 'a*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 5, 'passed': True, 'input': {'s': '', 'p': ''}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 6, 'passed': True, 'input': {'s': '', 'p': '*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 7, 'passed': True, 'input': {'s': 'aa', 'p': ''}, 'expected': False, 'actual': False, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'False\n', 'stderr': ''}, {'test_case': 8, 'passed': True, 'input': {'s': 'abcde', 'p': 'a*e'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 9, 'passed': True, 'input': {'s': 'abc', 'p': 'a?c'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 10, 'passed': True, 'input': {'s': 'abc', 'p': 'a?*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'True\n', 'stderr': ''}], 'generated_code_for_report': '```python\ndef isMatch(s, p):\n    i = 0\n    j = 0\n    star = -1\n    match = 0\n    \n    while i < len(s):\n        if j < len(p) and (p[j] == \'?\' or p[j] == s[i]):\n            i += 1\n            j += 1\n        elif j < len(p) and p[j] == \'*\':\n            star = j\n            match = i\n            j += 1\n        elif star != -1:\n            j = star + 1\n            match += 1\n            i = match\n        else:\n            return False\n    \n    while j < len(p) and p[j] == \'*\':\n        j += 1\n    \n    return j == len(p)\n\ndef main():\n    print(isMatch("aa", "a"))  # Should be False\n    print(isMatch("aa", "*"))  # Should be True\n    print(isMatch("cb", "?a")) # Should be False\n\nif __name__ == "__main__":\n    main()\n```', 'execution_time_ms': 0, 'memory_usage_mb': 0, 'recommendations': []}
+2025-05-22 21:51:49,786 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mDirect Fix Status:[0m SUCCESS
+2025-05-22 21:51:49,786 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mDirect Fix Score:[0m 1.0
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - [92m  Direct fix successful! No need for self-healing.[0m
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - ERROR - [91m    ERROR: Unhandled generic exception during task execution: type object 'TermColors' has no attribute 'YELLOW'[0m
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - 
+================================================================================
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - RESULTS:
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - ================================================================================
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Status: FAILURE_UNHANDLED_EXCEPTION
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Best Source: DIRECT_FIX
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Best Score: 1.0
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Direct Fix Attempts: 1
+2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Direct Fix Success Rate: 100.00%
+2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - 
+Final Code:
+2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - ----------------------------------------
+2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - ```python
+```python
+def isMatch(s, p):
+    i = 0
+    j = 0
+    star = -1
+    match = 0
+    
+    while i < len(s):
+        if j < len(p) and (p[j] == '?' or p[j] == s[i]):
+            i += 1
+            j += 1
+        elif j < len(p) and p[j] == '*':
+            star = j
+            match = i
+            j += 1
+        elif star != -1:
+            j = star + 1
+            match += 1
+            i = match
+        else:
+            return False
+    
+    while j < len(p) and p[j] == '*':
+        j += 1
+    
+    return j == len(p)
+
+def main():
+    print(isMatch("aa", "a"))  # Should be False
+    print(isMatch("aa", "*"))  # Should be True
+    print(isMatch("cb", "?a")) # Should be False
+
+if __name__ == "__main__":
+    main()
+```
+```
+2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - ----------------------------------------
+2025-05-22 21:51:49,790 - self_healing_agents.evaluation.enhanced_harness - INFO - Enhanced Evaluation Harness completed at 2025-05-22 21:51:49
+2025-05-22 21:51:49,790 - self_healing_agents.evaluation.enhanced_harness - INFO - Results saved to enhanced_evaluation_harness.log
+sks: 1
+Successful tasks: 0 (0.00%)
+Direct fix attempts: 1
+Direct fix successes: 1 (100.00%)
+Tasks where direct fix was best: 1 (100.00%)
+Tasks where self-healing was best: 0 (0.00%)
+Tasks where initial code was best: 0 (0.00%)
+
+INDIVIDUAL TASK RESULTS:
+--------------------------------------------------------------------------------
+Task 1: Wildcard Matching
+  Status: FAILURE_UNHANDLED_EXCEPTION
+  Score: 1.0
+  Best Source: DIRECT_FIX
+  Direct Fix: 1/1
+  Test Case Details (from final successful code):
+    Test Case 1: PASSED
+      Input: {'s': 'aa', 'p': 'aa'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 2: PASSED
+      Input: {'s': 'aa', 'p': '*'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 3: PASSED
+      Input: {'s': 'cb', 'p': '?b'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 4: PASSED
+      Input: {'s': 'a', 'p': 'a*'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 5: PASSED
+      Input: {'s': '', 'p': ''}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 6: PASSED
+      Input: {'s': '', 'p': '*'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 7: PASSED
+      Input: {'s': 'aa', 'p': ''}
+      Expected: False
+      Actual: False
+      Stdout: False
+
+      Stderr: 
+    Test Case 8: PASSED
+      Input: {'s': 'abcde', 'p': 'a*e'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 9: PASSED
+      Input: {'s': 'abc', 'p': 'a?c'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+    Test Case 10: PASSED
+      Input: {'s': 'abc', 'p': 'a?*'}
+      Expected: True
+      Actual: True
+      Stdout: True
+
+      Stderr: 
+--------------------------------------------------------------------------------

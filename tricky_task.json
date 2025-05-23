@@ -1,0 +1,7 @@
+[
+  {
+    "id": "tricky_task",
+    "description": "Implement a function to check if a number is prime. A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n\nExamples:\nInput: 2\nOutput: true\n\nInput: 3\nOutput: true\n\nInput: 4\nOutput: false\n\nInput: 17\nOutput: true\n\nInput: 25\nOutput: false\n\nNote: Your function should handle edge cases like 1, negative numbers, and large numbers efficiently.",
+    "initial_executor_prompt": "Implement a function called `isPrime` that takes an integer n and returns True if n is prime, False otherwise."
+  }
+] 

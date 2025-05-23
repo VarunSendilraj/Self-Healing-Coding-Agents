@@ -69,8 +69,8 @@ class Executor(Agent):
         # Construct a detailed prompt for the Executor
         # It's often helpful to include the original request for context, even if the plan is detailed.
         executor_prompt_content = (
-            f"Original User Request:\\n{original_request}\\n\\n"
-            f"Execution Plan:\\n{plan.get('steps', 'No specific steps provided in plan.')}\\n\\n"
+            f"Original User Request:\n{original_request}\n\n"
+            f"Execution Plan:\n{plan.get('steps', 'No specific steps provided in plan.')}\n\n"
             f"Please generate Python code to accomplish this. Ensure you only output the raw Python code, without any markdown formatting or explanations."
         )
 
@@ -85,6 +85,125 @@ class Executor(Agent):
         except Exception as e:
             print(f"Error in ExecutorAgent: {e}")
             return f"# Error generating code: {e}"
+
+    def direct_fix_attempt(self, original_code: str, error_report: Dict, task_description: str, plan: Dict) -> str:
+        """
+        Attempts to directly fix errors in the code based on the error report from the Critic.
+        This is a targeted fix attempt that occurs before engaging the full Self-Healing Module.
+        
+        Args:
+            original_code: The code with errors that needs to be fixed
+            error_report: The structured error report from the Critic
+            task_description: The original task description
+            plan: The plan from the Planner
+            
+        Returns:
+            str: The fixed code
+        """
+        print(f"Executor '{self.name}': Attempting direct error fix...")
+        
+        # Diagnostic logging for error report
+        print("DIAGNOSTIC: Error report type:", type(error_report))
+        print("DIAGNOSTIC: Error report keys:", error_report.keys() if isinstance(error_report, dict) else "Not a dict")
+        
+        # Create a focused error-fixing prompt
+        # This maintains the original system prompt but adds specific error information
+        
+        # Extract relevant error information from the error report
+        overall_status = error_report.get('overall_status', 'UNKNOWN_ERROR')
+        error_type = error_report.get('execution_error_type', 'No error type provided')
+        error_message = error_report.get('execution_error_message', 'No error message provided')
+        traceback = error_report.get('execution_traceback', 'No traceback provided')
+        
+        # Log extracted error information
+        print(f"DIAGNOSTIC: Extracted overall_status: {overall_status}")
+        print(f"DIAGNOSTIC: Extracted error_type: {error_type}")
+        print(f"DIAGNOSTIC: Extracted error_message: {error_message[:100]}{'...' if len(str(error_message)) > 100 else ''}")
+        
+        # Extract test failure information if available
+        num_tests_total = error_report.get('num_tests_total', 0)
+        num_tests_passed = error_report.get('num_tests_passed', 0)
+        num_tests_failed = error_report.get('num_tests_failed', 0)
+        failed_test_details = error_report.get('failed_test_details', [])
+        
+        # Log test information
+        print(f"DIAGNOSTIC: Extracted test counts - Total: {num_tests_total}, Passed: {num_tests_passed}, Failed: {num_tests_failed}")
+        print(f"DIAGNOSTIC: Number of failed test details: {len(failed_test_details)}")
+        if failed_test_details and len(failed_test_details) > 0:
+            print(f"DIAGNOSTIC: First failed test: {failed_test_details[0]}")
+            
+        # Diagnostic: Check if we're accessing the right fields in the error report
+        if 'status' in error_report and 'overall_status' not in error_report:
+            print("DIAGNOSTIC: Found 'status' field instead of 'overall_status'")
+            overall_status = error_report.get('status', 'UNKNOWN_ERROR')
+            
+        if 'score' in error_report and 'quantitative_score' not in error_report:
+            print("DIAGNOSTIC: Found 'score' field instead of 'quantitative_score'")
+            score = error_report.get('score', 0.0)
+            
+        # Additional diagnostic to inspect the error report structure
+        print("DIAGNOSTIC: Error report flat structure:", {k: type(v) for k, v in error_report.items()} if isinstance(error_report, dict) else "Not a dict")
+        
+        # Create a summary of failed tests
+        failed_tests_summary = ""
+        for i, test in enumerate(failed_test_details):
+            test_name = test.get('name', f'Test {i+1}')
+            inputs = test.get('inputs', {})
+            expected = test.get('expected_output_spec', 'Not specified')
+            actual = test.get('actual_output', 'Not available')
+            error_msg = test.get('error_message', '')
+            
+            failed_tests_summary += f"\nTest: {test_name}\n"
+            failed_tests_summary += f"Inputs: {inputs}\n"
+            failed_tests_summary += f"Expected output: {expected}\n"
+            failed_tests_summary += f"Actual output: {actual}\n"
+            if error_msg:
+                failed_tests_summary += f"Error message: {error_msg}\n"
+                
+        # Concise summary from error report
+        concise_summary = error_report.get('concise_summary', 'No summary provided')
+        
+        # Create the direct fix prompt
+        direct_fix_prompt = (
+            f"Original User Request:\n{task_description}\n\n"
+            f"Execution Plan:\n{plan.get('steps', 'No specific steps provided in plan.')}\n\n"
+            f"I need you to fix the following Python code that has errors:\n\n"
+            f"```python\n{original_code}\n```\n\n"
+            f"ERROR DETAILS:\n"
+            f"Status: {overall_status}\n"
+        )
+        
+        # Add appropriate error details based on the type of error
+        if overall_status in [STATUS_CRITICAL_SYNTAX_ERROR, STATUS_CRITICAL_RUNTIME_ERROR]:
+            direct_fix_prompt += (
+                f"Error Type: {error_type}\n"
+                f"Error Message: {error_message}\n"
+                f"Traceback:\n{traceback}\n\n"
+            )
+        elif overall_status == STATUS_LOGICAL_ERROR:
+            direct_fix_prompt += (
+                f"The code runs but fails test cases.\n"
+                f"Tests: {num_tests_passed} passed, {num_tests_failed} failed (out of {num_tests_total})\n"
+                f"Failed Test Details:{failed_tests_summary}\n\n"
+            )
+        
+        direct_fix_prompt += (
+            f"Summary of Issues: {concise_summary}\n\n"
+            f"Please fix these specific errors directly. Only output the corrected code without any explanations or markdown formatting."
+        )
+        
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": direct_fix_prompt}
+        ]
+        
+        try:
+            # Generate fixed code
+            fixed_code = self.llm_service.invoke(messages, expect_json=False)
+            return fixed_code
+        except Exception as e:
+            print(f"Error in ExecutorAgent direct_fix_attempt: {e}")
+            return original_code  # Return the original code if the fix attempt fails
 
 class Critic(Agent):
     def __init__(self, name: str, llm_service: LLMService, system_prompt: str = CRITIC_SYSTEM_PROMPT):
