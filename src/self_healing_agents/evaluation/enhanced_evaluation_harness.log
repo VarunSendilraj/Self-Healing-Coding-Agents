@@ -1,0 +1,28 @@
+2025-05-22 22:19:29,370 - __main__ - INFO - --- Starting Enhanced Multi-Agent Task: [95mdemo_task[0m ---
+2025-05-22 22:19:29,370 - __main__ - INFO - Description: [96mCreate a simple demonstration function for testing the enhanced multi-agent harness[0m
+2025-05-22 22:19:29,370 - __main__ - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are a complete beginner at Python who makes lots of mistakes. Write broken Python code with thes...
+2025-05-22 22:19:29,371 - __main__ - INFO - 
+=== PHASE 1: Initial Planning and Validation for Task '[94mdemo_task[0m' ===
+2025-05-22 22:19:29,371 - __main__ - INFO - [95m  1. Planning:[0m
+2025-05-22 22:19:29,371 - __main__ - INFO -     [92mPlanner Output:[0m
+{'steps': ['Define function', 'Implement algorithm', 'Return result'], 'approach': 'Step-by-step implementation'}
+2025-05-22 22:19:29,371 - __main__ - INFO - [95m  2. Plan Validation:[0m
+2025-05-22 22:19:29,371 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Starting plan quality assessment...
+2025-05-22 22:19:29,372 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Quality Score: 0.78
+2025-05-22 22:19:29,372 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Valid: True
+2025-05-22 22:19:29,372 - __main__ - INFO -     [96mPlan Quality Score:[0m 0.78
+2025-05-22 22:19:29,372 - __main__ - INFO -     [92mPlan Valid:[0m True
+2025-05-22 22:19:29,372 - __main__ - WARNING -     [93mPlan Warnings:[0m ["Missing recommended fields: ['requirements']", "Plan may not address: ['test cases']", 'Plan steps are quite brief - may lack detail', 'Vague steps found: 1 steps need more detail']
+2025-05-22 22:19:29,372 - __main__ - INFO - 
+=== PHASE 2: Execution and Initial Evaluation ===
+2025-05-22 22:19:29,372 - __main__ - INFO - [95m  3. Execution:[0m
+2025-05-22 22:19:29,372 - __main__ - INFO -     [92mExecutor Output (initial code):[0m
+def demo_function():
+    # Basic implementation that works
+    return "Demo result" 
+2025-05-22 22:19:29,372 - __main__ - INFO - [95m  4. Initial Evaluation:[0m
+2025-05-22 22:19:29,373 - __main__ - INFO -     [96mFull Initial Critique:[0m
+{'status': 'SUCCESS', 'score': 1.0, 'execution_stdout': 'DEBUG: About to execute code:\ndef demo_function():\n    # Basic implementation that works\n    return "Demo result"...\n', 'execution_stderr': '', 'error_details': None, 'test_results': [{'name': 'basic_test', 'inputs': {}, 'expected_output_spec': 'Demo result', 'status': 'passed', 'actual_output': "'Demo result'", 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef demo_function():\n    # Basic implementation that works\n    return "Demo result"\n# --- End of Generated Code from Executor ---\n\n# --- Test Execution ...\nDEBUG_TEST_SCRIPT: Executing test: basic_test\nDEBUG_TEST_SCRIPT: Inputs prepared as: \nDEBUG_TEST_SCRIPT: Expected output: \'Demo result\'\n__TEST_RESULT_START__\ntest_case_name=basic_test\ntest_passed=True\nactual_output=\'Demo result\'\nexpected_output=\'Demo result\'\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}], 'generated_test_specifications': [{'test_case_name': 'basic_test', 'inputs': {}, 'expected_output': 'Demo result'}], 'function_to_test': 'demo_function', 'summary': "Code executed successfully. All 1/1 tests passed for function 'demo_function'."}
+2025-05-22 22:19:29,373 - __main__ - INFO -     [92mCritic Status:[0m SUCCESS
+2025-05-22 22:19:29,373 - __main__ - INFO -     [92mCritic Score:[0m 1.0
+2025-05-22 22:19:29,373 - __main__ - INFO - [92m  Initial solution passed! No need for healing.[0m

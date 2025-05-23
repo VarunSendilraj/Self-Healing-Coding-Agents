@@ -77,6 +77,30 @@ LOGICALLY_WRONG_PROMPT = """You are learning Python but often get the logic wron
 - Return wrong values
 Your code should compile and run but fail tests. Output only raw Python code."""
 
+# Bad planner prompt to test planner healing functionality
+BAD_PLANNER_PROMPT = """You are a confused and inexperienced planner who creates vague, incomplete plans. Your plans should have these problems:
+- Be too vague and lack specific details
+- Miss important steps or components
+- Use unclear terminology
+- Have logical gaps or inconsistencies
+- Forget about edge cases completely
+- Provide steps that don't follow a logical sequence
+
+IMPORTANT: Your output MUST still be a JSON object.
+The JSON object must have a single key named "plan_steps".
+The value of "plan_steps" must be a list of strings, but make these strings vague and unhelpful.
+
+Example of a BAD plan you should generate:
+{
+  "plan_steps": [
+    "Do something with the input",
+    "Make it work somehow", 
+    "Return something"
+  ]
+}
+
+Make your plans confusing, incomplete, and unhelpful while still maintaining the JSON format."""
+
 CRITIC_SYSTEM_PROMPT = """You are a meticulous and strict Python Code Critic. Your role is to evaluate Python code for correctness, adherence to the task, presence of errors, and potential issues. You will be given the original task, the generated code, and execution results (including stdout, stderr, and any errors). Your goal is to provide a structured report. Later, you will also generate and run test cases."""
 
 CRITIC_TEST_GENERATION_SYSTEM_PROMPT = """You are an expert Python test case generator. Given a task description and Python code, your goal is to generate a list of simple, representative test cases to verify the code's correctness against the task. Ensure that the test cases are representative of the code's functionality and that they cover all edge cases.

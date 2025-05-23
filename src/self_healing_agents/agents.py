@@ -1,11 +1,14 @@
 from typing import Dict, List, Any, Optional, Tuple
 import json
+import logging
 from .llm_service import LLMService
 from .prompts import PLANNER_SYSTEM_PROMPT, EXECUTOR_SYSTEM_PROMPT_V1, CRITIC_SYSTEM_PROMPT, CRITIC_TEST_GENERATION_SYSTEM_PROMPT
 from abc import ABC, abstractmethod
 import io # Added for capturing stdout
 import sys # Added for capturing stderr (though exec captures it directly)
 import traceback # Added for formatting exceptions
+
+logger = logging.getLogger(__name__)
 
 # Define constants for overall status
 STATUS_CRITICAL_SYNTAX_ERROR = "CRITICAL_SYNTAX_ERROR"
@@ -768,6 +771,317 @@ class CriticAgent:
              report['concise_summary'] = "Analysis complete. No specific issues to summarize based on current status."
 
         return report
+
+# Self-Healing Agent Classes for Enhanced Multi-Agent System
+
+class PlannerSelfHealer(Agent):
+    """
+    Self-healing agent specifically for improving planning capabilities.
+    """
+    
+    def __init__(self, name: str, llm_service: LLMService, system_prompt: str = None):
+        super().__init__(name, llm_service)
+        if system_prompt is None:
+            self.system_prompt = """You are a Planning Self-Healer Agent specializing in improving planning quality.
+
+Your role is to analyze failed plans and generate improved versions that address specific planning issues:
+
+1. **Planning Failure Analysis**: 
+   - Examine why the original plan led to failures
+   - Identify missing steps, logical inconsistencies, or vague instructions
+   - Determine if the plan was too abstract or infeasible
+
+2. **Plan Improvement**: 
+   - Generate more detailed, specific steps
+   - Add missing dependencies and import requirements
+   - Ensure logical flow and completeness
+   - Make steps concrete and implementable
+
+3. **Output Format**: 
+   Return a JSON object with:
+   - "steps": Array of detailed execution steps
+   - "requirements": List of dependencies/imports needed
+   - "approach": High-level strategy description
+   - "improvements_made": List of specific improvements from original plan
+
+Focus on creating actionable, specific plans that provide clear guidance for implementation."""
+        else:
+            self.system_prompt = system_prompt
+            
+    def run(self, *args, **kwargs) -> Any:
+        """
+        Implementation of abstract run method. 
+        For self-healing agents, the main interface is through heal_plan method.
+        """
+        if len(args) >= 4:
+            return self.heal_plan(args[0], args[1], args[2], args[3])
+        else:
+            raise ValueError("PlannerSelfHealer.run requires 4 arguments: original_plan, failure_report, task_description, classification_result")
+            
+    def heal_plan(
+        self, 
+        original_plan: Dict[str, Any], 
+        failure_report: Dict[str, Any], 
+        task_description: str,
+        classification_result: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Generate an improved plan based on failure analysis.
+        
+        Args:
+            original_plan: The plan that failed
+            failure_report: Error details from the critic
+            task_description: Original task description
+            classification_result: Results from failure classification
+            
+        Returns:
+            Dict containing the improved plan
+        """
+        logger.info(f"🔧 PLANNER SELF-HEALING: Generating improved plan...")
+        
+        # Extract key failure information
+        planning_issues = classification_result.get("planning_issues", [])
+        execution_issues = classification_result.get("execution_issues", [])
+        
+        # Create detailed healing prompt
+        healing_prompt = self._create_healing_prompt(
+            original_plan, failure_report, task_description, 
+            planning_issues, execution_issues
+        )
+        
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": healing_prompt}
+        ]
+        
+        try:
+            improved_plan = self.llm_service.invoke(messages, expect_json=True)
+            
+            if not isinstance(improved_plan, dict):
+                logger.error("Planner self-healer returned non-dict response")
+                return self._create_fallback_plan(original_plan, planning_issues)
+                
+            # Ensure required fields are present
+            if "steps" not in improved_plan:
+                improved_plan["steps"] = original_plan.get("steps", ["Implement solution"])
+                
+            logger.info("✅ PLANNER SELF-HEALING: Generated improved plan")
+            return improved_plan
+            
+        except Exception as e:
+            logger.error(f"Error in planner self-healing: {e}")
+            return self._create_fallback_plan(original_plan, planning_issues)
+            
+    def _create_healing_prompt(
+        self, 
+        original_plan: Dict[str, Any], 
+        failure_report: Dict[str, Any], 
+        task_description: str,
+        planning_issues: List[str],
+        execution_issues: List[str]
+    ) -> str:
+        """Create a detailed prompt for plan healing."""
+        
+        prompt = f"""Task: {task_description}
+
+ORIGINAL PLAN THAT FAILED:
+{original_plan}
+
+FAILURE ANALYSIS:
+Planning Issues Identified:
+{chr(10).join(f"- {issue}" for issue in planning_issues)}
+
+Execution Issues (for context):
+{chr(10).join(f"- {issue}" for issue in execution_issues)}
+
+ERROR DETAILS:
+Status: {failure_report.get('overall_status', failure_report.get('status', 'UNKNOWN'))}
+Error Type: {failure_report.get('execution_error_type', 'N/A')}
+Error Message: {failure_report.get('execution_error_message', 'N/A')}
+
+Failed Tests: {failure_report.get('num_tests_failed', 0)} out of {failure_report.get('num_tests_total', 0)}
+
+HEALING OBJECTIVES:
+1. Address the specific planning issues identified above
+2. Create more detailed, actionable steps  
+3. Add missing dependencies and requirements
+4. Ensure logical flow and implementability
+5. Make the plan specific enough to guide clear implementation
+
+Generate an improved plan that fixes these planning deficiencies."""
+
+        return prompt
+        
+    def _create_fallback_plan(self, original_plan: Dict[str, Any], planning_issues: List[str]) -> Dict[str, Any]:
+        """Create a basic fallback plan when healing fails."""
+        steps = original_plan.get("steps", original_plan.get("plan_steps", []))
+        
+        # Add basic improvements
+        improved_steps = []
+        for step in steps:
+            improved_steps.append(f"Implement step: {step}")
+            
+        return {
+            "steps": improved_steps,
+            "requirements": ["Add necessary imports", "Handle edge cases"],
+            "approach": "Incremental implementation with error handling",
+            "improvements_made": ["Added error handling", "Made steps more specific"],
+            "healing_status": "FALLBACK_PLAN"
+        }
+
+class ExecutorSelfHealer(Agent):
+    """
+    Self-healing agent specifically for improving code execution/implementation.
+    """
+    
+    def __init__(self, name: str, llm_service: LLMService, system_prompt: str = None):
+        super().__init__(name, llm_service)
+        if system_prompt is None:
+            self.system_prompt = """You are an Execution Self-Healer Agent specializing in fixing code implementation issues.
+
+Your role is to analyze failed code and generate improved versions that address specific execution problems:
+
+1. **Execution Failure Analysis**: 
+   - Examine syntax errors, runtime errors, and logical bugs
+   - Identify implementation flaws while preserving the plan's intent
+   - Focus on code quality and correctness
+
+2. **Code Improvement**: 
+   - Fix syntax and runtime errors
+   - Implement proper error handling
+   - Optimize algorithms and data structures
+   - Ensure edge case handling
+
+3. **Output**: 
+   Return only the corrected Python code without any markdown formatting or explanations.
+
+Focus on generating clean, working code that properly implements the planned approach."""
+        else:
+            self.system_prompt = system_prompt
+            
+    def run(self, *args, **kwargs) -> Any:
+        """
+        Implementation of abstract run method. 
+        For self-healing agents, the main interface is through heal_code method.
+        """
+        if len(args) >= 5:
+            return self.heal_code(args[0], args[1], args[2], args[3], args[4])
+        else:
+            raise ValueError("ExecutorSelfHealer.run requires 5 arguments: original_code, plan, failure_report, task_description, classification_result")
+            
+    def heal_code(
+        self, 
+        original_code: str, 
+        plan: Dict[str, Any],
+        failure_report: Dict[str, Any], 
+        task_description: str,
+        classification_result: Dict[str, Any]
+    ) -> str:
+        """
+        Generate improved code based on failure analysis.
+        
+        Args:
+            original_code: The code that failed
+            plan: The execution plan
+            failure_report: Error details from the critic
+            task_description: Original task description
+            classification_result: Results from failure classification
+            
+        Returns:
+            String containing the improved code
+        """
+        logger.info(f"🔧 EXECUTOR SELF-HEALING: Generating improved code...")
+        
+        # Extract key failure information
+        execution_issues = classification_result.get("execution_issues", [])
+        
+        # Create detailed healing prompt
+        healing_prompt = self._create_code_healing_prompt(
+            original_code, plan, failure_report, task_description, execution_issues
+        )
+        
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": healing_prompt}
+        ]
+        
+        try:
+            improved_code = self.llm_service.invoke(messages, expect_json=False)
+            
+            if not improved_code or not isinstance(improved_code, str):
+                logger.error("Executor self-healer returned invalid response")
+                return self._create_fallback_code(original_code)
+                
+            logger.info("✅ EXECUTOR SELF-HEALING: Generated improved code")
+            return improved_code.strip()
+            
+        except Exception as e:
+            logger.error(f"Error in executor self-healing: {e}")
+            return self._create_fallback_code(original_code)
+            
+    def _create_code_healing_prompt(
+        self, 
+        original_code: str, 
+        plan: Dict[str, Any],
+        failure_report: Dict[str, Any], 
+        task_description: str,
+        execution_issues: List[str]
+    ) -> str:
+        """Create a detailed prompt for code healing."""
+        
+        prompt = f"""Task: {task_description}
+
+EXECUTION PLAN:
+{plan.get('steps', 'No plan steps available')}
+
+ORIGINAL CODE THAT FAILED:
+```python
+{original_code}
+```
+
+FAILURE ANALYSIS:
+Execution Issues Identified:
+{chr(10).join(f"- {issue}" for issue in execution_issues)}
+
+ERROR DETAILS:
+Status: {failure_report.get('overall_status', failure_report.get('status', 'UNKNOWN'))}
+Error Type: {failure_report.get('execution_error_type', 'N/A')}
+Error Message: {failure_report.get('execution_error_message', 'N/A')}
+Traceback: {failure_report.get('execution_traceback', 'N/A')}
+
+Failed Tests: {failure_report.get('num_tests_failed', 0)} out of {failure_report.get('num_tests_total', 0)}
+
+HEALING OBJECTIVES:
+1. Fix the specific execution issues identified above
+2. Ensure the code properly implements the plan
+3. Handle edge cases and error conditions
+4. Maintain the intended functionality while fixing bugs
+
+Generate improved Python code that addresses these execution problems."""
+
+        return prompt
+        
+    def _create_fallback_code(self, original_code: str) -> str:
+        """Create a basic fallback when code healing fails."""
+        if not original_code:
+            return "# Fallback implementation\npass"
+            
+        # Basic attempt to fix obvious issues
+        lines = original_code.split('\n')
+        fixed_lines = []
+        
+        for line in lines:
+            # Basic syntax fixes
+            if line.strip() and not line.startswith('#'):
+                # Ensure proper indentation (basic)
+                if line.startswith(' ') or line.startswith('\t'):
+                    fixed_lines.append(line)
+                else:
+                    fixed_lines.append(line)
+            else:
+                fixed_lines.append(line)
+                
+        return '\n'.join(fixed_lines)
 
 if __name__ == '__main__':
     # Setup (Ensure you have an LLMService implementation and API keys configured)
