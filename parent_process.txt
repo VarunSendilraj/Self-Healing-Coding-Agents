@@ -1,2 +1,0 @@
-Parent process ID: 130546
-This file was created by the parent process

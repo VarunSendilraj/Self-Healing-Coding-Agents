@@ -1,7 +1,0 @@
-[
-  {
-    "id": "regex_demo",
-    "description": "Given a string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n- '.' Matches any single character.\n- '*' Matches zero or more of the preceding element.\n\nExample 1:\nInput: s = \"aa\", p = \"a\"\nOutput: false\nExplanation: \"a\" does not match the entire string \"aa\".\n\nExample 2:\nInput: s = \"aa\", p = \"a*\"\nOutput: true\nExplanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes \"aa\".\n\nExample 3:\nInput: s = \"ab\", p = \".*\"\nOutput: true\nExplanation: \".*\" means \"zero or more (*) of any character (.)\".\n\nConstraints:\n- 1 <= s.length <= 20\n- 1 <= p.length <= 30\n- s contains only lowercase English letters.\n- p contains only lowercase English letters, '.', and '*'.",
-    "initial_executor_prompt": "Implement a function called `isMatch` that takes two strings s and p and returns True if s matches the pattern p, False otherwise. Handle the '.' and '*' characters as described in the problem."
-  }
-] 

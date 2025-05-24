@@ -22,7 +22,6 @@ import datetime
 from self_healing_agents.agents import Planner, Executor, Critic
 from self_healing_agents.llm_service import LLMService, LLMServiceError
 from self_healing_agents.prompts import DEFAULT_EXECUTOR_SYSTEM_PROMPT, ULTRA_BUGGY_PROMPT
-from self_healing_agents.prompt_modifier import PromptModifier as ActualPromptModifier, PromptInfo
 from self_healing_agents.schemas import CriticReport as CriticReportDataclass, CRITIC_STATUS_FAILURE_EVALUATION
 from self_healing_agents.schemas import CRITIC_STATUS_SUCCESS
 
@@ -113,7 +112,7 @@ def run_single_task(
     executor.set_prompt(initial_prompt)
     logger.info(f"✅ EXECUTOR PROMPT SET TO: {executor.system_prompt[:100]}...")
     
-    prompt_modifier_for_task: Optional[ActualPromptModifier] = None
+    prompt_modifier_for_task = None  # Removed ActualPromptModifier dependency
 
     current_executor_prompt = initial_prompt
     task_run_log: Dict[str, Any] = {
@@ -381,20 +380,13 @@ def run_single_task(
         
             # Initialize PromptModifier for self-healing phase
             if prompt_modifier_for_task is None:
-                logger.info("    Initializing PromptModifier for self-healing phase...")
-                try:
-                    prompt_modifier_for_task = ActualPromptModifier(
-                        llm_service=llm_service_instance,
-                        name="PromptModifier"
-                    )
-                except Exception as e:
-                    error_msg = f"Error initializing PromptModifier: {e}. Aborting self-healing."
-                    logger.error(TermColors.color_text(f"    ERROR: {error_msg}", TermColors.FAIL))
-                    task_run_log["final_status"] = "FAILURE_PROMPT_MODIFIER"
-                    task_run_log["final_code"] = best_code
-                    task_run_log["final_score"] = best_score
-                    task_run_log["final_source"] = best_source
-                    return task_run_log
+                logger.info("    Skipping PromptModifier initialization (dependency removed)")
+                # Simplified self-healing without PromptModifier
+                task_run_log["final_status"] = "COMPLETED_NO_SELF_HEALING"
+                task_run_log["final_code"] = best_code
+                task_run_log["final_score"] = best_score
+                task_run_log["final_source"] = best_source
+                return task_run_log
                     
             # Max number of self-healing iterations to perform
             MAX_SELF_HEALING_ITERATIONS = 3
