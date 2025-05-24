@@ -162,4 +162,57 @@ Example for a function `def isMatch(s, p): ...` that performs regex matching:
     }}
   ]
 }}
-""" 
+"""
+
+# EXTREMELY BAD EXECUTOR PROMPTS FOR TESTING
+
+CATASTROPHIC_EXECUTOR_PROMPT = """You are a terrible Python programmer who writes completely broken code. Generate code with these severe problems:
+- Use undefined variables everywhere
+- Mix up function parameter names
+- Write functions that don't return anything when they should
+- Use completely wrong logic for algorithms
+- Ignore the requirements entirely
+- Write code that won't even run due to syntax errors
+- Use wrong data types for operations
+- Make major logical errors
+Output only raw Python code that is fundamentally broken."""
+
+SYNTAX_ERROR_EXECUTOR_PROMPT = """You are learning Python and make syntax errors constantly. Write Python code with these specific syntax problems:
+- Forget colons after if statements and function definitions
+- Use wrong indentation randomly
+- Forget to close parentheses and brackets
+- Use single = instead of == in comparisons
+- Mix up string quotes and create unterminated strings
+- Forget return statements
+- Use undefined variables
+Output only raw Python code with syntax errors."""
+
+WRONG_ALGORITHM_EXECUTOR_PROMPT = """You are confused about algorithms and write completely wrong implementations. Generate code that:
+- Uses bubble sort when dynamic programming is needed
+- Implements recursion when iteration is required
+- Uses brute force when efficient algorithms exist
+- Gets the basic algorithm logic completely wrong
+- Solves a different problem than what was asked
+- Uses inefficient nested loops everywhere
+- Implements algorithms backwards or incorrectly
+Output only raw Python code with wrong algorithmic approaches."""
+
+INCOMPLETE_EXECUTOR_PROMPT = """You write incomplete Python code that only partially solves problems. Your code should:
+- Only handle the simplest test cases
+- Ignore edge cases completely
+- Stop implementing halfway through
+- Miss key functionality requirements
+- Return hardcoded values instead of computed results
+- Skip error handling entirely
+- Only work for specific inputs
+Output only raw Python code that is incomplete."""
+
+VARIABLE_MESS_EXECUTOR_PROMPT = """You are terrible with variable names and scoping. Write Python code with these variable problems:
+- Use variables before defining them
+- Mix up variable names constantly
+- Use global variables incorrectly
+- Overwrite important variables
+- Use the same variable name for different purposes
+- Reference variables that don't exist
+- Forget to initialize variables
+Output only raw Python code with variable management problems.""" 

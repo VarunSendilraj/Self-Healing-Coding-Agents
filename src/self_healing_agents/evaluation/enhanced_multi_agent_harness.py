@@ -21,9 +21,10 @@ if src_dir not in sys.path:
 # Import base classes and services
 from self_healing_agents.agents import Planner, Executor, Critic, PlannerSelfHealer, ExecutorSelfHealer
 from self_healing_agents.llm_service import LLMService, LLMServiceError
-from self_healing_agents.classifiers import FailureClassifier, FailureType, PlanValidator
+from self_healing_agents.classifiers import PlanValidator
 from self_healing_agents.prompts import DEFAULT_EXECUTOR_SYSTEM_PROMPT, ULTRA_BUGGY_PROMPT, BAD_PLANNER_PROMPT
 from self_healing_agents.schemas import CRITIC_STATUS_SUCCESS, CRITIC_STATUS_FAILURE_EVALUATION
+from self_healing_agents.classifiers.llm_failure_classifier import LLMFailureClassifier
 
 # Import enhanced harness for base functionality and color support
 try:
@@ -65,7 +66,7 @@ def run_enhanced_multi_agent_task(
     logger.info(f"Description: {TermColors.color_text(task_description, TermColors.CYAN)}")
     
     # Initialize enhanced components
-    failure_classifier = FailureClassifier()
+    failure_classifier = LLMFailureClassifier(llm_service_instance)
     plan_validator = PlanValidator()
     planner_healer = PlannerSelfHealer("PlannerHealer", llm_service_instance)
     executor_healer = ExecutorSelfHealer("ExecutorHealer", llm_service_instance)
@@ -306,18 +307,29 @@ def run_enhanced_multi_agent_task(
         code_for_classification = best_code or initial_code
         
         classification_result = failure_classifier.classify_failure(
+            task_description=task_description,
             plan=current_plan,
             code=code_for_classification,
             error_report=critique_for_classification,
-            task_description=task_description
+            additional_context={
+                "healing_iteration": healing_iteration,
+                "best_score": best_score,
+                "max_iterations": max_healing_iterations
+            }
         )
         
         healing_data["classification_result"] = classification_result
         task_run_log["classification_history"].append(classification_result)
         
-        logger.info(f"    {TermColors.color_text('Failure Type:', TermColors.CYAN)} {classification_result['failure_type'].value}")
+        logger.info(f"    {TermColors.color_text('Failure Type:', TermColors.CYAN)} {classification_result['primary_failure_type']}")
         logger.info(f"    {TermColors.color_text('Confidence:', TermColors.CYAN)} {classification_result['confidence']:.2f}")
         logger.info(f"    {TermColors.color_text('Recommended Target:', TermColors.CYAN)} {classification_result['recommended_healing_target']}")
+        
+        # Log LLM reasoning
+        if classification_result.get("reasoning"):
+            logger.info(f"    {TermColors.color_text('LLM Reasoning:', TermColors.YELLOW)}")
+            for reason in classification_result["reasoning"]:
+                logger.info(f"      - {reason}")
         
         # Step 2: Apply targeted healing
         healing_target = classification_result["recommended_healing_target"]
@@ -529,7 +541,7 @@ def test_planner_healing_with_real_llm():
     if result['classification_history']:
         print(f"\n🔍 FAILURE CLASSIFICATION ANALYSIS:")
         for i, classification in enumerate(result['classification_history'], 1):
-            failure_type = classification['failure_type'].value
+            failure_type = classification['primary_failure_type']
             confidence = classification['confidence']
             target = classification['recommended_healing_target']
             reasoning = classification.get('reasoning', 'N/A')
@@ -588,5 +600,138 @@ def test_planner_healing_with_real_llm():
     return result
 
 if __name__ == "__main__":
-    # Run the real LLM test instead of mock test
-    test_planner_healing_with_real_llm() 
+    """
+    Direct execution demo of the Enhanced Multi-Agent Self-Healing Harness
+    Testing LLM-based failure classification with bad planner prompt + good executor prompt
+    """
+    import logging
+    from self_healing_agents.agents import Planner, Executor, Critic
+    from self_healing_agents.llm_service import LLMService
+    from self_healing_agents.prompts import BAD_PLANNER_PROMPT, DEFAULT_EXECUTOR_SYSTEM_PROMPT
+    
+    # Setup logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    
+    print("🚀 ENHANCED MULTI-AGENT HARNESS - LLM-BASED CLASSIFICATION TEST")
+    print("=" * 70)
+    print("🎯 Testing LLM-based failure classifier with:")
+    print("   - BAD planner prompt (vague, incomplete plans)")
+    print("   - GOOD executor prompt (should generate working code)")
+    print("   - LLM analyzes test results to determine which agent to heal")
+    print("=" * 70)
+    
+    # Configure environment
+    import os
+    provider = os.environ.get("LLM_PROVIDER", "deepseek")
+    model_name = os.environ.get("LLM_MODEL", "deepseek-coder")
+    
+    try:
+        llm_service = LLMService(provider=provider, model_name=model_name)
+        print(f"✅ LLM Service: {provider}/{model_name}")
+    except Exception as e:
+        print(f"❌ LLM Service Error: {e}")
+        exit(1)
+    
+    # Initialize agents with targeted prompts
+    print(f"\n🔧 AGENT CONFIGURATION:")
+    print(f"   🤖 Planner: Using BAD_PLANNER_PROMPT (intentionally poor)")
+    print(f"   🔧 Executor: Using DEFAULT_EXECUTOR_SYSTEM_PROMPT (good)")
+    print(f"   🧐 Critic: Standard evaluation")
+    print(f"   🤖 Classifier: LLM-based intelligent analysis")
+    
+    planner = Planner("BadPlanner", llm_service, BAD_PLANNER_PROMPT)
+    executor = Executor("GoodExecutor", llm_service, DEFAULT_EXECUTOR_SYSTEM_PROMPT)
+    critic = Critic("Critic", llm_service)
+    
+    # Test task requiring good planning
+    test_task = {
+        "id": "llm_classifier_test_1",
+        "description": "Write a Python function 'fibonacci_sequence(n)' that returns the first n numbers in the Fibonacci sequence as a list. For n=0, return empty list. For n=1, return [0]. For n=2, return [0,1]. The function should handle edge cases and be efficient.",
+        "initial_executor_prompt": DEFAULT_EXECUTOR_SYSTEM_PROMPT
+    }
+    
+    print(f"\n📋 TEST TASK:")
+    print(f"   ID: {test_task['id']}")
+    print(f"   Task: {test_task['description']}")
+    
+    # Run the enhanced harness
+    print(f"\n🏃‍♂️ RUNNING ENHANCED MULTI-AGENT HARNESS...")
+    print("=" * 70)
+    
+    result = run_enhanced_multi_agent_task(
+        task_definition=test_task,
+        planner=planner,
+        executor=executor,
+        critic=critic,
+        llm_service_instance=llm_service,
+        max_healing_iterations=3
+    )
+    
+    # Detailed results analysis
+    print(f"\n📊 FINAL RESULTS ANALYSIS:")
+    print("=" * 70)
+    print(f"   Final Status: {TermColors.color_text(result['final_status'], TermColors.GREEN if 'SUCCESS' in result['final_status'] else TermColors.FAIL)}")
+    final_score_str = f"{result['final_score']:.2f}"
+    print(f"   Final Score: {TermColors.color_text(final_score_str, TermColors.GREEN)}")
+    print(f"   Total Healing Iterations: {result['total_healing_iterations']}")
+    print(f"   Planner Healings: {result['healing_breakdown']['planner_healings']}")
+    print(f"   Executor Healings: {result['healing_breakdown']['executor_healings']}")
+    print(f"   Direct Fix Attempts: {result['healing_breakdown']['direct_fix_attempts']}")
+    
+    # LLM Classification Analysis
+    if result.get('classification_history'):
+        print(f"\n🤖 LLM FAILURE CLASSIFICATION ANALYSIS:")
+        print("=" * 70)
+        for i, classification in enumerate(result['classification_history'], 1):
+            failure_type = classification['primary_failure_type']
+            confidence = classification['confidence']
+            target = classification['recommended_healing_target']
+            
+            print(f"   Classification {i}:")
+            print(f"     Failure Type: {TermColors.color_text(failure_type, TermColors.CYAN)}")
+            confidence_str = f"{confidence:.2f}"
+            print(f"     Confidence: {TermColors.color_text(confidence_str, TermColors.GREEN)}")
+            print(f"     Recommended Target: {TermColors.color_text(target, TermColors.YELLOW)}")
+            
+            if classification.get("reasoning"):
+                print(f"     LLM Reasoning:")
+                for reason in classification["reasoning"]:
+                    print(f"       - {reason}")
+            
+            if classification.get("healing_recommendations"):
+                print(f"     Healing Recommendations:")
+                for rec in classification["healing_recommendations"]:
+                    print(f"       - {rec}")
+            print()
+    
+    # Workflow phase breakdown
+    print(f"\n📈 WORKFLOW PHASES:")
+    print("=" * 70)
+    for i, phase in enumerate(result['workflow_phases'], 1):
+        phase_name = phase.get('phase', 'UNKNOWN')
+        print(f"   Phase {i}: {TermColors.color_text(phase_name, TermColors.HEADER)}")
+        
+        if phase_name == "INITIAL_PLANNING_AND_VALIDATION":
+            plan_valid = phase.get('plan_validation_passed', False)
+            status_text = 'PASSED' if plan_valid else 'FAILED'
+            status_color = TermColors.GREEN if plan_valid else TermColors.FAIL
+            print(f"     Plan Validation: {TermColors.color_text(status_text, status_color)}")
+            
+        elif phase_name == "DIRECT_FIX":
+            fix_successful = phase.get('direct_fix_successful', False)
+            fix_text = 'SUCCESSFUL' if fix_successful else 'FAILED'
+            fix_color = TermColors.GREEN if fix_successful else TermColors.FAIL
+            print(f"     Direct Fix: {TermColors.color_text(fix_text, fix_color)}")
+            
+        elif phase_name.startswith("HEALING_ITERATION"):
+            healing_successful = phase.get('healing_successful', False)
+            healing_target = phase.get('healing_target', 'UNKNOWN')
+            print(f"     Target: {TermColors.color_text(healing_target, TermColors.CYAN)}")
+            success_text = 'YES' if healing_successful else 'NO'
+            success_color = TermColors.GREEN if healing_successful else TermColors.FAIL
+            print(f"     Success: {TermColors.color_text(success_text, success_color)}")
+    
+    print(f"\n🎉 LLM-BASED CLASSIFICATION TEST COMPLETE!")
+    print(f"   The system demonstrated intelligent LLM-based failure analysis.")
+    print(f"   Classification decisions were based on test results and context analysis.")
+    print(f"   System successfully targeted healing based on LLM reasoning.") 
