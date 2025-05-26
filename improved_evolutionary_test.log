@@ -1,0 +1,310 @@
+2025-05-24 22:52:23,117 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cuda:0
+2025-05-24 22:52:23,118 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-05-24 22:52:26,797 - self_healing_agents.evolution.prompt_population - INFO - ✅ EMBEDDINGS: Initialized sentence transformers for diversity calculation
+2025-05-24 22:52:26,797 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 TASK-SPECIFIC FITNESS: Set to evaluate on actual task
+2025-05-24 22:52:26,798 - self_healing_agents.evolution.fitness_evaluator - INFO -    📋 Task: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-24 22:52:26,798 - self_healing_agents.evolution.fitness_evaluator - INFO -    🧪 Created 1 targeted validation tasks
+2025-05-24 22:52:26,798 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 22:52:26,798 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 22:52:28,209 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:52:38,024 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:52:50,074 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 22:52:50,366 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:52:57,053 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 22:52:57,053 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 22:52:57,053 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.521 (weight: 0.2)
+2025-05-24 22:52:57,053 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.360 (weight: 0.2)
+2025-05-24 22:52:57,053 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 22:52:57,054 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 22:52:57,054 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 22:52:57,054 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.176
+2025-05-24 22:52:57,054 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 22:52:57,054 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 22:52:57,054 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.176
+2025-05-24 22:52:57,054 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.176 (success: 0.000, efficiency: 0.521, coherence: 0.360)
+2025-05-24 22:52:57,055 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 22:52:57,055 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 22:52:57,819 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:53:09,402 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:53:20,372 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 22:53:20,687 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:53:26,550 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 22:53:26,550 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 22:53:26,551 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.521 (weight: 0.2)
+2025-05-24 22:53:26,551 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.760 (weight: 0.2)
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.256
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.256
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.256 (success: 0.000, efficiency: 0.521, coherence: 0.760)
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 22:53:26,560 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 22:53:26,863 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:53:38,409 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:53:49,027 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 22:53:49,368 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:53:55,680 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 22:53:55,680 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 22:53:55,680 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.522 (weight: 0.2)
+2025-05-24 22:53:55,680 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.835 (weight: 0.2)
+2025-05-24 22:53:55,681 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 22:53:55,682 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 22:53:55,682 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 22:53:55,682 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.271
+2025-05-24 22:53:55,682 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 22:53:55,682 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 22:53:55,682 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.271
+2025-05-24 22:53:55,682 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.271 (success: 0.000, efficiency: 0.522, coherence: 0.835)
+2025-05-24 22:53:55,744 - self_healing_agents.evolution.evolution_operators - INFO - 🔀 MUTATION: Performing error-targeted mutation for EXECUTOR
+2025-05-24 22:53:56,078 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:54:17,931 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED MUTATION: Applied 3 targeted mutations for syntax_error
+2025-05-24 22:54:18,264 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:54:26,495 - self_healing_agents.evolution.evolution_operators - INFO - ✅ MUTATION: Applied targeted mutations successfully
+2025-05-24 22:54:26,495 - self_healing_agents.evolution.evolution_operators - INFO - 🔀 MUTATION: Performing error-targeted mutation for EXECUTOR
+2025-05-24 22:54:26,790 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:54:50,501 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED MUTATION: Applied 3 targeted mutations for logic_error
+2025-05-24 22:54:50,799 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:55:00,333 - self_healing_agents.evolution.evolution_operators - INFO - ✅ MUTATION: Applied targeted mutations successfully
+2025-05-24 22:55:00,333 - self_healing_agents.evolution.evolution_operators - INFO - 🔀 MUTATION: Performing error-targeted mutation for EXECUTOR
+2025-05-24 22:55:00,680 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:55:17,177 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED MUTATION: Applied 3 targeted mutations for incomplete_implementation
+2025-05-24 22:55:17,473 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:55:26,381 - self_healing_agents.evolution.evolution_operators - INFO - ✅ MUTATION: Applied targeted mutations successfully
+2025-05-24 22:55:26,382 - self_healing_agents.evolution.evolution_operators - INFO - 🧬 CROSSOVER: Performing error-targeted semantic crossover for EXECUTOR
+2025-05-24 22:55:26,671 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:55:36,315 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:55:42,245 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:56:11,372 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED CROSSOVER: Generated prompt targeting syntax_error
+2025-05-24 22:56:11,671 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:56:22,172 - self_healing_agents.evolution.evolution_operators - INFO - ✅ CROSSOVER: Generated coherent offspring
+2025-05-24 22:56:22,173 - self_healing_agents.evolution.evolution_operators - INFO - 🧬 CROSSOVER: Performing error-targeted semantic crossover for EXECUTOR
+2025-05-24 22:56:22,463 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:56:29,488 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:56:35,978 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:56:58,653 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED CROSSOVER: Generated prompt targeting logic_error
+2025-05-24 22:56:58,953 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:57:09,942 - self_healing_agents.evolution.evolution_operators - INFO - ✅ CROSSOVER: Generated coherent offspring
+2025-05-24 22:57:10,004 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cuda:0
+2025-05-24 22:57:10,004 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-05-24 22:57:10,836 - self_healing_agents.evolution.prompt_population - INFO - ✅ EMBEDDINGS: Initialized sentence transformers for diversity calculation
+2025-05-24 22:57:10,837 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 TASK-SPECIFIC FITNESS: Set to evaluate on actual task
+2025-05-24 22:57:10,840 - self_healing_agents.evolution.fitness_evaluator - INFO -    📋 Task: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-24 22:57:10,840 - self_healing_agents.evolution.fitness_evaluator - INFO -    🧪 Created 1 targeted validation tasks
+2025-05-24 22:57:10,840 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🧬 EVOLUTION START: Optimizing EXECUTOR prompt
+2025-05-24 22:57:10,840 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📊 Config: Pop=3, Gen=2
+2025-05-24 22:57:10,840 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    🎯 Budget: Max 15 evaluations
+2025-05-24 22:57:10,840 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🌱 PHASE 1: Population Initialization
+2025-05-24 22:57:10,840 - self_healing_agents.evolution.prompt_population - INFO - 🌱 POPULATION INIT: Generating 3 diverse prompts for EXECUTOR
+2025-05-24 22:57:11,641 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:57:34,705 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:58:01,884 - self_healing_agents.evolution.prompt_population - INFO - ✅ POPULATION INIT: Generated 3 individuals
+2025-05-24 22:58:02,248 - self_healing_agents.evolution.prompt_population - INFO - 📊 DIVERSITY: Population diversity score: 0.601
+2025-05-24 22:58:02,248 - self_healing_agents.evolution.prompt_population - INFO - 🔍 SAMPLE GENERATED PROMPTS:
+2025-05-24 22:58:02,248 - self_healing_agents.evolution.prompt_population - INFO -    Individual 1 (71 chars): You are a Python programmer. Write code according to the specification.
+2025-05-24 22:58:02,249 - self_healing_agents.evolution.prompt_population - INFO -    Individual 2 (1827 chars): Here's a constraint-focused variation of the EXECUTOR prompt:
+
+**Constrained Python Code Executor**  
+
+You are a professional Python programmer with strict quality standards. Your task is to write clean, efficient, and maintainable code according to specifications while adhering to the following constraints:  
+
+### **Mandatory Requirements:**  
+✅ **Code Quality:**  
+- Follow PEP 8 style guidelines (4-space indents, snake_case variables, etc.)  
+- Include type hints for all function signatures (Python 3.8+)  
+- Write docstrings for all functions and modules (Google or NumPy style)  
+- Avoid global variables unless explicitly permitted  
+
+✅ **Performance & Safety:**  
+- Optimize for readability first, then efficiency  
+- Validate all inputs (raise `ValueError` on invalid data)  
+- Use context managers (`with`) for file/resource handling  
+- No hardcoded secrets (use environment variables instead)  
+
+✅ **Testing & Maintainability:**  
+- Include `pytest`-compatible test cases (if applicable)  
+- Avoid nested loops deeper than 2 levels  
+- Maximum function length: 30 lines (excluding docstrings)  
+
+### **Strict Prohibitions:**  
+❌ **Never Do These:**  
+- Use `eval()` or `exec()` (security risk)  
+- Implement recursive solutions without stack guards  
+- Write functions with side effects (unless required)  
+- Use mutable default arguments (e.g., `def f(x=[])`)  
+
+### **Output Format:**  
+Return completed code in this structure:  
+```python  
+"""  
+[Module Purpose]  
+"""  
+[Imports]  
+
+[Functions with Type Hints + Docstrings]  
+
+if __name__ == "__main__":  
+    [Example Usage]  
+```  
+
+**Violations will result in rejection.** First confirm constraints are understood, then proceed.  
+
+---  
+This version enforces professional standards while explicitly blacklisting anti-patterns. Adjust severity as needed....
+2025-05-24 22:58:02,249 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🎯 PHASE 2: Initial Fitness Evaluation
+2025-05-24 22:58:02,249 - self_healing_agents.evolution.fitness_evaluator - INFO - 📊 BATCH FITNESS: Evaluating 3 EXECUTOR prompts
+2025-05-24 22:58:02,249 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 22:58:02,249 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 22:58:02,549 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:58:13,193 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:58:28,744 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 22:58:29,031 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:58:37,014 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 22:58:37,014 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 22:58:37,014 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.519 (weight: 0.2)
+2025-05-24 22:58:37,014 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.360 (weight: 0.2)
+2025-05-24 22:58:37,016 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 22:58:37,016 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 22:58:37,016 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 22:58:37,017 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.176
+2025-05-24 22:58:37,017 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 22:58:37,017 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 22:58:37,017 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.176
+2025-05-24 22:58:37,017 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.176 (success: 0.000, efficiency: 0.519, coherence: 0.360)
+2025-05-24 22:58:37,017 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 22:58:37,017 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 22:58:37,319 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:58:49,721 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:59:08,553 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 22:59:08,856 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:59:15,228 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 22:59:15,228 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 22:59:15,228 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.308 (weight: 0.2)
+2025-05-24 22:59:15,228 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.900 (weight: 0.2)
+2025-05-24 22:59:15,229 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 22:59:15,229 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 22:59:15,229 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 22:59:15,229 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.242
+2025-05-24 22:59:15,229 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 22:59:15,230 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 22:59:15,230 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.242
+2025-05-24 22:59:15,230 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.242 (success: 0.000, efficiency: 0.308, coherence: 0.900)
+2025-05-24 22:59:15,230 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 22:59:15,230 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 22:59:16,039 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:59:28,196 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:59:38,787 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 22:59:39,114 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:59:46,129 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 22:59:46,129 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 22:59:46,129 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.521 (weight: 0.2)
+2025-05-24 22:59:46,129 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.900 (weight: 0.2)
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.284
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.284
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.284 (success: 0.000, efficiency: 0.521, coherence: 0.900)
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ BATCH FITNESS: Completed. Score range: 0.176 - 0.284
+2025-05-24 22:59:46,130 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📈 Initial best fitness: 0.284
+2025-05-24 22:59:46,132 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🔄 PHASE 3: Evolution Loop
+2025-05-24 22:59:46,132 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+--- Generation 1/2 ---
+2025-05-24 22:59:46,132 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 3 survivors from 3
+2025-05-24 22:59:46,303 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.176 - 0.284
+2025-05-24 22:59:46,303 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    👶 OFFSPRING: Generating new individuals
+2025-05-24 22:59:46,304 - self_healing_agents.evolution.evolution_operators - INFO - 🧬 CROSSOVER: Performing error-targeted semantic crossover for EXECUTOR
+2025-05-24 22:59:46,598 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 22:59:52,335 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:00:22,957 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:01:11,269 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED CROSSOVER: Generated prompt targeting logic_error
+2025-05-24 23:01:11,574 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:01:20,911 - self_healing_agents.evolution.evolution_operators - INFO - ✅ CROSSOVER: Generated coherent offspring
+2025-05-24 23:01:20,911 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    ✅ Generated 1 offspring
+2025-05-24 23:01:20,911 - self_healing_agents.evolution.fitness_evaluator - INFO - 📊 BATCH FITNESS: Evaluating 1 EXECUTOR prompts
+2025-05-24 23:01:20,911 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 23:01:20,912 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 23:01:21,206 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:01:35,977 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:01:50,581 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 23:01:50,879 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:02:00,544 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 23:02:00,544 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 23:02:00,544 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.517 (weight: 0.2)
+2025-05-24 23:02:00,544 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.900 (weight: 0.2)
+2025-05-24 23:02:00,545 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 23:02:00,545 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 23:02:00,545 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 23:02:00,545 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.283
+2025-05-24 23:02:00,545 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 23:02:00,545 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 23:02:00,545 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.283
+2025-05-24 23:02:00,546 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.283 (success: 0.000, efficiency: 0.517, coherence: 0.900)
+2025-05-24 23:02:00,546 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ BATCH FITNESS: Completed. Score range: 0.283 - 0.283
+2025-05-24 23:02:00,546 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 3 survivors from 3
+2025-05-24 23:02:00,715 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.176 - 0.284
+2025-05-24 23:02:00,764 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📊 Gen 1 Stats:
+2025-05-24 23:02:00,764 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🏆 Best: 0.284
+2025-05-24 23:02:00,764 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       📈 Mean: 0.234 ± 0.045
+2025-05-24 23:02:00,765 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🎲 Diversity: 0.601
+2025-05-24 23:02:00,765 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🔢 Evaluations: 4
+2025-05-24 23:02:00,765 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+--- Generation 2/2 ---
+2025-05-24 23:02:00,765 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 3 survivors from 3
+2025-05-24 23:02:00,913 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.176 - 0.284
+2025-05-24 23:02:00,913 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    👶 OFFSPRING: Generating new individuals
+2025-05-24 23:02:00,962 - self_healing_agents.evolution.evolution_operators - INFO - 🔀 MUTATION: Performing error-targeted mutation for EXECUTOR
+2025-05-24 23:02:01,297 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:02:36,808 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED MUTATION: Applied 3 targeted mutations for logic_error
+2025-05-24 23:02:37,126 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:02:47,192 - self_healing_agents.evolution.evolution_operators - INFO - ✅ MUTATION: Applied targeted mutations successfully
+2025-05-24 23:02:47,193 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    ✅ Generated 1 offspring
+2025-05-24 23:02:47,193 - self_healing_agents.evolution.fitness_evaluator - INFO - 📊 BATCH FITNESS: Evaluating 1 EXECUTOR prompts
+2025-05-24 23:02:47,193 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-24 23:02:47,193 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-24 23:02:47,486 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:02:57,131 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:03:15,161 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-24 23:03:15,464 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-24 23:03:21,471 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-24 23:03:21,471 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.5)
+2025-05-24 23:03:21,472 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.378 (weight: 0.2)
+2025-05-24 23:03:21,472 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.922 (weight: 0.2)
+2025-05-24 23:03:21,474 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.1)
+2025-05-24 23:03:21,474 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-24 23:03:21,474 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-24 23:03:21,474 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.260
+2025-05-24 23:03:21,474 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-24 23:03:21,474 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-24 23:03:21,475 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.260
+2025-05-24 23:03:21,475 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.260 (success: 0.000, efficiency: 0.378, coherence: 0.922)
+2025-05-24 23:03:21,475 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ BATCH FITNESS: Completed. Score range: 0.260 - 0.260
+2025-05-24 23:03:21,475 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 3 survivors from 3
+2025-05-24 23:03:21,649 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.176 - 0.284
+2025-05-24 23:03:21,698 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📊 Gen 2 Stats:
+2025-05-24 23:03:21,698 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🏆 Best: 0.284
+2025-05-24 23:03:21,698 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       📈 Mean: 0.234 ± 0.045
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🎲 Diversity: 0.601
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🔢 Evaluations: 5
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+📊 PHASE 4: Results Compilation
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+============================================================
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🧬 EVOLUTIONARY OPTIMIZATION COMPLETE
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ============================================================
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🏆 Best Fitness: 0.284
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🔢 Generations: 2
+2025-05-24 23:03:21,699 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 📊 Evaluations: 5
+2025-05-24 23:03:21,700 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ⏱️  Execution Time: 370.9s
+2025-05-24 23:03:21,700 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🛑 Termination: max_generations
+2025-05-24 23:03:21,700 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 📈 Improvement: +0.000 (+0.0%)
+2025-05-24 23:03:21,700 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ⚡ Efficiency: 0.0 evaluations/sec
+2025-05-24 23:03:21,700 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ❌ LIMITED: Minimal improvement
+2025-05-24 23:03:21,700 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ============================================================

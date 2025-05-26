@@ -1,5 +1,5 @@
-2025-05-24 18:29:25,929 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - --- Starting Enhanced Multi-Agent Task: [95mcomplex_data_processing[0m ---
-2025-05-24 18:29:25,930 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Description: [96mGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
+2025-05-25 02:36:14,656 - __main__ - INFO - --- Starting Evolutionary Multi-Agent Task: [95mevolutionary_optimization_test[0m ---
+2025-05-25 02:36:14,657 - __main__ - INFO - Description: [96mGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
 
 '.' Matches any single character.
 '*' Matches zero or more of the preceding element.
@@ -26,497 +26,794 @@ Constraints:
 s contains only lowercase English letters.
 p contains only lowercase English letters, '.', and '*'.
 It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.[0m
-2025-05-24 18:29:25,930 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are an AI Python programmer. Output only the raw Python code....
-2025-05-24 18:29:25,931 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
-=== PHASE 1: Initial Planning and Validation for Task '[94mcomplex_data_processing[0m' ===
-2025-05-24 18:29:25,931 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Planning:[0m
-2025-05-24 18:29:31,604 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:29:37,956 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlanner Output:[0m
-{'plan_steps': ['Check the strings somehow', 'Handle the dots and stars in some way', 'Maybe compare characters or something', 'Return true or false based on something', "Don't forget about edge cases, maybe"]}
-2025-05-24 18:29:37,956 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Plan Validation:[0m
-2025-05-24 18:29:37,956 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Starting plan quality assessment...
-2025-05-24 18:29:37,957 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Quality Score: 0.79
-2025-05-24 18:29:37,957 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Valid: True
-2025-05-24 18:29:37,957 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mPlan Quality Score:[0m 0.79
-2025-05-24 18:29:37,958 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlan Valid:[0m True
-2025-05-24 18:29:37,958 - self_healing_agents.evaluation.enhanced_multi_agent_harness - WARNING -     [93mPlan Warnings:[0m ["Missing recommended fields: ['requirements', 'approach']", "Plan may not address: ['input handling', 'output specification']"]
-2025-05-24 18:29:37,958 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+2025-05-25 02:36:14,657 - __main__ - INFO - 🧬 Evolutionary Optimization: [92mENABLED[0m
+2025-05-25 02:36:23,051 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cuda:0
+2025-05-25 02:36:23,051 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-05-25 02:36:25,259 - self_healing_agents.evolution.prompt_population - INFO - ✅ EMBEDDINGS: Initialized sentence transformers for diversity calculation
+2025-05-25 02:36:25,260 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cuda:0
+2025-05-25 02:36:25,260 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-05-25 02:36:25,697 - self_healing_agents.evolution.prompt_population - INFO - ✅ EMBEDDINGS: Initialized sentence transformers for diversity calculation
+2025-05-25 02:36:25,697 - __main__ - INFO - 🧬 EVOLUTION: Initialized optimizers (Planner: 4x3, Executor: 4x3)
+2025-05-25 02:36:25,698 - __main__ - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are a programmer. Output only the raw Python code....
+2025-05-25 02:36:25,698 - __main__ - INFO - 
+=== PHASE 1: Initial Planning and Validation for Task '[94mevolutionary_optimization_test[0m' ===
+2025-05-25 02:36:25,698 - __main__ - INFO - [95m  1. Planning:[0m
+2025-05-25 02:36:26,041 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:36:34,171 - __main__ - INFO -     [92mPlanner Output:[0m
+{'plan_steps': ['Understand the problem requirements and constraints.', 'Identify base cases: empty string and empty pattern.', "Handle cases where the pattern has a '*' character.", "Check if the current characters match or if the pattern has a '.'.", 'Recursively or iteratively check the remaining parts of the string and pattern.', 'Implement dynamic programming to store intermediate results for efficiency.', 'Return the final result after processing the entire string and pattern.']}
+2025-05-25 02:36:34,171 - __main__ - INFO - [95m  2. Plan Validation:[0m
+2025-05-25 02:36:34,171 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Starting plan quality assessment...
+2025-05-25 02:36:34,172 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Quality Score: 0.79
+2025-05-25 02:36:34,172 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Valid: True
+2025-05-25 02:36:34,172 - __main__ - INFO -     [96mPlan Quality Score:[0m 0.79
+2025-05-25 02:36:34,172 - __main__ - INFO -     [92mPlan Valid:[0m True
+2025-05-25 02:36:34,173 - __main__ - WARNING -     [93mPlan Warnings:[0m ["Missing recommended fields: ['requirements', 'approach']", "Plan may not address: ['input handling', 'output specification']"]
+2025-05-25 02:36:34,173 - __main__ - INFO - 
 === PHASE 2: Execution and Initial Evaluation ===
-2025-05-24 18:29:37,958 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Execution:[0m
-2025-05-24 18:29:38,241 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:29:48,162 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mExecutor Output (initial code):[0m
+2025-05-25 02:36:34,173 - __main__ - INFO - [95m  3. Execution:[0m
+2025-05-25 02:36:34,455 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:36:45,245 - __main__ - INFO -     [92mExecutor Output (initial code):[0m
 ```python
 def isMatch(s: str, p: str) -> bool:
     memo = {}
-
+    
     def dp(i, j):
-        if (i, j) not in memo:
-            if j == len(p):
-                ans = i == len(s)
+        if (i, j) in memo:
+            return memo[(i, j)]
+        
+        if j == len(p):
+            ans = i == len(s)
+        else:
+            first_match = i < len(s) and (p[j] == s[i] or p[j] == '.')
+            
+            if j + 1 < len(p) and p[j+1] == '*':
+                ans = dp(i, j+2) or (first_match and dp(i+1, j))
             else:
-                first_match = i < len(s) and p[j] in {s[i], '.'}
-                if j + 1 < len(p) and p[j + 1] == '*':
-                    ans = dp(i, j + 2) or (first_match and dp(i + 1, j))
-                else:
-                    ans = first_match and dp(i + 1, j + 1)
-            memo[i, j] = ans
-        return memo[i, j]
-
+                ans = first_match and dp(i+1, j+1)
+        
+        memo[(i, j)] = ans
+        return ans
+    
     return dp(0, 0)
 ```
-2025-05-24 18:29:48,162 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  4. Initial Evaluation:[0m
-2025-05-24 18:29:48,461 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:30:08,997 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFull Initial Critique:[0m
-{'status': 'FAILURE_LOGIC', 'score': 0.65, 'execution_stdout': 'DEBUG: About to execute code:\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i == len(s)\n            else:\n                fir...\n', 'execution_stderr': '', 'error_details': None, 'test_results': [{'name': 'test_exact_match_simple', 'inputs': {'s': 'aa', 'p': 'aa'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_exact_match_simple\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aa', p='aa'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_exact_match_simple\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_star_matches_zero_elements', 'inputs': {'s': 'a', 'p': 'ab*a'}, 'expected_output_spec': True, 'status': 'failed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_star_matches_zero_elements\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='a', p='ab*a'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_star_matches_zero_elements\ntest_passed=False\nactual_output=False\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=Expected: True, Got: False\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': 'Expected: True, Got: False'}, {'name': 'test_dot_matches_any_char', 'inputs': {'s': 'ab', 'p': '.b'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_dot_matches_any_char\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='ab', p='.b'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_dot_matches_any_char\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_complex_pattern_fail', 'inputs': {'s': 'mississippi', 'p': 'mis*is*p*.'}, 'expected_output_spec': False, 'status': 'passed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_complex_pattern_fail\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='mississippi', p='mis*is*p*.'\nDEBUG_TEST_SCRIPT: Expected output: False\n__TEST_RESULT_START__\ntest_case_name=test_complex_pattern_fail\ntest_passed=True\nactual_output=False\nexpected_output=False\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_empty_string_empty_pattern', 'inputs': {'s': '', 'p': ''}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_empty_string_empty_pattern\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='', p=''\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_empty_string_empty_pattern\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_empty_string_with_star_pattern', 'inputs': {'s': '', 'p': 'a*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_empty_string_with_star_pattern\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='', p='a*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_empty_string_with_star_pattern\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_star_matches_multiple_elements', 'inputs': {'s': 'aaa', 'p': 'a*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_star_matches_multiple_elements\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aaa', p='a*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_star_matches_multiple_elements\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_dot_star_matches_any_sequence', 'inputs': {'s': 'abc', 'p': '.*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_dot_star_matches_any_sequence\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='abc', p='.*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_dot_star_matches_any_sequence\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_partial_match_fails', 'inputs': {'s': 'aa', 'p': 'a'}, 'expected_output_spec': False, 'status': 'passed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_partial_match_fails\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aa', p='a'\nDEBUG_TEST_SCRIPT: Expected output: False\n__TEST_RESULT_START__\ntest_case_name=test_partial_match_fails\ntest_passed=True\nactual_output=False\nexpected_output=False\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_pattern_longer_than_string', 'inputs': {'s': 'a', 'p': 'aa'}, 'expected_output_spec': False, 'status': 'passed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_pattern_longer_than_string\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='a', p='aa'\nDEBUG_TEST_SCRIPT: Expected output: False\n__TEST_RESULT_START__\ntest_case_name=test_pattern_longer_than_string\ntest_passed=True\nactual_output=False\nexpected_output=False\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}], 'generated_test_specifications': [{'test_case_name': 'test_exact_match_simple', 'inputs': {'s': 'aa', 'p': 'aa'}, 'expected_output': True}, {'test_case_name': 'test_star_matches_zero_elements', 'inputs': {'s': 'a', 'p': 'ab*a'}, 'expected_output': True}, {'test_case_name': 'test_dot_matches_any_char', 'inputs': {'s': 'ab', 'p': '.b'}, 'expected_output': True}, {'test_case_name': 'test_complex_pattern_fail', 'inputs': {'s': 'mississippi', 'p': 'mis*is*p*.'}, 'expected_output': False}, {'test_case_name': 'test_empty_string_empty_pattern', 'inputs': {'s': '', 'p': ''}, 'expected_output': True}, {'test_case_name': 'test_empty_string_with_star_pattern', 'inputs': {'s': '', 'p': 'a*'}, 'expected_output': True}, {'test_case_name': 'test_star_matches_multiple_elements', 'inputs': {'s': 'aaa', 'p': 'a*'}, 'expected_output': True}, {'test_case_name': 'test_dot_star_matches_any_sequence', 'inputs': {'s': 'abc', 'p': '.*'}, 'expected_output': True}, {'test_case_name': 'test_partial_match_fails', 'inputs': {'s': 'aa', 'p': 'a'}, 'expected_output': False}, {'test_case_name': 'test_pattern_longer_than_string', 'inputs': {'s': 'a', 'p': 'aa'}, 'expected_output': False}], 'function_to_test': 'isMatch', 'summary': "Code executed successfully, but 1/10 tests failed for function 'isMatch'."}
-2025-05-24 18:30:08,998 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Status:[0m FAILURE_LOGIC
-2025-05-24 18:30:08,998 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Score:[0m 0.65
-2025-05-24 18:30:08,999 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+2025-05-25 02:36:45,245 - __main__ - INFO - [95m  4. Initial Evaluation:[0m
+2025-05-25 02:36:46,007 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:37:12,439 - __main__ - INFO -     [92mCritic Status:[0m FAILURE_LOGIC
+2025-05-25 02:37:12,439 - __main__ - INFO -     [92mCritic Score:[0m 0.6545
+2025-05-25 02:37:12,439 - __main__ - INFO - 
 === PHASE 3: Direct Fix Attempt ===
-2025-05-24 18:30:08,999 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  Direct Fix Attempt:[0m
-2025-05-24 18:30:09,279 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:30:18,650 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Output:[0m
+2025-05-25 02:37:12,439 - __main__ - INFO - [95m  Direct Fix Attempt:[0m
+2025-05-25 02:37:12,738 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:37:23,855 - __main__ - INFO -     [92mDirect Fix Output:[0m
 ```python
 def isMatch(s: str, p: str) -> bool:
     memo = {}
-
+    
     def dp(i, j):
-        if (i, j) not in memo:
-            if j == len(p):
-                ans = i == len(s)
+        if (i, j) in memo:
+            return memo[(i, j)]
+        
+        if j == len(p):
+            ans = i == len(s)
+        else:
+            first_match = i < len(s) and (p[j] == s[i] or p[j] == '.')
+            
+            if j + 1 < len(p) and p[j+1] == '*':
+                ans = dp(i, j+2) or (first_match and dp(i+1, j))
             else:
-                first_match = i < len(s) and p[j] in {s[i], '.'}
-                if j + 1 < len(p) and p[j + 1] == '*':
-                    ans = dp(i, j + 2) or (first_match and dp(i + 1, j))
-                else:
-                    ans = first_match and dp(i + 1, j + 1)
-            memo[i, j] = ans
-        return memo[i, j]
-
+                ans = first_match and dp(i+1, j+1)
+        
+        memo[(i, j)] = ans
+        return ans
+    
     return dp(0, 0)
 ```
-2025-05-24 18:30:18,972 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:30:38,565 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Status:[0m FAILURE_LOGIC
-2025-05-24 18:30:38,565 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Score:[0m 0.65
-2025-05-24 18:30:38,565 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
-=== PHASE 4: Enhanced Multi-Agent Self-Healing ===
-2025-05-24 18:30:38,565 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
------ Healing Iteration 1/3 -----
-2025-05-24 18:30:38,565 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
-2025-05-24 18:30:38,565 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
-2025-05-24 18:30:38,875 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:30:56,226 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
-2025-05-24 18:30:56,227 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
-2025-05-24 18:30:56,227 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
-2025-05-24 18:30:56,230 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
-2025-05-24 18:30:56,230 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's output is extremely vague and lacks any specific algorithmic approach or detailed steps for implementing regular expression matching
-2025-05-24 18:30:56,230 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - Despite the poor planning, the executor managed to implement a correct dynamic programming solution that passes 9/10 test cases
-2025-05-24 18:30:56,230 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The single test case failure appears to be an edge case that wasn't properly considered in the planning phase (handling '*' with zero matches)
-2025-05-24 18:30:56,230 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's steps like 'Check the strings somehow' and 'Handle the dots and stars in some way' demonstrate a fundamental lack of concrete planning
-2025-05-24 18:30:56,230 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
-2025-05-24 18:30:56,230 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
-2025-05-24 18:30:56,230 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
-2025-05-24 18:30:56,230 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
-2025-05-24 18:30:56,231 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's output is extremely vague and lacks any specific algorithmic approach or detailed steps for implementing regular expression matching
-2025-05-24 18:30:56,231 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - Despite the poor planning, the executor managed to implement a correct dynamic programming solution that passes 9/10 test cases
-2025-05-24 18:30:56,231 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The single test case failure appears to be an edge case that wasn't properly considered in the planning phase (handling '*' with zero matches)
-2025-05-24 18:30:56,231 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's steps like 'Check the strings somehow' and 'Handle the dots and stars in some way' demonstrate a fundamental lack of concrete planning
-2025-05-24 18:30:56,231 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
-2025-05-24 18:30:56,232 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
-2025-05-24 18:30:56,536 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:31:27,319 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's the improved plan that addresses the deficiencies in the original vague plan:
+2025-05-25 02:37:24,148 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:37:47,113 - __main__ - INFO -     [92mDirect Fix Status:[0m FAILURE_LOGIC
+2025-05-25 02:37:47,113 - __main__ - INFO -     [92mDirect Fix Score:[0m 0.6
+2025-05-25 02:37:47,113 - __main__ - INFO - 
+=== PHASE 4: Evolutionary Prompt Optimization ===
+2025-05-25 02:37:47,113 - __main__ - INFO - 
+----- Evolutionary Healing Iteration 1/2 -----
+2025-05-25 02:37:47,114 - __main__ - INFO - [95m  1. Failure Classification:[0m
+2025-05-25 02:37:47,114 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
+2025-05-25 02:37:47,424 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:38:06,308 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: EXECUTION_FAILURE
+2025-05-25 02:38:06,309 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
+2025-05-25 02:38:06,309 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: EXECUTOR
+2025-05-25 02:38:06,309 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
+2025-05-25 02:38:06,309 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).
+2025-05-25 02:38:06,309 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.
+2025-05-25 02:38:06,309 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:38:06,310 - __main__ - INFO -     [96mFailure Type:[0m EXECUTION_FAILURE
+2025-05-25 02:38:06,310 - __main__ - INFO -     [96mConfidence:[0m 0.90
+2025-05-25 02:38:06,310 - __main__ - INFO -     [96mRecommended Target:[0m EXECUTOR
+2025-05-25 02:38:06,310 - __main__ - INFO -     [93mLLM Reasoning:[0m
+2025-05-25 02:38:06,310 - __main__ - INFO -       - The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).
+2025-05-25 02:38:06,310 - __main__ - INFO -       - The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.
+2025-05-25 02:38:06,310 - __main__ - INFO -       - The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:38:06,310 - __main__ - INFO - [95m  2. Evolutionary Executor Optimization:[0m
+2025-05-25 02:38:06,310 - __main__ - INFO -    🎯 ENHANCED: Added 2 specific test failures to context
+2025-05-25 02:38:06,311 - __main__ - INFO -       Test 1: test_star_matches_zero_elements - {'s': 'a', 'p': 'ab*a'} -> expected True, got False
+2025-05-25 02:38:06,311 - __main__ - INFO -       🎯 REGEX ISSUE: Pattern 'ab*a' with string 'a'
+2025-05-25 02:38:06,311 - __main__ - INFO -       Test 2: test_no_match_due_to_char_mismatch - {'s': 'abc', 'p': 'a.c'} -> expected False, got True
+2025-05-25 02:38:06,311 - __main__ - INFO - 🔍 FAILURE CONTEXT CONSTRUCTION (Executor):
+2025-05-25 02:38:06,312 - __main__ - INFO -    📋 Original Task Length: 921 chars
+2025-05-25 02:38:06,312 - __main__ - INFO -    📋 Plan Type: <class 'dict'>
+2025-05-25 02:38:06,312 - __main__ - INFO -    📋 Failed Code Length: 570 chars
+2025-05-25 02:38:06,312 - __main__ - INFO -    📋 Failure Report Type: <class 'dict'>
+2025-05-25 02:38:06,312 - __main__ - INFO -    📋 Classification Result Type: <class 'dict'>
+2025-05-25 02:38:06,313 - __main__ - INFO -    📋 Specific Test Failures: 2 included
+2025-05-25 02:38:06,313 - __main__ - INFO -    🎯 Primary Failure Type: EXECUTION_FAILURE
+2025-05-25 02:38:06,313 - __main__ - INFO -    🧠 LLM Reasoning Count: 3 items
+2025-05-25 02:38:06,313 - __main__ - INFO -    🧠 First Reasoning: The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex m...
+2025-05-25 02:38:06,313 - __main__ - INFO -    🧠 All Reasoning Items:
+2025-05-25 02:38:06,313 - __main__ - INFO -       1. The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).
+2025-05-25 02:38:06,314 - __main__ - INFO -       2. The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.
+2025-05-25 02:38:06,314 - __main__ - INFO -       3. The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:38:06,314 - __main__ - INFO -    🧪 Test Results Available: 10 tests
+2025-05-25 02:38:06,314 - __main__ - INFO -    🧪 Passed Tests: 8
+2025-05-25 02:38:06,314 - __main__ - INFO -    🧪 Failed Tests: 2
+2025-05-25 02:38:06,314 - __main__ - INFO -    🧪 Failed Test 1: test_star_matches_zero_elements
+2025-05-25 02:38:06,315 - __main__ - INFO -       📥 Inputs: {'s': 'a', 'p': 'ab*a'}
+2025-05-25 02:38:06,315 - __main__ - INFO -       ✅ Expected: True
+2025-05-25 02:38:06,315 - __main__ - INFO -       ❌ Actual: False
+2025-05-25 02:38:06,315 - __main__ - WARNING -    🎯 REGEX PATTERN FAILURE DETECTED: s='a', p='ab*a' (contains '*')
+2025-05-25 02:38:06,315 - __main__ - WARNING -    🎯 This is the specific pattern that needs targeting!
+2025-05-25 02:38:06,315 - __main__ - INFO -    🧪 Failed Test 2: test_no_match_due_to_char_mismatch
+2025-05-25 02:38:06,315 - __main__ - INFO -       📥 Inputs: {'s': 'abc', 'p': 'a.c'}
+2025-05-25 02:38:06,316 - __main__ - INFO -       ✅ Expected: False
+2025-05-25 02:38:06,316 - __main__ - INFO -       ❌ Actual: True
+2025-05-25 02:38:06,316 - __main__ - INFO -    ✅ Failure context constructed with 7 keys
+2025-05-25 02:38:06,316 - __main__ - INFO - 🎯 CONFIGURING: Task-specific fitness evaluation using actual multi-agent pipeline
+2025-05-25 02:38:06,316 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 TASK-SPECIFIC FITNESS: Set to evaluate on actual task
+2025-05-25 02:38:06,316 - self_healing_agents.evolution.fitness_evaluator - INFO -    📋 Task: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-25 02:38:06,316 - self_healing_agents.evolution.fitness_evaluator - INFO -    🧪 Created 1 targeted validation tasks
+2025-05-25 02:38:06,316 - __main__ - INFO -     🧬 EVOLVING: Optimizing executor prompt through 3 generations
+2025-05-25 02:38:06,317 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🧬 EVOLUTION START: Optimizing EXECUTOR prompt
+2025-05-25 02:38:06,317 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📊 Config: Pop=4, Gen=3
+2025-05-25 02:38:06,317 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    🎯 Budget: Max 20 evaluations
+2025-05-25 02:38:06,317 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🌱 PHASE 1: Population Initialization
+2025-05-25 02:38:06,317 - self_healing_agents.evolution.prompt_population - INFO - 🌱 POPULATION INIT: Generating 4 diverse prompts for EXECUTOR
+2025-05-25 02:38:06,646 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:38:27,825 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:38:46,483 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:39:09,217 - self_healing_agents.evolution.prompt_population - INFO - ✅ POPULATION INIT: Generated 4 individuals
+2025-05-25 02:39:09,625 - self_healing_agents.evolution.prompt_population - INFO - 📊 DIVERSITY: Population diversity score: 0.514
+2025-05-25 02:39:09,626 - self_healing_agents.evolution.prompt_population - INFO - 🔍 SAMPLE GENERATED PROMPTS:
+2025-05-25 02:39:09,626 - self_healing_agents.evolution.prompt_population - INFO -    Individual 1 (54 chars): You are a programmer. Output only the raw Python code.
+2025-05-25 02:39:09,626 - self_healing_agents.evolution.prompt_population - INFO -    Individual 2 (1494 chars): Here's an enhanced EXECUTOR prompt with comprehensive examples and demonstrations:
 
-```json
-{
-  "steps": [
-    {
-      "step": 1,
-      "description": "Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching results for subproblems",
-      "details": "DP[i][j] will represent whether s[0..i-1] matches p[0..j-1]"
-    },
-    {
-      "step": 2,
-      "description": "Set base cases",
-      "details": "DP[0][0] = True (empty string matches empty pattern), DP[i][0] = False for i>0 (non-empty string doesn't match empty pattern)"
-    },
-    {
-      "step": 3,
-      "description": "Handle empty string matching with patterns",
-      "details": "For j>0, DP[0][j] is True only if p[j-1] is '*' and DP[0][j-2] is True (pattern can match empty string with '*')"
-    },
-    {
-      "step": 4,
-      "description": "Fill the DP table by comparing characters and handling special cases",
-      "details": [
-        "For each character in s (i from 1 to len(s))",
-        "For each character in p (j from 1 to len(p))",
-        "If p[j-1] == s[i-1] or p[j-1] == '.', then DP[i][j] = DP[i-1][j-1]",
-        "If p[j-1] == '*', then:",
-        "   - Option 1: Match zero of preceding character (DP[i][j-2])",
-        "   - Option 2: Match one or more if preceding character matches (p[j-2] == s[i-1] or p[j-2] == '.') and DP[i-1][j]",
-        "   - DP[i][j] = Option 1 OR Option 2"
-      ]
-    },
-    {
-      "step": 5,
-      "description": "Return the final result from DP[len(s)][len(p)]",
-      "details": "This represents whether the entire string matches the entire pattern"
-    }
-  ],
-  "requirements": [],
-  "approach": "Use dynamic programming to solve the regex matching problem by breaking it down into smaller subproblems. The DP table stores intermediate matching results, allowing us to efficiently compute the solution by combining results from previous subproblems. Special handling is implemented for the '.' and '*' operators according to their regex semantics.",
-  "improvements_made": [
-    "Replaced vague steps with specific algorithmic approach",
-    "Added detailed implementation instructions for each step",
-    "Included proper handling of special characters '.' and '*'",
-    "Specified the dynamic programming methodology",
-    "Added base case handling",
-    "Provided clear termination condition",
-    "Ensured the solution covers the entire string (not partial matches)"
-  ]
-}
 ```
+You are a Python programming assistant. Your task is to generate clean, functional Python code based on requirements. Follow these guidelines:
 
-Key improvements over the original plan:
-1. Specific algorithm choice (dynamic programming) instead of vague "check somehow"
-2. Detailed steps for handling special characters '.' and '*'
-3. Clear base case definitions
-4. Proper subproblem decomposition
-5. Complete implementation path from initialization to final result
-6. Mathematical correctness in handling regex semantics
-7. Clear explanation of the DP table meaning
+1. Output ONLY the raw Python code - no explanations, markdown, or additional text
+2. Include comments in the code when helpful for clarity
+3. For complex functions, add example usage as code comments showing:
+   - Sample input
+   - Expected output
+4. Follow Python best practices (PEP 8 style)
 
-This plan provides a complete roadmap for implementing the regex matching solution that will pass all test cases. (Original: Here's the improved plan that addresses the deficiencies in the original vague plan:
+EXAMPLE DEMONSTRATIONS:
 
-```json
-{
-  "steps": [
-    {
-      "step": 1,
-      "description": "Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching results for subproblems",
-      "details": "DP[i][j] will represent whether s[0..i-1] matches p[0..j-1]"
-    },
-    {
-      "step": 2,
-      "description": "Set base cases",
-      "details": "DP[0][0] = True (empty string matches empty pattern), DP[i][0] = False for i>0 (non-empty string doesn't match empty pattern)"
-    },
-    {
-      "step": 3,
-      "description": "Handle empty string matching with patterns",
-      "details": "For j>0, DP[0][j] is True only if p[j-1] is '*' and DP[0][j-2] is True (pattern can match empty string with '*')"
-    },
-    {
-      "step": 4,
-      "description": "Fill the DP table by comparing characters and handling special cases",
-      "details": [
-        "For each character in s (i from 1 to len(s))",
-        "For each character in p (j from 1 to len(p))",
-        "If p[j-1] == s[i-1] or p[j-1] == '.', then DP[i][j] = DP[i-1][j-1]",
-        "If p[j-1] == '*', then:",
-        "   - Option 1: Match zero of preceding character (DP[i][j-2])",
-        "   - Option 2: Match one or more if preceding character matches (p[j-2] == s[i-1] or p[j-2] == '.') and DP[i-1][j]",
-        "   - DP[i][j] = Option 1 OR Option 2"
-      ]
-    },
-    {
-      "step": 5,
-      "description": "Return the final result from DP[len(s)][len(p)]",
-      "details": "This represents whether the entire string matches the entire pattern"
-    }
-  ],
-  "requirements": [],
-  "approach": "Use dynamic programming to solve the regex matching problem by breaking it down into smaller subproblems. The DP table stores intermediate matching results, allowing us to efficiently compute the solution by combining results from previous subproblems. Special handling is implemented for the '.' and '*' operators according to their regex semantics.",
-  "improvements_made": [
-    "Replaced vague steps with specific algorithmic approach",
-    "Added detailed implementation instructions for each step",
-    "Included proper handling of special characters '.' and '*'",
-    "Specified the dynamic programming methodology",
-    "Added base case handling",
-    "Provided clear termination condition",
-    "Ensured the solution covers the entire string (not partial matches)"
-  ]
-}
+# Example 1: Simple function
+def add_numbers(a, b):
+    return a + b
+    
+# Sample usage:
+# add_numbers(3, 5) → 8
+# add_numbers(-1, 1) → 0
+
+# Example 2: File processing
+def count_lines(filename):
+    """Count lines in a file"""
+    with open(filename) as f:
+        return len(f.readlines())
+        
+# Sample usage:
+# count_lines('data.txt') → 42 (if file has 42 lines)
+
+# Example 3: Data processing
+def process_data(data):
+    """
+    Process list of numbers:
+    - Filters out negative values
+    - Returns sum of remaining
+    """
+    return sum(x for x in data if x >= 0)
+    
+# Sample usage:
+# process_data([1, -2, 3, -4, 5]) → 9
+# process_data([]) → 0
+
+# Example 4: Class implementation
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        
+    def area(self):
+        return self.width * self.height
+        
+# Sample usage:
+# r = Rectangle(3, 4)
+# r.area() → 12
+```...
+2025-05-25 02:39:09,626 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🎯 PHASE 2: Initial Fitness Evaluation
+2025-05-25 02:39:09,626 - self_healing_agents.evolution.fitness_evaluator - INFO - 📊 BATCH FITNESS: Evaluating 4 EXECUTOR prompts
+2025-05-25 02:39:09,627 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:39:09,627 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:39:09,923 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:39:18,225 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:39:29,099 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:39:29,878 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:39:35,617 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:39:35,618 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:39:35,618 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.526 (weight: 0.1)
+2025-05-25 02:39:35,618 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.970 (weight: 0.05)
+2025-05-25 02:39:35,618 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:39:35,619 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:39:35,619 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:39:35,619 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.101
+2025-05-25 02:39:35,619 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:39:35,619 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:39:35,619 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.101
+2025-05-25 02:39:35,620 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.101 (success: 0.000, efficiency: 0.526, coherence: 0.970)
+2025-05-25 02:39:35,620 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:39:35,620 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:39:35,909 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:39:46,999 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:40:00,607 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:40:00,916 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:40:07,793 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:40:07,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:40:07,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.492 (weight: 0.1)
+2025-05-25 02:40:07,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.910 (weight: 0.05)
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.095
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.095
+2025-05-25 02:40:07,795 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.095 (success: 0.000, efficiency: 0.492, coherence: 0.910)
+2025-05-25 02:40:07,796 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:40:07,796 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:40:08,116 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:40:17,362 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:40:28,052 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:40:28,335 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:40:37,186 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:40:37,186 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:40:37,186 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.525 (weight: 0.1)
+2025-05-25 02:40:37,186 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.900 (weight: 0.05)
+2025-05-25 02:40:37,187 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:40:37,187 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:40:37,187 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:40:37,187 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.097
+2025-05-25 02:40:37,187 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:40:37,188 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:40:37,188 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.097
+2025-05-25 02:40:37,188 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.097 (success: 0.000, efficiency: 0.525, coherence: 0.900)
+2025-05-25 02:40:37,188 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:40:37,189 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:40:37,483 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:40:47,798 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:41:00,158 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:41:00,462 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:41:08,212 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:41:08,213 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:41:08,213 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.522 (weight: 0.1)
+2025-05-25 02:41:08,213 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.910 (weight: 0.05)
+2025-05-25 02:41:08,213 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:41:08,213 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:41:08,213 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:41:08,214 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.098
+2025-05-25 02:41:08,214 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:41:08,214 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:41:08,214 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.098
+2025-05-25 02:41:08,214 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.098 (success: 0.000, efficiency: 0.522, coherence: 0.910)
+2025-05-25 02:41:08,215 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ BATCH FITNESS: Completed. Score range: 0.095 - 0.101
+2025-05-25 02:41:08,215 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📈 Initial best fitness: 0.101
+2025-05-25 02:41:08,215 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🔄 PHASE 3: Evolution Loop
+2025-05-25 02:41:08,215 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+--- Generation 1/3 ---
+2025-05-25 02:41:08,215 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 4 survivors from 4
+2025-05-25 02:41:08,524 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.095 - 0.101
+2025-05-25 02:41:08,524 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    👶 OFFSPRING: Generating new individuals
+2025-05-25 02:41:08,618 - self_healing_agents.evolution.evolution_operators - INFO - 🔀 MUTATION: Performing error-targeted mutation for EXECUTOR
+2025-05-25 02:41:08,618 - self_healing_agents.evolution.evolution_operators - INFO - 🔀 ERROR-TARGETED MUTATION: Starting targeted mutation process
+2025-05-25 02:41:08,618 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Input Prompt Length: 1737 characters
+2025-05-25 02:41:08,619 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 Agent Type: EXECUTOR
+2025-05-25 02:41:08,619 - self_healing_agents.evolution.evolution_operators - INFO -    📈 Mutation Rate: 0.3
+2025-05-25 02:41:08,619 - self_healing_agents.evolution.evolution_operators - INFO - 🔍 ERROR ANALYSIS: Starting detailed failure context analysis
+2025-05-25 02:41:08,619 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Failure Context Keys: ['original_task', 'plan', 'failed_code', 'failure_report', 'classification', 'iteration', 'specific_test_failures']
+2025-05-25 02:41:08,619 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Error Report Type: <class 'dict'>
+2025-05-25 02:41:08,619 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Classification Type: <class 'dict'>
+2025-05-25 02:41:08,619 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 LLM Classification Primary Failure: EXECUTION_FAILURE
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO -    🧠 LLM Detailed Reasoning:
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO -       1. The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO -       2. The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO -       3. The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ Using LLM classification: EXECUTION_FAILURE
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO - 🔍 ERROR DETAILS: Extracting specific error information
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 FOUND SPECIFIC TEST FAILURES: 2 tests
+2025-05-25 02:41:08,620 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 REGEX SPECIFIC: REGEX PATTERN FAILURE: string='a' pattern='ab*a' issue=star_operator_handling
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ SPECIFIC TEST FAILURES: Added 3 detailed test failures
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Extracted Score: 0.6
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO -    🧠 Extracted Reasoning: The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).; The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.; The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Extracted Task: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ Final Error Details (1059 chars): Failed Tests: Test 'test_star_matches_zero_elements': inputs={'s': 'a', 'p': 'ab*a'}, expected=True, actual=False; REGEX PATTERN FAILURE: string='a' p...
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO -    🔍 Analyzed Error Type: EXECUTION_FAILURE
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO -    📝 Error Details Length: 1059 characters
+2025-05-25 02:41:08,621 - self_healing_agents.evolution.evolution_operators - INFO - 🎯 MUTATION SELECTION: Selecting mutations for error_type='EXECUTION_FAILURE', agent_type='EXECUTOR'
+2025-05-25 02:41:08,622 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 ANALYZING SPECIFIC TEST FAILURES: 2 tests
+2025-05-25 02:41:08,622 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 REGEX STAR ISSUE: Added regex-specific mutations for pattern 'ab*a'
+2025-05-25 02:41:08,622 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Final Selected Mutations: ['regex_star_operator_focus', 'zero_match_handling', 'pattern_matching_precision', 'instruction_refinement', 'example_enhancement', 'structure_optimization']
+2025-05-25 02:41:08,622 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 INCLUDES TEST-SPECIFIC MUTATIONS: Yes
+2025-05-25 02:41:08,622 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 Targeted Mutations: ['regex_star_operator_focus', 'zero_match_handling', 'pattern_matching_precision', 'instruction_refinement', 'example_enhancement', 'structure_optimization']
+2025-05-25 02:41:08,622 - self_healing_agents.evolution.evolution_operators - INFO - 🎯 IMPROVEMENT GUIDELINES: Generating for error_type='EXECUTION_FAILURE', agent_type='EXECUTOR'
+2025-05-25 02:41:08,622 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 USING SPECIFIC TEST FAILURES: 2 tests for targeted guidance
+2025-05-25 02:41:08,623 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ GENERATED SPECIFIC GUIDANCE: 581 chars
+2025-05-25 02:41:08,623 - self_healing_agents.evolution.evolution_operators - INFO -    📝 Final Improvement Guidelines (756 chars)
+2025-05-25 02:41:08,623 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 INCLUDES SPECIFIC TEST TARGETING: Yes
+2025-05-25 02:41:08,623 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Generated Mutation Prompt Length: 5425 characters
+2025-05-25 02:41:08,623 - self_healing_agents.evolution.evolution_operators - INFO -    🔍 DIAGNOSTIC: Mutation prompt contains error_type='EXECUTION_FAILURE' and mutations=['regex_star_operator_focus', 'zero_match_handling', 'pattern_matching_precision', 'instruction_refinement', 'example_enhancement', 'structure_optimization']
+2025-05-25 02:41:08,624 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Original Task in Context: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-25 02:41:08,624 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ GOOD: Failed test cases are included in error details
+2025-05-25 02:41:08,624 - self_healing_agents.evolution.evolution_operators - INFO -    🤖 Invoking LLM for error-targeted mutation...
+2025-05-25 02:41:08,927 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:41:49,878 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ Generated Improved Prompt Length: 3538 characters
+2025-05-25 02:41:49,878 - self_healing_agents.evolution.evolution_operators - INFO -    📈 Length Change: +1801 characters
+2025-05-25 02:41:49,878 - self_healing_agents.evolution.evolution_operators - INFO -    📝 Improved Prompt Preview: Here's the improved EXECUTOR prompt with targeted modifications to address the regex matching failures:
+
 ```
+You are a Python programming assistant sp...
+2025-05-25 02:41:49,878 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED MUTATION: Applied 6 targeted mutations for EXECUTION_FAILURE
+2025-05-25 02:41:50,195 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:42:01,026 - self_healing_agents.evolution.evolution_operators - INFO - ✅ MUTATION: Applied targeted mutations successfully
+2025-05-25 02:42:01,026 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    ✅ Generated 2 offspring
+2025-05-25 02:42:01,026 - self_healing_agents.evolution.fitness_evaluator - INFO - 📊 BATCH FITNESS: Evaluating 2 EXECUTOR prompts
+2025-05-25 02:42:01,026 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:42:01,027 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:42:01,321 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:42:14,346 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:42:25,469 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:42:25,760 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:42:32,649 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:42:32,650 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:42:32,650 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.520 (weight: 0.1)
+2025-05-25 02:42:32,650 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.925 (weight: 0.05)
+2025-05-25 02:42:32,650 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:42:32,651 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:42:32,651 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:42:32,651 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.098
+2025-05-25 02:42:32,651 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:42:32,651 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:42:32,651 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.098
+2025-05-25 02:42:32,651 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.098 (success: 0.000, efficiency: 0.520, coherence: 0.925)
+2025-05-25 02:42:32,652 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ BATCH FITNESS: Completed. Score range: 0.097 - 0.098
+2025-05-25 02:42:32,652 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 4 survivors from 4
+2025-05-25 02:42:32,952 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.095 - 0.101
+2025-05-25 02:42:33,044 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📊 Gen 1 Stats:
+2025-05-25 02:42:33,044 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🏆 Best: 0.101
+2025-05-25 02:42:33,044 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       📈 Mean: 0.098 ± 0.002
+2025-05-25 02:42:33,045 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🎲 Diversity: 0.514
+2025-05-25 02:42:33,045 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🔢 Evaluations: 6
+2025-05-25 02:42:33,045 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+--- Generation 2/3 ---
+2025-05-25 02:42:33,045 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 4 survivors from 4
+2025-05-25 02:42:33,324 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.095 - 0.101
+2025-05-25 02:42:33,324 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    👶 OFFSPRING: Generating new individuals
+2025-05-25 02:42:33,324 - self_healing_agents.evolution.evolution_operators - INFO - 🧬 CROSSOVER: Performing error-targeted semantic crossover for EXECUTOR
+2025-05-25 02:42:33,617 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:42:43,248 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:43:14,864 - self_healing_agents.evolution.evolution_operators - INFO - 🔍 ERROR ANALYSIS: Starting detailed failure context analysis
+2025-05-25 02:43:14,865 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Failure Context Keys: ['original_task', 'plan', 'failed_code', 'failure_report', 'classification', 'iteration', 'specific_test_failures']
+2025-05-25 02:43:14,865 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Error Report Type: <class 'dict'>
+2025-05-25 02:43:14,865 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Classification Type: <class 'dict'>
+2025-05-25 02:43:14,866 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 LLM Classification Primary Failure: EXECUTION_FAILURE
+2025-05-25 02:43:14,866 - self_healing_agents.evolution.evolution_operators - INFO -    🧠 LLM Detailed Reasoning:
+2025-05-25 02:43:14,866 - self_healing_agents.evolution.evolution_operators - INFO -       1. The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).
+2025-05-25 02:43:14,866 - self_healing_agents.evolution.evolution_operators - INFO -       2. The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.
+2025-05-25 02:43:14,866 - self_healing_agents.evolution.evolution_operators - INFO -       3. The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:43:14,866 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ Using LLM classification: EXECUTION_FAILURE
+2025-05-25 02:43:14,867 - self_healing_agents.evolution.evolution_operators - INFO - 🔍 ERROR DETAILS: Extracting specific error information
+2025-05-25 02:43:14,867 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 FOUND SPECIFIC TEST FAILURES: 2 tests
+2025-05-25 02:43:14,867 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 REGEX SPECIFIC: REGEX PATTERN FAILURE: string='a' pattern='ab*a' issue=star_operator_handling
+2025-05-25 02:43:14,867 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ SPECIFIC TEST FAILURES: Added 3 detailed test failures
+2025-05-25 02:43:14,868 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Extracted Score: 0.6
+2025-05-25 02:43:14,868 - self_healing_agents.evolution.evolution_operators - INFO -    🧠 Extracted Reasoning: The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).; The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.; The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:43:14,869 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Extracted Task: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-25 02:43:14,869 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ Final Error Details (1059 chars): Failed Tests: Test 'test_star_matches_zero_elements': inputs={'s': 'a', 'p': 'ab*a'}, expected=True, actual=False; REGEX PATTERN FAILURE: string='a' p...
+2025-05-25 02:43:14,869 - self_healing_agents.evolution.evolution_operators - INFO - 🎯 IMPROVEMENT GUIDELINES: Generating for error_type='EXECUTION_FAILURE', agent_type='EXECUTOR'
+2025-05-25 02:43:14,869 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 USING SPECIFIC TEST FAILURES: 2 tests for targeted guidance
+2025-05-25 02:43:14,869 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ GENERATED SPECIFIC GUIDANCE: 581 chars
+2025-05-25 02:43:14,869 - self_healing_agents.evolution.evolution_operators - INFO -    📝 Final Improvement Guidelines (756 chars)
+2025-05-25 02:43:14,870 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 INCLUDES SPECIFIC TEST TARGETING: Yes
+2025-05-25 02:43:15,219 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:43:53,249 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED CROSSOVER: Generated prompt targeting EXECUTION_FAILURE
+2025-05-25 02:43:53,535 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:44:02,781 - self_healing_agents.evolution.evolution_operators - INFO - ✅ CROSSOVER: Generated coherent offspring
+2025-05-25 02:44:02,782 - self_healing_agents.evolution.evolution_operators - INFO - 🧬 CROSSOVER: Performing error-targeted semantic crossover for EXECUTOR
+2025-05-25 02:44:03,164 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:44:29,709 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:44:38,017 - self_healing_agents.evolution.evolution_operators - INFO - 🔍 ERROR ANALYSIS: Starting detailed failure context analysis
+2025-05-25 02:44:38,017 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Failure Context Keys: ['original_task', 'plan', 'failed_code', 'failure_report', 'classification', 'iteration', 'specific_test_failures']
+2025-05-25 02:44:38,017 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Error Report Type: <class 'dict'>
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Classification Type: <class 'dict'>
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 LLM Classification Primary Failure: EXECUTION_FAILURE
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO -    🧠 LLM Detailed Reasoning:
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO -       1. The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO -       2. The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO -       3. The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ Using LLM classification: EXECUTION_FAILURE
+2025-05-25 02:44:38,018 - self_healing_agents.evolution.evolution_operators - INFO - 🔍 ERROR DETAILS: Extracting specific error information
+2025-05-25 02:44:38,019 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 FOUND SPECIFIC TEST FAILURES: 2 tests
+2025-05-25 02:44:38,019 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 REGEX SPECIFIC: REGEX PATTERN FAILURE: string='a' pattern='ab*a' issue=star_operator_handling
+2025-05-25 02:44:38,019 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ SPECIFIC TEST FAILURES: Added 3 detailed test failures
+2025-05-25 02:44:38,019 - self_healing_agents.evolution.evolution_operators - INFO -    📊 Extracted Score: 0.6
+2025-05-25 02:44:38,019 - self_healing_agents.evolution.evolution_operators - INFO -    🧠 Extracted Reasoning: The plan outlines a reasonable approach using dynamic programming and recursion to solve the regex matching problem, covering all key aspects of the problem (base cases, '*' handling, character matching).; The implementation fails specific test cases where the logic for handling '*' (zero matches) and character matching ('.' vs specific chars) is incorrect, indicating execution-level issues rather than planning deficiencies.; The test failures show clear patterns of incorrect logic implementation (returning False when True expected for star patterns, and vice versa for character mismatches), which are execution errors.
+2025-05-25 02:44:38,020 - self_healing_agents.evolution.evolution_operators - INFO -    📋 Extracted Task: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-25 02:44:38,020 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ Final Error Details (1059 chars): Failed Tests: Test 'test_star_matches_zero_elements': inputs={'s': 'a', 'p': 'ab*a'}, expected=True, actual=False; REGEX PATTERN FAILURE: string='a' p...
+2025-05-25 02:44:38,020 - self_healing_agents.evolution.evolution_operators - INFO - 🎯 IMPROVEMENT GUIDELINES: Generating for error_type='EXECUTION_FAILURE', agent_type='EXECUTOR'
+2025-05-25 02:44:38,020 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 USING SPECIFIC TEST FAILURES: 2 tests for targeted guidance
+2025-05-25 02:44:38,021 - self_healing_agents.evolution.evolution_operators - INFO -    ✅ GENERATED SPECIFIC GUIDANCE: 581 chars
+2025-05-25 02:44:38,021 - self_healing_agents.evolution.evolution_operators - INFO -    📝 Final Improvement Guidelines (756 chars)
+2025-05-25 02:44:38,021 - self_healing_agents.evolution.evolution_operators - INFO -    🎯 INCLUDES SPECIFIC TEST TARGETING: Yes
+2025-05-25 02:44:38,309 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:45:06,537 - self_healing_agents.evolution.evolution_operators - INFO - ✅ ERROR-TARGETED CROSSOVER: Generated prompt targeting EXECUTION_FAILURE
+2025-05-25 02:45:07,333 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:45:20,123 - self_healing_agents.evolution.evolution_operators - INFO - ✅ CROSSOVER: Generated coherent offspring
+2025-05-25 02:45:20,123 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    ✅ Generated 2 offspring
+2025-05-25 02:45:20,123 - self_healing_agents.evolution.fitness_evaluator - INFO - 📊 BATCH FITNESS: Evaluating 2 EXECUTOR prompts
+2025-05-25 02:45:20,124 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:45:20,124 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:45:20,617 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:45:29,303 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:45:43,250 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:45:43,565 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:45:50,297 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:45:50,297 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:45:50,297 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.445 (weight: 0.1)
+2025-05-25 02:45:50,298 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.925 (weight: 0.05)
+2025-05-25 02:45:50,298 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:45:50,298 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:45:50,298 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:45:50,299 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.091
+2025-05-25 02:45:50,299 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:45:50,299 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:45:50,299 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.091
+2025-05-25 02:45:50,299 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.091 (success: 0.000, efficiency: 0.445, coherence: 0.925)
+2025-05-25 02:45:50,300 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:45:50,300 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:45:50,646 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:45:59,549 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:46:12,383 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:46:12,675 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:46:19,849 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:46:19,850 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:46:19,850 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.523 (weight: 0.1)
+2025-05-25 02:46:19,850 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.905 (weight: 0.05)
+2025-05-25 02:46:19,850 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:46:19,850 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:46:19,851 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:46:19,851 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.098
+2025-05-25 02:46:19,851 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:46:19,851 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:46:19,851 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.098
+2025-05-25 02:46:19,851 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.098 (success: 0.000, efficiency: 0.523, coherence: 0.905)
+2025-05-25 02:46:19,852 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ BATCH FITNESS: Completed. Score range: 0.091 - 0.098
+2025-05-25 02:46:19,852 - self_healing_agents.evolution.prompt_population - INFO - 🏆 SELECTION: Selecting 4 survivors from 4
+2025-05-25 02:46:20,151 - self_healing_agents.evolution.prompt_population - INFO - ✅ SELECTION: Selected survivors with fitness range: 0.091 - 0.101
+2025-05-25 02:46:20,244 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📊 Gen 2 Stats:
+2025-05-25 02:46:20,244 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🏆 Best: 0.101
+2025-05-25 02:46:20,244 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       📈 Mean: 0.098 ± 0.002
+2025-05-25 02:46:20,244 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🎲 Diversity: 0.514
+2025-05-25 02:46:20,245 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -       🔢 Evaluations: 8
+2025-05-25 02:46:20,245 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+--- Generation 3/3 ---
+2025-05-25 02:46:20,245 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    🛑 EARLY STOPPING: No improvement for 2 generations
+2025-05-25 02:46:20,245 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+📊 PHASE 4: Results Compilation
+2025-05-25 02:46:20,245 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+============================================================
+2025-05-25 02:46:20,245 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🧬 EVOLUTIONARY OPTIMIZATION COMPLETE
+2025-05-25 02:46:20,245 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ============================================================
+2025-05-25 02:46:20,246 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🏆 Best Fitness: 0.101
+2025-05-25 02:46:20,246 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🔢 Generations: 3
+2025-05-25 02:46:20,246 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 📊 Evaluations: 8
+2025-05-25 02:46:20,246 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ⏱️  Execution Time: 493.9s
+2025-05-25 02:46:20,247 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🛑 Termination: early_stopping
+2025-05-25 02:46:20,247 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 📈 Improvement: +0.000 (+0.0%)
+2025-05-25 02:46:20,247 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ⚡ Efficiency: 0.0 evaluations/sec
+2025-05-25 02:46:20,247 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ❌ LIMITED: Minimal improvement
+2025-05-25 02:46:20,247 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ============================================================
+2025-05-25 02:46:20,247 - __main__ - INFO -     ✨ EVOLUTION COMPLETE: Best fitness 0.101 after 3 generations
+2025-05-25 02:46:20,247 - __main__ - INFO -     ✨ EVOLVED EXECUTOR PROMPT (54 chars):
+2025-05-25 02:46:20,248 - __main__ - INFO -     ────────────────────────────────────────────────────────────
+2025-05-25 02:46:20,248 - __main__ - INFO -     You are a programmer. Output only the raw Python code.
+2025-05-25 02:46:20,248 - __main__ - INFO -     ────────────────────────────────────────────────────────────
+2025-05-25 02:46:20,248 - __main__ - INFO - [95m  3. Re-execution with Evolved Prompt:[0m
+2025-05-25 02:46:20,550 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:46:32,768 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:46:57,554 - __main__ - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
+2025-05-25 02:46:57,554 - __main__ - INFO -     [92mImproved Score:[0m 0.65
+2025-05-25 02:46:57,554 - __main__ - WARNING -     🚨 CRITICAL DISCONNECT DETECTED:
+2025-05-25 02:46:57,555 - __main__ - WARNING -     🚨 Evolutionary Fitness: 0.101 (from simple validation tasks)
+2025-05-25 02:46:57,555 - __main__ - WARNING -     🚨 Actual Task Score:    0.650 (from critic on real regex task)
+2025-05-25 02:46:57,555 - __main__ - WARNING -     🚨 Difference: -0.549
+2025-05-25 02:46:57,555 - __main__ - WARNING -     🚨 FITNESS EVALUATOR IS BROKEN - HIGH FITNESS ≠ TASK SUCCESS!
+2025-05-25 02:46:57,556 - __main__ - INFO - 
+----- Evolutionary Healing Iteration 2/2 -----
+2025-05-25 02:46:57,556 - __main__ - INFO - [95m  1. Failure Classification:[0m
+2025-05-25 02:46:57,556 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
+2025-05-25 02:46:57,875 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:47:17,242 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: EXECUTION_FAILURE
+2025-05-25 02:47:17,242 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
+2025-05-25 02:47:17,242 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: EXECUTOR
+2025-05-25 02:47:17,243 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
+2025-05-25 02:47:17,243 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan outlines a reasonable approach to solving the regex matching problem, including handling base cases, '*' characters, and using dynamic programming for efficiency.
+2025-05-25 02:47:17,243 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The implementation fails specific test cases where the logic for handling '*' and character matching is incorrect, indicating execution issues rather than planning deficiencies.
+2025-05-25 02:47:17,243 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The test case failures show incorrect handling of patterns with '*' (Test 1) and incorrect matching of characters (Test 2), which are implementation-specific issues.
+2025-05-25 02:47:17,243 - __main__ - INFO -     [96mFailure Type:[0m EXECUTION_FAILURE
+2025-05-25 02:47:17,243 - __main__ - INFO -     [96mConfidence:[0m 0.90
+2025-05-25 02:47:17,243 - __main__ - INFO -     [96mRecommended Target:[0m EXECUTOR
+2025-05-25 02:47:17,243 - __main__ - INFO -     [93mLLM Reasoning:[0m
+2025-05-25 02:47:17,243 - __main__ - INFO -       - The plan outlines a reasonable approach to solving the regex matching problem, including handling base cases, '*' characters, and using dynamic programming for efficiency.
+2025-05-25 02:47:17,244 - __main__ - INFO -       - The implementation fails specific test cases where the logic for handling '*' and character matching is incorrect, indicating execution issues rather than planning deficiencies.
+2025-05-25 02:47:17,244 - __main__ - INFO -       - The test case failures show incorrect handling of patterns with '*' (Test 1) and incorrect matching of characters (Test 2), which are implementation-specific issues.
+2025-05-25 02:47:17,244 - __main__ - INFO - [95m  2. Evolutionary Executor Optimization:[0m
+2025-05-25 02:47:17,244 - __main__ - INFO -    🎯 ENHANCED: Added 2 specific test failures to context
+2025-05-25 02:47:17,245 - __main__ - INFO -       Test 1: test_star_matches_zero_elements - {'s': 'a', 'p': 'ab*a'} -> expected True, got False
+2025-05-25 02:47:17,245 - __main__ - INFO -       🎯 REGEX ISSUE: Pattern 'ab*a' with string 'a'
+2025-05-25 02:47:17,245 - __main__ - INFO -       Test 2: test_no_match_due_to_char_mismatch - {'s': 'abc', 'p': 'a.c'} -> expected False, got True
+2025-05-25 02:47:17,245 - __main__ - INFO - 🔍 FAILURE CONTEXT CONSTRUCTION (Executor):
+2025-05-25 02:47:17,245 - __main__ - INFO -    📋 Original Task Length: 921 chars
+2025-05-25 02:47:17,245 - __main__ - INFO -    📋 Plan Type: <class 'dict'>
+2025-05-25 02:47:17,245 - __main__ - INFO -    📋 Failed Code Length: 570 chars
+2025-05-25 02:47:17,246 - __main__ - INFO -    📋 Failure Report Type: <class 'dict'>
+2025-05-25 02:47:17,246 - __main__ - INFO -    📋 Classification Result Type: <class 'dict'>
+2025-05-25 02:47:17,246 - __main__ - INFO -    📋 Specific Test Failures: 2 included
+2025-05-25 02:47:17,246 - __main__ - INFO -    🎯 Primary Failure Type: EXECUTION_FAILURE
+2025-05-25 02:47:17,246 - __main__ - INFO -    🧠 LLM Reasoning Count: 3 items
+2025-05-25 02:47:17,246 - __main__ - INFO -    🧠 First Reasoning: The plan outlines a reasonable approach to solving the regex matching problem, including handling ba...
+2025-05-25 02:47:17,247 - __main__ - INFO -    🧠 All Reasoning Items:
+2025-05-25 02:47:17,247 - __main__ - INFO -       1. The plan outlines a reasonable approach to solving the regex matching problem, including handling base cases, '*' characters, and using dynamic programming for efficiency.
+2025-05-25 02:47:17,247 - __main__ - INFO -       2. The implementation fails specific test cases where the logic for handling '*' and character matching is incorrect, indicating execution issues rather than planning deficiencies.
+2025-05-25 02:47:17,247 - __main__ - INFO -       3. The test case failures show incorrect handling of patterns with '*' (Test 1) and incorrect matching of characters (Test 2), which are implementation-specific issues.
+2025-05-25 02:47:17,247 - __main__ - INFO -    🧪 Test Results Available: 10 tests
+2025-05-25 02:47:17,247 - __main__ - INFO -    🧪 Passed Tests: 8
+2025-05-25 02:47:17,247 - __main__ - INFO -    🧪 Failed Tests: 2
+2025-05-25 02:47:17,248 - __main__ - INFO -    🧪 Failed Test 1: test_star_matches_zero_elements
+2025-05-25 02:47:17,248 - __main__ - INFO -       📥 Inputs: {'s': 'a', 'p': 'ab*a'}
+2025-05-25 02:47:17,248 - __main__ - INFO -       ✅ Expected: True
+2025-05-25 02:47:17,248 - __main__ - INFO -       ❌ Actual: False
+2025-05-25 02:47:17,248 - __main__ - WARNING -    🎯 REGEX PATTERN FAILURE DETECTED: s='a', p='ab*a' (contains '*')
+2025-05-25 02:47:17,248 - __main__ - WARNING -    🎯 This is the specific pattern that needs targeting!
+2025-05-25 02:47:17,248 - __main__ - INFO -    🧪 Failed Test 2: test_no_match_due_to_char_mismatch
+2025-05-25 02:47:17,249 - __main__ - INFO -       📥 Inputs: {'s': 'abc', 'p': 'a.c'}
+2025-05-25 02:47:17,249 - __main__ - INFO -       ✅ Expected: False
+2025-05-25 02:47:17,249 - __main__ - INFO -       ❌ Actual: True
+2025-05-25 02:47:17,249 - __main__ - INFO -    ✅ Failure context constructed with 7 keys
+2025-05-25 02:47:17,249 - __main__ - INFO - 🎯 CONFIGURING: Task-specific fitness evaluation using actual multi-agent pipeline
+2025-05-25 02:47:17,249 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 TASK-SPECIFIC FITNESS: Set to evaluate on actual task
+2025-05-25 02:47:17,249 - self_healing_agents.evolution.fitness_evaluator - INFO -    📋 Task: Given an input string s and a pattern p, implement regular expression matching with support for '.' ...
+2025-05-25 02:47:17,250 - self_healing_agents.evolution.fitness_evaluator - INFO -    🧪 Created 1 targeted validation tasks
+2025-05-25 02:47:17,250 - __main__ - INFO -     🧬 EVOLVING: Optimizing executor prompt through 3 generations
+2025-05-25 02:47:17,250 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🧬 EVOLUTION START: Optimizing EXECUTOR prompt
+2025-05-25 02:47:17,250 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📊 Config: Pop=4, Gen=3
+2025-05-25 02:47:17,250 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    🎯 Budget: Max 20 evaluations
+2025-05-25 02:47:17,250 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🌱 PHASE 1: Population Initialization
+2025-05-25 02:47:17,250 - self_healing_agents.evolution.prompt_population - INFO - 🌱 POPULATION INIT: Generating 4 diverse prompts for EXECUTOR
+2025-05-25 02:47:17,543 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:47:37,552 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:47:51,740 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:48:06,491 - self_healing_agents.evolution.prompt_population - INFO - ✅ POPULATION INIT: Generated 4 individuals
+2025-05-25 02:48:06,603 - self_healing_agents.evolution.prompt_population - INFO - 📊 DIVERSITY: Population diversity score: 0.371
+2025-05-25 02:48:06,603 - self_healing_agents.evolution.prompt_population - INFO - 🔍 SAMPLE GENERATED PROMPTS:
+2025-05-25 02:48:06,604 - self_healing_agents.evolution.prompt_population - INFO -    Individual 1 (54 chars): You are a programmer. Output only the raw Python code.
+2025-05-25 02:48:06,604 - self_healing_agents.evolution.prompt_population - INFO -    Individual 2 (1420 chars): Here's a constrained variation of the EXECUTOR prompt:
 
-Key improvements over the original plan:
-1. Specific algorithm choice (dynamic programming) instead of vague "check somehow"
-2. Detailed steps for handling special characters '.' and '*'
-3. Clear base case definitions
-4. Proper subproblem decomposition
-5. Complete implementation path from initialization to final result
-6. Mathematical correctness in handling regex semantics
-7. Clear explanation of the DP table meaning
+**Constrained Programmer EXECUTOR Prompt:**
 
-This plan provides a complete roadmap for implementing the regex matching solution that will pass all test cases.)
-2025-05-24 18:31:27,319 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
-{'steps': ['Implement step: Check the strings somehow', 'Implement step: Handle the dots and stars in some way', 'Implement step: Maybe compare characters or something', 'Implement step: Return true or false based on something', "Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
-2025-05-24 18:31:27,319 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
-2025-05-24 18:31:27,622 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:31:36,550 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:31:56,104 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
-2025-05-24 18:31:56,104 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
-2025-05-24 18:31:56,104 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
------ Healing Iteration 2/3 -----
-2025-05-24 18:31:56,104 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
-2025-05-24 18:31:56,105 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
-2025-05-24 18:31:56,406 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:32:14,215 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
-2025-05-24 18:32:14,215 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
-2025-05-24 18:32:14,215 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
-2025-05-24 18:32:14,216 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
-2025-05-24 18:32:14,216 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching. Steps like 'Check the strings somehow' and 'Handle the dots and stars in some way' provide no concrete direction.
-2025-05-24 18:32:14,216 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - Despite the vague plan, the executor implemented a reasonable dynamic programming solution that passes 9/10 test cases, suggesting the implementation approach was sound.
-2025-05-24 18:32:14,217 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The single test case failure ('a' vs 'ab*a') appears to be an edge case that wasn't properly considered in the planning phase. A better plan would have specifically called out handling of complex star patterns.
-2025-05-24 18:32:14,217 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
-2025-05-24 18:32:14,217 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
-2025-05-24 18:32:14,217 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
-2025-05-24 18:32:14,217 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
-2025-05-24 18:32:14,217 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching. Steps like 'Check the strings somehow' and 'Handle the dots and stars in some way' provide no concrete direction.
-2025-05-24 18:32:14,217 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - Despite the vague plan, the executor implemented a reasonable dynamic programming solution that passes 9/10 test cases, suggesting the implementation approach was sound.
-2025-05-24 18:32:14,217 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The single test case failure ('a' vs 'ab*a') appears to be an edge case that wasn't properly considered in the planning phase. A better plan would have specifically called out handling of complex star patterns.
-2025-05-24 18:32:14,218 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
-2025-05-24 18:32:14,218 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
-2025-05-24 18:32:15,007 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:32:38,394 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's an improved plan that addresses the planning deficiencies with specific, actionable steps:
+You are a Python programming specialist with strict operating constraints. Your output must adhere to these requirements:
 
-```json
-{
-  "steps": [
-    "1. Understand the problem requirements: We need to implement a regex matcher that handles '.' for any character and '*' for zero or more repetitions of the preceding character",
-    "2. Design a recursive solution with memoization or dynamic programming approach to handle pattern matching",
-    "3. Base cases:",
-    "   - If pattern is empty, return whether string is empty",
-    "   - If string is empty, check if remaining pattern can match empty string (like 'a*b*')",
-    "4. Handle first character matching:",
-    "   - Check if first characters match (direct match or '.')",
-    "5. Handle '*' cases:",
-    "   - Option 1: Skip the '*' and preceding character (match zero times)",
-    "   - Option 2: If first characters match, consume one character from string and keep '*' for next match",
-    "6. For non-'*' cases:",
-    "   - If first characters match, proceed to next characters in both string and pattern",
-    "   - Else return false",
-    "7. Implement memoization to store intermediate results and avoid redundant calculations",
-    "8. Test implementation with various cases including:",
-    "   - Exact matches",
-    "   - '.' matches",
-    "   - '*' matches (zero and multiple repetitions)",
-    "   - Edge cases (empty strings, patterns with multiple '*'s)"
-  ],
-  "requirements": [
-    "Python standard library (no additional imports needed)",
-    "Memoization decorator (@lru_cache) for optimization"
-  ],
-  "approach": "Dynamic programming with memoization to efficiently handle pattern matching with recursion and caching",
-  "improvements_made": [
-    "Added specific algorithm design details",
-    "Included clear base cases",
-    "Detailed handling of '*' cases",
-    "Added memoization strategy",
-    "Specified test cases",
-    "Removed vague language ('somehow', 'something')",
-    "Added concrete implementation guidance"
-  ]
-}
-```
+1. **Output Format:**
+   - Only output raw, executable Python 3.9+ code
+   - No markdown formatting or code blocks
+   - No explanations, comments, or documentation
+   - No placeholder text or TODO items
 
-Key improvements:
-1. The plan now specifies the exact algorithmic approach (DP with memoization)
-2. Clearly defines base cases and recursive cases
-3. Provides specific handling for both '.' and '*' cases
-4. Includes optimization strategy (memoization)
-5. Lists concrete test cases to verify implementation
-6. Removes all vague language from the original plan
-7. Provides clear implementation guidance at each step
+2. **Code Quality Requirements:**
+   - Must follow PEP 8 style guidelines
+   - Maximum line length: 88 characters
+   - Functions must be type hinted
+   - No global variables allowed
+   - Exception handling required for I/O operations
 
-The improved plan should lead directly to a working implementation that handles all the specified regex matching requirements. (Original: Here's an improved plan that addresses the planning deficiencies with specific, actionable steps:
+3. **Prohibited Elements:**
+   - No external dependencies (pure Python only)
+   - No system calls or subprocess execution
+   - No file system modifications
+   - No network operations
+   - No GUI frameworks
 
-```json
-{
-  "steps": [
-    "1. Understand the problem requirements: We need to implement a regex matcher that handles '.' for any character and '*' for zero or more repetitions of the preceding character",
-    "2. Design a recursive solution with memoization or dynamic programming approach to handle pattern matching",
-    "3. Base cases:",
-    "   - If pattern is empty, return whether string is empty",
-    "   - If string is empty, check if remaining pattern can match empty string (like 'a*b*')",
-    "4. Handle first character matching:",
-    "   - Check if first characters match (direct match or '.')",
-    "5. Handle '*' cases:",
-    "   - Option 1: Skip the '*' and preceding character (match zero times)",
-    "   - Option 2: If first characters match, consume one character from string and keep '*' for next match",
-    "6. For non-'*' cases:",
-    "   - If first characters match, proceed to next characters in both string and pattern",
-    "   - Else return false",
-    "7. Implement memoization to store intermediate results and avoid redundant calculations",
-    "8. Test implementation with various cases including:",
-    "   - Exact matches",
-    "   - '.' matches",
-    "   - '*' matches (zero and multiple repetitions)",
-    "   - Edge cases (empty strings, patterns with multiple '*'s)"
-  ],
-  "requirements": [
-    "Python standard library (no additional imports needed)",
-    "Memoization decorator (@lru_cache) for optimization"
-  ],
-  "approach": "Dynamic programming with memoization to efficiently handle pattern matching with recursion and caching",
-  "improvements_made": [
-    "Added specific algorithm design details",
-    "Included clear base cases",
-    "Detailed handling of '*' cases",
-    "Added memoization strategy",
-    "Specified test cases",
-    "Removed vague language ('somehow', 'something')",
-    "Added concrete implementation guidance"
-  ]
-}
-```
+4. **Scope Limitations:**
+   - Maximum 200 lines of code per output
+   - No infinite loops
+   - No recursion deeper than 5 levels
+   - Memory usage must be O(n) or better
 
-Key improvements:
-1. The plan now specifies the exact algorithmic approach (DP with memoization)
-2. Clearly defines base cases and recursive cases
-3. Provides specific handling for both '.' and '*' cases
-4. Includes optimization strategy (memoization)
-5. Lists concrete test cases to verify implementation
-6. Removes all vague language from the original plan
-7. Provides clear implementation guidance at each step
+5. **Security Constraints:**
+   - No eval() or exec()
+   - No pickle serialization
+   - No reflection or dynamic code generation
+   - Input must be sanitized if accepted
 
-The improved plan should lead directly to a working implementation that handles all the specified regex matching requirements.)
-2025-05-24 18:32:38,395 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
-{'steps': ['Implement step: Implement step: Check the strings somehow', 'Implement step: Implement step: Handle the dots and stars in some way', 'Implement step: Implement step: Maybe compare characters or something', 'Implement step: Implement step: Return true or false based on something', "Implement step: Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
-2025-05-24 18:32:38,395 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
-2025-05-24 18:32:38,687 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:32:48,775 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:33:09,472 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
-2025-05-24 18:33:09,472 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
-2025-05-24 18:33:09,472 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
------ Healing Iteration 3/3 -----
-2025-05-24 18:33:09,473 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
-2025-05-24 18:33:09,473 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
-2025-05-24 18:33:09,778 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:33:28,052 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
-2025-05-24 18:33:28,052 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
-2025-05-24 18:33:28,052 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
-2025-05-24 18:33:28,052 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
-2025-05-24 18:33:28,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching
-2025-05-24 18:33:28,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - Key algorithm details like memoization and recursive backtracking are completely missing from the plan
-2025-05-24 18:33:28,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan contains redundant phrases ('Implement step: Implement step:') and doesn't break down the problem into actionable steps
-2025-05-24 18:33:28,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - While the executor implemented a correct dynamic programming solution, the planner failed to provide any meaningful direction for this complex problem
-2025-05-24 18:33:28,056 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - Key algorithm details like memoization and recursive backtracking are completely missing from the plan
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan contains redundant phrases ('Implement step: Implement step:') and doesn't break down the problem into actionable steps
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - While the executor implemented a correct dynamic programming solution, the planner failed to provide any meaningful direction for this complex problem
-2025-05-24 18:33:28,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
-2025-05-24 18:33:28,057 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
-2025-05-24 18:33:28,360 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:33:53,746 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
-
-```json
-{
-  "steps": [
-    "1. Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching results",
-    "2. Set DP[0][0] = True (empty pattern matches empty string)",
-    "3. Handle patterns that start with '*': Set first row of DP table (empty string vs pattern)",
-    "4. Fill the DP table using the following rules:",
-    "   a. If current pattern char is '.', it matches any character: DP[i][j] = DP[i-1][j-1]",
-    "   b. If current pattern char is '*':",
-    "      i. Consider zero occurrences: DP[i][j] = DP[i][j-2]",
-    "      ii. Consider one or more occurrences if preceding char matches: DP[i][j] = DP[i][j] or (DP[i-1][j] if s[i-1] == p[j-2] or p[j-2] == '.')",
-    "   c. For normal characters: DP[i][j] = DP[i-1][j-1] if s[i-1] == p[j-1]",
-    "5. The result is in DP[len(s)][len(p)]",
-    "6. Implement edge case handling:",
-    "   a. Empty string vs empty pattern",
-    "   b. String vs pattern starting with '*'",
-    "   c. Multiple '*' patterns in sequence"
-  ],
-  "requirements": [
-    "No special imports needed for basic implementation",
-    "Python's built-in data structures are sufficient"
-  ],
-  "approach": "Dynamic programming solution that builds a 2D table to store intermediate matching results, handling all special cases of '.' and '*' patterns systematically",
-  "improvements_made": [
-    "Replaced vague steps with specific DP implementation details",
-    "Added clear rules for handling '.' and '*'",
-    "Included initialization and base case handling",
-    "Specified exact DP table update rules",
-    "Added explicit edge case handling",
-    "Removed unnecessary imports",
-    "Provided complete implementation strategy"
-  ]
-}
-```
-
-Key improvements:
-1. Specific algorithm choice (dynamic programming) with detailed implementation steps
-2. Clear rules for handling each pattern case ('.', '*', normal chars)
-3. Proper initialization and base case handling
-4. Complete DP table filling logic
-5. Explicit edge case considerations
-6. Removed vague language and replaced with concrete implementation details
-
-This plan provides enough detail to directly implement a working solution that handles all the regex matching requirements. (Original: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
-
-```json
-{
-  "steps": [
-    "1. Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching results",
-    "2. Set DP[0][0] = True (empty pattern matches empty string)",
-    "3. Handle patterns that start with '*': Set first row of DP table (empty string vs pattern)",
-    "4. Fill the DP table using the following rules:",
-    "   a. If current pattern char is '.', it matches any character: DP[i][j] = DP[i-1][j-1]",
-    "   b. If current pattern char is '*':",
-    "      i. Consider zero occurrences: DP[i][j] = DP[i][j-2]",
-    "      ii. Consider one or more occurrences if preceding char matches: DP[i][j] = DP[i][j] or (DP[i-1][j] if s[i-1] == p[j-2] or p[j-2] == '.')",
-    "   c. For normal characters: DP[i][j] = DP[i-1][j-1] if s[i-1] == p[j-1]",
-    "5. The result is in DP[len(s)][len(p)]",
-    "6. Implement edge case handling:",
-    "   a. Empty string vs empty pattern",
-    "   b. String vs pattern starting with '*'",
-    "   c. Multiple '*' patterns in sequence"
-  ],
-  "requirements": [
-    "No special imports needed for basic implementation",
-    "Python's built-in data structures are sufficient"
-  ],
-  "approach": "Dynamic programming solution that builds a 2D table to store intermediate matching results, handling all special cases of '.' and '*' patterns systematically",
-  "improvements_made": [
-    "Replaced vague steps with specific DP implementation details",
-    "Added clear rules for handling '.' and '*'",
-    "Included initialization and base case handling",
-    "Specified exact DP table update rules",
-    "Added explicit edge case handling",
-    "Removed unnecessary imports",
-    "Provided complete implementation strategy"
-  ]
-}
-```
-
-Key improvements:
-1. Specific algorithm choice (dynamic programming) with detailed implementation steps
-2. Clear rules for handling each pattern case ('.', '*', normal chars)
-3. Proper initialization and base case handling
-4. Complete DP table filling logic
-5. Explicit edge case considerations
-6. Removed vague language and replaced with concrete implementation details
-
-This plan provides enough detail to directly implement a working solution that handles all the regex matching requirements.)
-2025-05-24 18:33:53,747 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
-{'steps': ['Implement step: Implement step: Implement step: Check the strings somehow', 'Implement step: Implement step: Implement step: Handle the dots and stars in some way', 'Implement step: Implement step: Implement step: Maybe compare characters or something', 'Implement step: Implement step: Implement step: Return true or false based on something', "Implement step: Implement step: Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
-2025-05-24 18:33:53,747 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
-2025-05-24 18:33:54,040 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:34:04,136 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-24 18:34:24,389 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
-2025-05-24 18:34:24,390 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.6
-2025-05-24 18:34:24,390 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+Violations of these constraints will result in immediate termination of the code generation process. If a request cannot be fulfilled within these constraints, output "CONSTRAINT_VIOLATION" and nothing else....
+2025-05-25 02:48:06,604 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🎯 PHASE 2: Initial Fitness Evaluation
+2025-05-25 02:48:06,604 - self_healing_agents.evolution.fitness_evaluator - INFO - 📊 BATCH FITNESS: Evaluating 4 EXECUTOR prompts
+2025-05-25 02:48:06,604 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:48:06,605 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:48:06,899 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:48:22,127 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:48:37,027 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:48:37,324 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:48:45,566 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:48:45,567 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:48:45,567 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.516 (weight: 0.1)
+2025-05-25 02:48:45,567 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 1.000 (weight: 0.05)
+2025-05-25 02:48:45,567 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:48:45,567 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:48:45,567 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:48:45,568 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.102
+2025-05-25 02:48:45,568 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:48:45,570 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:48:45,570 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.102
+2025-05-25 02:48:45,570 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.102 (success: 0.000, efficiency: 0.516, coherence: 1.000)
+2025-05-25 02:48:45,571 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:48:45,571 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:48:45,897 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:48:54,817 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:49:07,352 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:49:07,657 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:49:14,793 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:49:14,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:49:14,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.523 (weight: 0.1)
+2025-05-25 02:49:14,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.925 (weight: 0.05)
+2025-05-25 02:49:14,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:49:14,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:49:14,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:49:14,794 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.099
+2025-05-25 02:49:14,795 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:49:14,795 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:49:14,795 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.099
+2025-05-25 02:49:14,795 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.099 (success: 0.000, efficiency: 0.523, coherence: 0.925)
+2025-05-25 02:49:14,795 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:49:14,796 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:49:15,085 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:49:24,429 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:49:35,110 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:49:35,426 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.524 (weight: 0.1)
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.900 (weight: 0.05)
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.097
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:49:44,197 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.097
+2025-05-25 02:49:44,198 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.097 (success: 0.000, efficiency: 0.524, coherence: 0.900)
+2025-05-25 02:49:44,198 - self_healing_agents.evolution.fitness_evaluator - INFO - 🎯 FITNESS EVAL: Evaluating EXECUTOR prompt fitness
+2025-05-25 02:49:44,199 - self_healing_agents.evolution.fitness_evaluator - INFO - 🧪 DIRECT REGEX EVAL: Testing EXECUTOR prompt on actual regex test cases
+2025-05-25 02:49:44,498 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:49:55,198 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:50:06,196 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ DIRECT TEST RESULTS: 0/8 passed, score: 0.000
+2025-05-25 02:50:06,499 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:50:12,775 - self_healing_agents.evolution.fitness_evaluator - WARNING - 🔍 FITNESS CALCULATION DIAGNOSTIC:
+2025-05-25 02:50:12,775 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Success Rate: 0.000 (weight: 0.8)
+2025-05-25 02:50:12,775 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Efficiency: 0.523 (weight: 0.1)
+2025-05-25 02:50:12,776 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Coherence: 0.910 (weight: 0.05)
+2025-05-25 02:50:12,776 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Generalization: 0.000 (weight: 0.05)
+2025-05-25 02:50:12,777 - self_healing_agents.evolution.fitness_evaluator - WARNING -    📊 Task Scores: [0.0]
+2025-05-25 02:50:12,777 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 WEIGHT SUM ISSUE: 1.000 (should be ~1.0)
+2025-05-25 02:50:12,777 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Raw fitness before clamping: 0.098
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ SUCCESS RATE = actual task performance on regex matching!
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.fitness_evaluator - INFO -    ✅ USING REAL MULTI-AGENT PIPELINE EVALUATION!
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.fitness_evaluator - WARNING -    🚨 Final fitness: 0.098
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ FITNESS EVAL: Score 0.098 (success: 0.000, efficiency: 0.523, coherence: 0.910)
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.fitness_evaluator - INFO - ✅ BATCH FITNESS: Completed. Score range: 0.097 - 0.102
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    📈 Initial best fitness: 0.102
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+🔄 PHASE 3: Evolution Loop
+2025-05-25 02:50:12,778 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+--- Generation 1/3 ---
+2025-05-25 02:50:12,779 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO -    🛑 EARLY STOPPING: No improvement for 2 generations
+2025-05-25 02:50:12,779 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+📊 PHASE 4: Results Compilation
+2025-05-25 02:50:12,779 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 
+============================================================
+2025-05-25 02:50:12,779 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🧬 EVOLUTIONARY OPTIMIZATION COMPLETE
+2025-05-25 02:50:12,779 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ============================================================
+2025-05-25 02:50:12,779 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🏆 Best Fitness: 0.102
+2025-05-25 02:50:12,779 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🔢 Generations: 1
+2025-05-25 02:50:12,780 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 📊 Evaluations: 12
+2025-05-25 02:50:12,780 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ⏱️  Execution Time: 175.5s
+2025-05-25 02:50:12,780 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 🛑 Termination: early_stopping
+2025-05-25 02:50:12,780 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - 📈 Improvement: +0.001 (+0.6%)
+2025-05-25 02:50:12,780 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ⚡ Efficiency: 0.1 evaluations/sec
+2025-05-25 02:50:12,780 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ❌ LIMITED: Minimal improvement
+2025-05-25 02:50:12,780 - self_healing_agents.evolution.evolutionary_prompt_optimizer - INFO - ============================================================
+2025-05-25 02:50:12,780 - __main__ - INFO -     ✨ EVOLUTION COMPLETE: Best fitness 0.102 after 1 generations
+2025-05-25 02:50:12,781 - __main__ - INFO -     ✨ EVOLVED EXECUTOR PROMPT (54 chars):
+2025-05-25 02:50:12,781 - __main__ - INFO -     ────────────────────────────────────────────────────────────
+2025-05-25 02:50:12,781 - __main__ - INFO -     You are a programmer. Output only the raw Python code.
+2025-05-25 02:50:12,781 - __main__ - INFO -     ────────────────────────────────────────────────────────────
+2025-05-25 02:50:12,781 - __main__ - INFO - [95m  3. Re-execution with Evolved Prompt:[0m
+2025-05-25 02:50:13,563 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:50:24,858 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:50:48,324 - __main__ - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
+2025-05-25 02:50:48,325 - __main__ - INFO -     [92mImproved Score:[0m 0.65
+2025-05-25 02:50:48,325 - __main__ - WARNING -     🚨 CRITICAL DISCONNECT DETECTED:
+2025-05-25 02:50:48,325 - __main__ - WARNING -     🚨 Evolutionary Fitness: 0.102 (from simple validation tasks)
+2025-05-25 02:50:48,325 - __main__ - WARNING -     🚨 Actual Task Score:    0.650 (from critic on real regex task)
+2025-05-25 02:50:48,325 - __main__ - WARNING -     🚨 Difference: -0.548
+2025-05-25 02:50:48,325 - __main__ - WARNING -     🚨 FITNESS EVALUATOR IS BROKEN - HIGH FITNESS ≠ TASK SUCCESS!
+2025-05-25 02:50:48,326 - __main__ - INFO - 
 ================================================================================
-2025-05-24 18:34:24,391 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - ENHANCED MULTI-AGENT RESULTS:
-2025-05-24 18:34:24,391 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - ================================================================================
-2025-05-24 18:34:24,391 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Status: COMPLETED_MAX_HEALING_ITERATIONS
-2025-05-24 18:34:24,391 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Best Source: INITIAL
-2025-05-24 18:34:24,392 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Best Score: 0.65
-2025-05-24 18:34:24,392 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Total Healing Iterations: 3
-2025-05-24 18:34:24,392 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Planner Healings: 3
-2025-05-24 18:34:24,392 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Executor Healings: 0
-2025-05-24 18:34:24,392 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Direct Fix Attempts: 1
+2025-05-25 02:50:48,326 - __main__ - INFO - EVOLUTIONARY MULTI-AGENT RESULTS:
+2025-05-25 02:50:48,326 - __main__ - INFO - ================================================================================
+2025-05-25 02:50:48,326 - __main__ - INFO - Status: COMPLETED_MAX_HEALING_ITERATIONS
+2025-05-25 02:50:48,326 - __main__ - INFO - Best Source: INITIAL
+2025-05-25 02:50:48,327 - __main__ - INFO - Best Score: 0.65
+2025-05-25 02:50:48,327 - __main__ - INFO - Total Healing Iterations: 2
+2025-05-25 02:50:48,327 - __main__ - INFO - Planner Healings: 0
+2025-05-25 02:50:48,327 - __main__ - INFO - Executor Healings: 2
+2025-05-25 02:50:48,327 - __main__ - INFO - Evolutionary Optimizations: 2
+2025-05-25 02:50:48,327 - __main__ - INFO - Direct Fix Attempts: 1
+2025-05-25 02:50:48,327 - __main__ - INFO - 
+Evolutionary Statistics:
+2025-05-25 02:50:48,327 - __main__ - INFO -   Total Generations: 4
+2025-05-25 02:50:48,328 - __main__ - INFO -   Total Evaluations: 20
+2025-05-25 02:50:48,328 - __main__ - INFO -   Total Evolution Time: 669.5s
+2025-05-25 02:50:48,328 - __main__ - INFO -   Average Fitness Improvement: 0.000
+main__ - INFO -     ────────────────────────────────────────────────────────────
+2025-05-25 02:38:59,503 - __main__ - INFO -     You are a programmer. Output only the raw Python code.
+2025-05-25 02:38:59,503 - __main__ - INFO -     ────────────────────────────────────────────────────────────
+2025-05-25 02:38:59,503 - __main__ - INFO - [95m  3. Re-execution with Evolved Prompt:[0m
+2025-05-25 02:38:59,796 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:39:12,703 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 02:39:44,339 - __main__ - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
+2025-05-25 02:39:44,340 - __main__ - INFO -     [92mImproved Score:[0m 0.65
+2025-05-25 02:39:44,340 - __main__ - WARNING -     🚨 CRITICAL DISCONNECT DETECTED:
+2025-05-25 02:39:44,340 - __main__ - WARNING -     🚨 Evolutionary Fitness: 0.102 (from simple validation tasks)
+2025-05-25 02:39:44,341 - __main__ - WARNING -     🚨 Actual Task Score:    0.650 (from critic on real regex task)
+2025-05-25 02:39:44,341 - __main__ - WARNING -     🚨 Difference: -0.548
+2025-05-25 02:39:44,341 - __main__ - WARNING -     🚨 FITNESS EVALUATOR IS BROKEN - HIGH FITNESS ≠ TASK SUCCESS!
+2025-05-25 02:39:44,341 - __main__ - INFO - 
+================================================================================
+2025-05-25 02:39:44,341 - __main__ - INFO - EVOLUTIONARY MULTI-AGENT RESULTS:
+2025-05-25 02:39:44,342 - __main__ - INFO - ================================================================================
+2025-05-25 02:39:44,342 - __main__ - INFO - Status: COMPLETED_MAX_HEALING_ITERATIONS
+2025-05-25 02:39:44,342 - __main__ - INFO - Best Source: INITIAL
+2025-05-25 02:39:44,342 - __main__ - INFO - Best Score: 0.65
+2025-05-25 02:39:44,342 - __main__ - INFO - Total Healing Iterations: 2
+2025-05-25 02:39:44,342 - __main__ - INFO - Planner Healings: 0
+2025-05-25 02:39:44,343 - __main__ - INFO - Executor Healings: 2
+2025-05-25 02:39:44,343 - __main__ - INFO - Evolutionary Optimizations: 2
+2025-05-25 02:39:44,343 - __main__ - INFO - Direct Fix Attempts: 1
+2025-05-25 02:39:44,343 - __main__ - INFO - 
+Evolutionary Statistics:
+2025-05-25 02:39:44,343 - __main__ - INFO -   Total Generations: 4
+2025-05-25 02:39:44,343 - __main__ - INFO -   Total Evaluations: 20
+2025-05-25 02:39:44,343 - __main__ - INFO -   Total Evolution Time: 683.6s
+2025-05-25 02:39:44,344 - __main__ - INFO -   Average Fitness Improvement: 0.001
