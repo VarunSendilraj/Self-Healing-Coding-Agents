@@ -37,7 +37,7 @@ class LLMService:
         model_name: str,
         api_key: str = None,
         temperature: float = 0.0,
-        max_tokens: int = 1024,
+        max_tokens: int = 4096,
         # base_url: str = None, # Useful for self-hosted or non-standard OpenAI-compatible APIs
     ):
         self.provider = provider

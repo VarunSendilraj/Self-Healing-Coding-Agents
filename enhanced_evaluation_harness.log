@@ -1,539 +1,519 @@
-2025-05-23 21:49:02,692 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - --- Starting Enhanced Multi-Agent Task: [95mcomplex_data_processing[0m ---
-2025-05-23 21:49:02,694 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Description: [96mGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
+2025-05-29 02:23:53,526 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - --- Starting Enhanced Multi-Agent Task: [95mcomplex_data_processing[0m ---
+2025-05-29 02:23:53,527 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Description: [96m
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
 
-'.' Matches any single character.
-'*' Matches zero or more of the preceding element.
-The matching should cover the entire input string (not partial).
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+
+For example, the next permutation of arr = [1,2,3] is [1,3,2].
+Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+Given an array of integers nums, find the next permutation of nums.
+
+The replacement must be in place and use only constant extra memory.
 
 Example 1:
-Input: s = "aa", p = "a"
-Output: false
-Explanation: "a" does not match the entire string "aa".
+Input: nums = [1,2,3]
+Output: [1,3,2]
 
 Example 2:
-Input: s = "aa", p = "a*"
-Output: true
-Explanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes "aa".
+Input: nums = [3,2,1]
+Output: [1,2,3]
 
 Example 3:
-Input: s = "ab", p = ".*"
-Output: true
-Explanation: ".*" means "zero or more (*) of any character (.)".
+Input: nums = [1,1,5]
+Output: [1,5,1]
 
-Constraints:
-1 <= s.length <= 20
-1 <= p.length <= 20
-s contains only lowercase English letters.
-p contains only lowercase English letters, '.', and '*'.
-It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.[0m
-2025-05-23 21:49:02,696 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are an AI Python programmer. Output only the raw Python code....
-2025-05-23 21:49:02,696 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+
+[0m
+2025-05-29 02:23:53,528 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are an AI Python programmer. Output only the raw Python code....
+2025-05-29 02:23:53,528 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
 === PHASE 1: Initial Planning and Validation for Task '[94mcomplex_data_processing[0m' ===
-2025-05-23 21:49:02,696 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Planning:[0m
-2025-05-23 21:49:03,088 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:49:09,001 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlanner Output:[0m
-{'plan_steps': ['Check the strings somehow', 'Handle the dots and stars in a way', 'Maybe compare characters or something', 'Return true or false based on if it matches', "Don't forget about edge cases, maybe"]}
-2025-05-23 21:49:09,001 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Plan Validation:[0m
-2025-05-23 21:49:09,004 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Starting plan quality assessment...
-2025-05-23 21:49:09,005 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Quality Score: 0.79
-2025-05-23 21:49:09,005 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Valid: True
-2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mPlan Quality Score:[0m 0.79
-2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlan Valid:[0m True
-2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - WARNING -     [93mPlan Warnings:[0m ["Missing recommended fields: ['requirements', 'approach']", "Plan may not address: ['input handling', 'output specification']"]
-2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+2025-05-29 02:23:53,528 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Planning:[0m
+2025-05-29 02:23:53,528 - self_healing_agents.agents - INFO - 🧠 PLANNER 'Planner': Generating plan...
+2025-05-29 02:23:53,528 - self_healing_agents.agents - INFO - 📋 PLANNER SYSTEM PROMPT:
+------------------------------------------------------------
+You are a Planner Agent. Your role is to understand a given programming task and break it down into a high-level plan or structure which will guide an Executor Agent.
+
+IMPORTANT: Your output MUST be a JSON object.
+The JSON object must have a single key named "plan_steps".
+The value of "plan_steps" must be a list of strings, where each string is a concise step in the plan.
+
+Example Output:
+{
+  "plan_steps": [
+    "Define a function `add_numbers` that takes two arguments.",
+    "Inside the function, calculate the sum of the two arguments.",
+    "Return the calculated sum."
+  ]
+}
+
+Focus on outlining the main components, functions, and logic flow.
+Do not write any Python code yourself. Only provide the JSON plan.
+
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
+
+1. START IMMEDIATELY with { (opening brace)
+2. END IMMEDIATELY with } (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: " for quotes, \ for backslashes, 
+ for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+
+INVALID EXAMPLE (DO NOT DO THIS):
+```json
+{
+  "plan_steps": ["step1", "step2"]
+}
+```
+
+INVALID EXAMPLE (DO NOT DO THIS):
+Here's the plan:
+{
+  "plan_steps": ["step1", "step2"]
+}
+
+VALID EXAMPLE (DO THIS):
+{
+  "plan_steps": ["step1", "step2"]
+}
+
+Your response must be parseable by JSON.parse() without any preprocessing.
+
+------------------------------------------------------------
+2025-05-29 02:23:53,529 - self_healing_agents.agents - INFO - 👤 PLANNER USER PROMPT:
+------------------------------------------------------------
+
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+
+For example, the next permutation of arr = [1,2,3] is [1,3,2].
+Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+Given an array of integers nums, find the next permutation of nums.
+
+The replacement must be in place and use only constant extra memory.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: [1,3,2]
+
+Example 2:
+Input: nums = [3,2,1]
+Output: [1,2,3]
+
+Example 3:
+Input: nums = [1,1,5]
+Output: [1,5,1]
+
+
+
+------------------------------------------------------------
+2025-05-29 02:23:53,902 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-29 02:24:02,032 - self_healing_agents.agents - INFO - ✅ PLANNER 'Planner': Plan generated successfully
+2025-05-29 02:24:02,033 - self_healing_agents.agents - INFO - 📊 PLANNER OUTPUT:
+------------------------------------------------------------
+{'plan_steps': ['Start from the end of the array and find the first element that is smaller than its next element (pivot).', "If no such element is found, reverse the entire array as it's the last permutation.", 'Find the smallest element greater than the pivot from the end of the array.', 'Swap the pivot with this element.', 'Reverse the subarray that comes after the original pivot position to get the next permutation.']}
+------------------------------------------------------------
+2025-05-29 02:24:02,033 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlanner Output:[0m
+{'plan_steps': ['Start from the end of the array and find the first element that is smaller than its next element (pivot).', "If no such element is found, reverse the entire array as it's the last permutation.", 'Find the smallest element greater than the pivot from the end of the array.', 'Swap the pivot with this element.', 'Reverse the subarray that comes after the original pivot position to get the next permutation.']}
+2025-05-29 02:24:02,033 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Plan Validation:[0m
+2025-05-29 02:24:02,033 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Starting plan quality assessment...
+2025-05-29 02:24:02,033 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Quality Score: 0.72
+2025-05-29 02:24:02,033 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Valid: True
+2025-05-29 02:24:02,034 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mPlan Quality Score:[0m 0.72
+2025-05-29 02:24:02,034 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlan Valid:[0m True
+2025-05-29 02:24:02,034 - self_healing_agents.evaluation.enhanced_multi_agent_harness - WARNING -     [93mPlan Warnings:[0m ["Missing recommended fields: ['requirements', 'approach']", "Plan may not address: ['input handling', 'output specification', 'test cases']"]
+2025-05-29 02:24:02,034 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
 === PHASE 2: Execution and Initial Evaluation ===
-2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Execution:[0m
-2025-05-23 21:49:09,300 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:49:18,846 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mExecutor Output (initial code):[0m
+2025-05-29 02:24:02,034 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Execution:[0m
+2025-05-29 02:24:02,034 - self_healing_agents.agents - INFO - ⚙️ EXECUTOR 'Executor': Generating code...
+2025-05-29 02:24:02,035 - self_healing_agents.agents - INFO - 🔧 EXECUTOR SYSTEM PROMPT:
+------------------------------------------------------------
+You are an AI Python programmer. Output only the raw Python code.
+------------------------------------------------------------
+2025-05-29 02:24:02,035 - self_healing_agents.agents - INFO - 👤 EXECUTOR USER PROMPT:
+------------------------------------------------------------
+Original User Request:
+
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+
+For example, the next permutation of arr = [1,2,3] is [1,3,2].
+Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+Given an array of integers nums, find the next permutation of nums.
+
+The replacement must be in place and use only constant extra memory.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: [1,3,2]
+
+Example 2:
+Input: nums = [3,2,1]
+Output: [1,2,3]
+
+Example 3:
+Input: nums = [1,1,5]
+Output: [1,5,1]
+
+
+
+
+Execution Plan:
+1. Start from the end of the array and find the first element that is smaller than its next element (pivot).
+2. If no such element is found, reverse the entire array as it's the last permutation.
+3. Find the smallest element greater than the pivot from the end of the array.
+4. Swap the pivot with this element.
+5. Reverse the subarray that comes after the original pivot position to get the next permutation.
+
+Please generate Python code to accomplish this. Ensure you only output the raw Python code, without any markdown formatting or explanations.
+------------------------------------------------------------
+2025-05-29 02:24:02,324 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-29 02:24:15,105 - self_healing_agents.agents - INFO - ✅ EXECUTOR 'Executor': Code generated successfully
+2025-05-29 02:24:15,105 - self_healing_agents.agents - INFO - 💻 EXECUTOR OUTPUT:
+------------------------------------------------------------
 ```python
-def isMatch(s: str, p: str) -> bool:
-    memo = {}
-
-    def dp(i, j):
-        if (i, j) not in memo:
-            if j == len(p):
-                ans = i == len(s)
-            else:
-                first_match = i < len(s) and p[j] in {s[i], '.'}
-                if j + 1 < len(p) and p[j+1] == '*':
-                    ans = dp(i, j+2) or (first_match and dp(i+1, j))
-                else:
-                    ans = first_match and dp(i+1, j+1)
-            memo[(i, j)] = ans
-        return memo[(i, j)]
-
-    return dp(0, 0)
+def nextPermutation(nums):
+    n = len(nums)
+    pivot = -1
+    
+    # Step 1: Find the pivot
+    for i in range(n - 1, 0, -1):
+        if nums[i - 1] < nums[i]:
+            pivot = i - 1
+            break
+    
+    if pivot == -1:
+        nums.reverse()
+        return
+    
+    # Step 2: Find the smallest element greater than nums[pivot] from the end
+    for i in range(n - 1, pivot, -1):
+        if nums[i] > nums[pivot]:
+            nums[pivot], nums[i] = nums[i], nums[pivot]
+            break
+    
+    # Step 3: Reverse the subarray after pivot
+    left, right = pivot + 1, n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
 ```
-2025-05-23 21:49:18,846 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  4. Initial Evaluation:[0m
-2025-05-23 21:49:19,164 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:49:40,871 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFull Initial Critique:[0m
-{'status': 'FAILURE_LOGIC', 'score': 0.65, 'execution_stdout': 'DEBUG: About to execute code:\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i == len(s)\n            else:\n                fir...\n', 'execution_stderr': '', 'error_details': None, 'test_results': [{'name': 'test_exact_match_simple', 'inputs': {'s': 'aa', 'p': 'aa'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_exact_match_simple\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aa', p='aa'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_exact_match_simple\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_star_matches_zero_elements', 'inputs': {'s': 'a', 'p': 'ab*a'}, 'expected_output_spec': True, 'status': 'failed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_star_matches_zero_elements\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='a', p='ab*a'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_star_matches_zero_elements\ntest_passed=False\nactual_output=False\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=Expected: True, Got: False\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': 'Expected: True, Got: False'}, {'name': 'test_dot_matches_any_char', 'inputs': {'s': 'ab', 'p': '.b'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_dot_matches_any_char\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='ab', p='.b'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_dot_matches_any_char\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_complex_pattern_fail', 'inputs': {'s': 'mississippi', 'p': 'mis*is*p*.'}, 'expected_output_spec': False, 'status': 'passed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_complex_pattern_fail\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='mississippi', p='mis*is*p*.'\nDEBUG_TEST_SCRIPT: Expected output: False\n__TEST_RESULT_START__\ntest_case_name=test_complex_pattern_fail\ntest_passed=True\nactual_output=False\nexpected_output=False\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_empty_string_empty_pattern', 'inputs': {'s': '', 'p': ''}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_empty_string_empty_pattern\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='', p=''\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_empty_string_empty_pattern\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_empty_string_with_star_pattern', 'inputs': {'s': '', 'p': 'a*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_empty_string_with_star_pattern\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='', p='a*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_empty_string_with_star_pattern\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_star_matches_multiple_elements', 'inputs': {'s': 'aaa', 'p': 'a*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_star_matches_multiple_elements\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aaa', p='a*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_star_matches_multiple_elements\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_dot_star_matches_any_string', 'inputs': {'s': 'abc', 'p': '.*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_dot_star_matches_any_string\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='abc', p='.*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_dot_star_matches_any_string\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_partial_match_fails', 'inputs': {'s': 'aab', 'p': 'a'}, 'expected_output_spec': False, 'status': 'passed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_partial_match_fails\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aab', p='a'\nDEBUG_TEST_SCRIPT: Expected output: False\n__TEST_RESULT_START__\ntest_case_name=test_partial_match_fails\ntest_passed=True\nactual_output=False\nexpected_output=False\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_pattern_longer_than_string', 'inputs': {'s': 'a', 'p': 'a*b*c*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_pattern_longer_than_string\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='a', p='a*b*c*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_pattern_longer_than_string\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}], 'generated_test_specifications': [{'test_case_name': 'test_exact_match_simple', 'inputs': {'s': 'aa', 'p': 'aa'}, 'expected_output': True}, {'test_case_name': 'test_star_matches_zero_elements', 'inputs': {'s': 'a', 'p': 'ab*a'}, 'expected_output': True}, {'test_case_name': 'test_dot_matches_any_char', 'inputs': {'s': 'ab', 'p': '.b'}, 'expected_output': True}, {'test_case_name': 'test_complex_pattern_fail', 'inputs': {'s': 'mississippi', 'p': 'mis*is*p*.'}, 'expected_output': False}, {'test_case_name': 'test_empty_string_empty_pattern', 'inputs': {'s': '', 'p': ''}, 'expected_output': True}, {'test_case_name': 'test_empty_string_with_star_pattern', 'inputs': {'s': '', 'p': 'a*'}, 'expected_output': True}, {'test_case_name': 'test_star_matches_multiple_elements', 'inputs': {'s': 'aaa', 'p': 'a*'}, 'expected_output': True}, {'test_case_name': 'test_dot_star_matches_any_string', 'inputs': {'s': 'abc', 'p': '.*'}, 'expected_output': True}, {'test_case_name': 'test_partial_match_fails', 'inputs': {'s': 'aab', 'p': 'a'}, 'expected_output': False}, {'test_case_name': 'test_pattern_longer_than_string', 'inputs': {'s': 'a', 'p': 'a*b*c*'}, 'expected_output': True}], 'function_to_test': 'isMatch', 'summary': "Code executed successfully, but 1/10 tests failed for function 'isMatch'."}
-2025-05-23 21:49:40,871 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Status:[0m FAILURE_LOGIC
-2025-05-23 21:49:40,871 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Score:[0m 0.65
-2025-05-23 21:49:40,881 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
-=== PHASE 3: Direct Fix Attempt ===
-2025-05-23 21:49:40,881 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  Direct Fix Attempt:[0m
-2025-05-23 21:49:41,170 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:49:51,772 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Output:[0m
+------------------------------------------------------------
+2025-05-29 02:24:15,106 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mExecutor Output (initial code):[0m
 ```python
-def isMatch(s: str, p: str) -> bool:
-    memo = {}
-
-    def dp(i, j):
-        if (i, j) in memo:
-            return memo[(i, j)]
-        if j == len(p):
-            ans = i == len(s)
-        else:
-            first_match = i < len(s) and p[j] in {s[i], '.'}
-            if j + 1 < len(p) and p[j+1] == '*':
-                ans = dp(i, j+2) or (first_match and dp(i+1, j))
-            else:
-                ans = first_match and dp(i+1, j+1)
-        memo[(i, j)] = ans
-        return ans
-
-    return dp(0, 0)
+def nextPermutation(nums):
+    n = len(nums)
+    pivot = -1
+    
+    # Step 1: Find the pivot
+    for i in range(n - 1, 0, -1):
+        if nums[i - 1] < nums[i]:
+            pivot = i - 1
+            break
+    
+    if pivot == -1:
+        nums.reverse()
+        return
+    
+    # Step 2: Find the smallest element greater than nums[pivot] from the end
+    for i in range(n - 1, pivot, -1):
+        if nums[i] > nums[pivot]:
+            nums[pivot], nums[i] = nums[i], nums[pivot]
+            break
+    
+    # Step 3: Reverse the subarray after pivot
+    left, right = pivot + 1, n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
 ```
-2025-05-23 21:49:52,094 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:50:13,139 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Status:[0m FAILURE_LOGIC
-2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Score:[0m 0.6
-2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
-=== PHASE 4: Enhanced Multi-Agent Self-Healing ===
-2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
------ Healing Iteration 1/3 -----
-2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
-2025-05-23 21:50:13,140 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
-2025-05-23 21:50:13,450 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:50:35,490 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
-2025-05-23 21:50:35,491 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
-2025-05-23 21:50:35,491 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
-2025-05-23 21:50:35,491 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
-2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan is extremely vague and lacks any specific algorithmic approach or detailed steps to solve the regex matching problem
-2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan doesn't mention dynamic programming or memoization, which are key to solving this problem efficiently
-2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan fails to address critical edge cases and specific handling of '*' and '.' characters
-2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - While the implementation has some issues, they stem from following an inadequate plan rather than being pure execution errors
-2025-05-23 21:50:35,492 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
-2025-05-23 21:50:35,492 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
-2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
-2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
-2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan is extremely vague and lacks any specific algorithmic approach or detailed steps to solve the regex matching problem
-2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan doesn't mention dynamic programming or memoization, which are key to solving this problem efficiently
-2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan fails to address critical edge cases and specific handling of '*' and '.' characters
-2025-05-23 21:50:35,495 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - While the implementation has some issues, they stem from following an inadequate plan rather than being pure execution errors
-2025-05-23 21:50:35,495 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
-2025-05-23 21:50:35,495 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
-2025-05-23 21:50:35,788 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:51:04,984 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's the improved plan that addresses the deficiencies in the original plan:
+2025-05-29 02:24:15,106 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  4. Initial Evaluation:[0m
+2025-05-29 02:24:15,107 - self_healing_agents.agents - INFO - 🧪 CRITIC 'Critic': Generating test cases...
+2025-05-29 02:24:15,107 - self_healing_agents.agents - INFO - 🔬 CRITIC TEST GENERATION SYSTEM PROMPT:
+------------------------------------------------------------
+You are a helpful AI assistant responding in JSON as requested.
+------------------------------------------------------------
+2025-05-29 02:24:15,107 - self_healing_agents.agents - INFO - 👤 CRITIC TEST GENERATION USER PROMPT:
+------------------------------------------------------------
+You are an expert Python test case generator. Given a task description and Python code, your goal is to generate a list of simple, representative test cases to verify the code's correctness against the task. Ensure that the test cases are representative of the code's functionality and that they cover all edge cases.
 
+The task description was:
+
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+
+For example, the next permutation of arr = [1,2,3] is [1,3,2].
+Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+Given an array of integers nums, find the next permutation of nums.
+
+The replacement must be in place and use only constant extra memory.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: [1,3,2]
+
+Example 2:
+Input: nums = [3,2,1]
+Output: [1,2,3]
+
+Example 3:
+Input: nums = [1,1,5]
+Output: [1,5,1]
+
+
+
+
+The Python code generated for this task is:
+```python
+```python
+def nextPermutation(nums):
+    n = len(nums)
+    pivot = -1
+    
+    # Step 1: Find the pivot
+    for i in range(n - 1, 0, -1):
+        if nums[i - 1] < nums[i]:
+            pivot = i - 1
+            break
+    
+    if pivot == -1:
+        nums.reverse()
+        return
+    
+    # Step 2: Find the smallest element greater than nums[pivot] from the end
+    for i in range(n - 1, pivot, -1):
+        if nums[i] > nums[pivot]:
+            nums[pivot], nums[i] = nums[i], nums[pivot]
+            break
+    
+    # Step 3: Reverse the subarray after pivot
+    left, right = pivot + 1, n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
+```
+```
+
+Please generate your response as a single JSON object with two top-level keys:
+1.  `"function_to_test"`: A string containing the name of the primary function defined in the code that should be tested (e.g., "isMatch", "calculate_median").
+2.  `"test_cases"`: A list of JSON objects, where each object represents a single test case to be applied to the function specified in `"function_to_test"`. Each test case object must have the following keys:
+    - `"test_case_name"`: A brief, descriptive name for the test case (e.g., "test_positive_numbers", "test_string_with_wildcard_star").
+    - `"inputs"`: A dictionary representing the arguments to be passed to the function. The keys of this dictionary should match the parameter names of the function. For example, for a function `def process_data(s, p):`, inputs might be `{"s": "test", "p": "t*st"}`.
+    - `"expected_output"`: The expected return value when the function is called with these inputs. This can be a primitive Python data type (integer, string, boolean, float) or a list/dictionary. If the function is expected to raise a specific exception for the given inputs, this value should be a string formatted as `"raises <ExceptionName>"`, for example, `"raises ValueError"` or `"raises TypeError"`.
+
+Focus on:
+- Basic functionality: Does the code work for typical, valid inputs?
+- Simple edge cases if obvious from the task or code (e.g., empty inputs for functions expecting iterables, zero values for numerical operations if relevant, specific patterns for regex like empty string or pattern).
+
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
+
+1. START IMMEDIATELY with { (opening brace)
+2. END IMMEDIATELY with } (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: " for quotes, \ for backslashes, 
+ for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+11. For complex data in test inputs/outputs:
+    - Use null instead of None
+    - Use true/false instead of True/False
+    - Use numbers directly, not string representations
+    - For infinity, use the string "Infinity" instead of float('inf')
+    - For tuples in expected output, use arrays [1, 2] instead of (1, 2)
+12. Double-escape braces in format strings: {{ and }}
+
+INVALID EXAMPLE (DO NOT DO THIS):
 ```json
 {
-  "steps": [
+  "function_to_test": "test_func",
+  "test_cases": [...]
+}
+```
+
+INVALID EXAMPLE (DO NOT DO THIS):
+Here are the test cases:
+{
+  "function_to_test": "test_func", 
+  "test_cases": [...]
+}
+
+VALID EXAMPLE (DO THIS):
+{
+  "function_to_test": "isMatch",
+  "test_cases": [
     {
-      "step": 1,
-      "description": "Understand the problem requirements and constraints",
-      "details": [
-        "Need to implement full string matching (not partial)",
-        "Special characters: '.' matches any single character, '*' matches zero or more of preceding element",
-        "Both strings have length constraints (1-20)",
-        "Input strings have specific character restrictions"
-      ]
+      "test_case_name": "test_exact_match_simple",
+      "inputs": {"s": "aa", "p": "aa"},
+      "expected_output": true
     },
     {
-      "step": 2,
-      "description": "Design a recursive solution approach",
-      "details": [
-        "Base case: if pattern is empty, return whether string is empty",
-        "Check first character match (direct match or '.')",
-        "Handle '*' cases: either skip the pattern (zero matches) or keep matching (one or more matches)",
-        "For non-'*' cases, simply move to next character in both strings"
-      ]
-    },
-    {
-      "step": 3,
-      "description": "Implement memoization for efficiency",
-      "details": [
-        "Create a memoization table to store already computed results",
-        "Key memoization by current string and pattern indices",
-        "Check memo table before computing to avoid redundant work"
-      ]
-    },
-    {
-      "step": 4,
-      "description": "Handle edge cases",
-      "details": [
-        "Empty string with empty pattern (should match)",
-        "Empty string with non-empty pattern (might match if pattern can match zero characters)",
-        "Single character matches with '.'",
-        "Multiple '*' patterns in sequence"
-      ]
-    },
-    {
-      "step": 5,
-      "description": "Implement the solution",
-      "details": [
-        "Write the recursive matching function",
-        "Add memoization logic",
-        "Handle all special cases in the implementation"
-      ]
-    },
-    {
-      "step": 6,
-      "description": "Test the implementation",
-      "details": [
-        "Test with provided examples",
-        "Test edge cases",
-        "Test with various combinations of '.' and '*'"
-      ]
+      "test_case_name": "test_empty_string_empty_pattern",
+      "inputs": {"s": "", "p": ""},
+      "expected_output": true
     }
-  ],
-  "requirements": [
-    "Python (or language of choice)",
-    "Memoization data structure (dictionary or 2D array)"
-  ],
-  "approach": "Use recursive backtracking with memoization to handle the pattern matching, carefully considering all special cases for '.' and '*' characters. The solution will check all possible ways the pattern could match the string by exploring both zero and one-or-more matches for '*' patterns.",
-  "improvements_made": [
-    "Added specific technical details about how to handle pattern matching",
-    "Included memoization strategy for efficiency",
-    "Detailed edge case handling",
-    "Broken down into clear implementation steps",
-    "Added requirements section",
-    "Provided high-level approach description",
-    "Made each step actionable and specific"
   ]
 }
-``` (Original: Here's the improved plan that addresses the deficiencies in the original plan:
 
-```json
-{
-  "steps": [
-    {
-      "step": 1,
-      "description": "Understand the problem requirements and constraints",
-      "details": [
-        "Need to implement full string matching (not partial)",
-        "Special characters: '.' matches any single character, '*' matches zero or more of preceding element",
-        "Both strings have length constraints (1-20)",
-        "Input strings have specific character restrictions"
-      ]
-    },
-    {
-      "step": 2,
-      "description": "Design a recursive solution approach",
-      "details": [
-        "Base case: if pattern is empty, return whether string is empty",
-        "Check first character match (direct match or '.')",
-        "Handle '*' cases: either skip the pattern (zero matches) or keep matching (one or more matches)",
-        "For non-'*' cases, simply move to next character in both strings"
-      ]
-    },
-    {
-      "step": 3,
-      "description": "Implement memoization for efficiency",
-      "details": [
-        "Create a memoization table to store already computed results",
-        "Key memoization by current string and pattern indices",
-        "Check memo table before computing to avoid redundant work"
-      ]
-    },
-    {
-      "step": 4,
-      "description": "Handle edge cases",
-      "details": [
-        "Empty string with empty pattern (should match)",
-        "Empty string with non-empty pattern (might match if pattern can match zero characters)",
-        "Single character matches with '.'",
-        "Multiple '*' patterns in sequence"
-      ]
-    },
-    {
-      "step": 5,
-      "description": "Implement the solution",
-      "details": [
-        "Write the recursive matching function",
-        "Add memoization logic",
-        "Handle all special cases in the implementation"
-      ]
-    },
-    {
-      "step": 6,
-      "description": "Test the implementation",
-      "details": [
-        "Test with provided examples",
-        "Test edge cases",
-        "Test with various combinations of '.' and '*'"
-      ]
-    }
-  ],
-  "requirements": [
-    "Python (or language of choice)",
-    "Memoization data structure (dictionary or 2D array)"
-  ],
-  "approach": "Use recursive backtracking with memoization to handle the pattern matching, carefully considering all special cases for '.' and '*' characters. The solution will check all possible ways the pattern could match the string by exploring both zero and one-or-more matches for '*' patterns.",
-  "improvements_made": [
-    "Added specific technical details about how to handle pattern matching",
-    "Included memoization strategy for efficiency",
-    "Detailed edge case handling",
-    "Broken down into clear implementation steps",
-    "Added requirements section",
-    "Provided high-level approach description",
-    "Made each step actionable and specific"
-  ]
-}
-```)
-2025-05-23 21:51:04,984 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
-{'steps': ['Implement step: Check the strings somehow', 'Implement step: Handle the dots and stars in a way', 'Implement step: Maybe compare characters or something', 'Implement step: Return true or false based on if it matches', "Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
-2025-05-23 21:51:04,984 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
-2025-05-23 21:51:05,288 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:51:18,096 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:51:42,680 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
-2025-05-23 21:51:42,681 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
-2025-05-23 21:51:42,681 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
------ Healing Iteration 2/3 -----
-2025-05-23 21:51:42,684 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
-2025-05-23 21:51:42,684 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
-2025-05-23 21:51:42,977 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:52:02,054 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
-2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
-2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
-2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
-2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching
-2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - Key requirements like handling '*' and '.' patterns are not properly addressed in the planning steps
-2025-05-23 21:52:02,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan suggests 'check the strings somehow' and 'handle the dots and stars in a way' which are not actionable instructions
-2025-05-23 21:52:02,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The test failures show incorrect handling of star patterns and character matching, which stems from inadequate planning
-2025-05-23 21:52:02,056 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
-2025-05-23 21:52:02,056 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
-2025-05-23 21:52:02,056 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
-2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
-2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching
-2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - Key requirements like handling '*' and '.' patterns are not properly addressed in the planning steps
-2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan suggests 'check the strings somehow' and 'handle the dots and stars in a way' which are not actionable instructions
-2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The test failures show incorrect handling of star patterns and character matching, which stems from inadequate planning
-2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
-2025-05-23 21:52:02,057 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
-2025-05-23 21:52:02,350 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:52:31,654 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
+Your response must be parseable by JSON.parse() without any preprocessing.
 
-```json
-{
-  "steps": [
-    "1. Define a function `isMatch(s: str, p: str) -> bool` that implements the regex matching",
-    "2. Implement dynamic programming approach with a 2D table dp[i][j] where dp[i][j] is True if s[0..i] matches p[0..j]",
-    "3. Initialize dp[0][0] = True (empty string matches empty pattern)",
-    "4. Handle initialization of first row (empty string case) accounting for patterns with '*' that can match zero characters",
-    "5. Fill the DP table by comparing characters and handling special cases:",
-    "   a. If p[j] == s[i] or p[j] == '.': dp[i][j] = dp[i-1][j-1]",
-    "   b. If p[j] == '*':",
-    "      i. Consider zero occurrences: dp[i][j] = dp[i][j-2]",
-    "      ii. Consider one or more occurrences if preceding character matches: dp[i][j] = dp[i][j] or (dp[i-1][j] if s[i] == p[j-1] or p[j-1] == '.')",
-    "6. Return dp[len(s)][len(p)] as the final result",
-    "7. Add test cases to verify implementation:",
-    "   a. Exact matches",
-    "   b. '.' matches",
-    "   c. '*' matches with zero and multiple repetitions",
-    "   d. Edge cases (empty string, patterns ending with '*')"
-  ],
-  "requirements": [
-    "No special imports needed for basic implementation",
-    "Python 3.x for type hints"
-  ],
-  "approach": "Dynamic programming solution that builds a 2D table to store intermediate match results, handling all special cases systematically",
-  "improvements_made": [
-    "Replaced vague steps with specific DP implementation details",
-    "Added clear initialization and filling procedures",
-    "Included detailed handling of '*' cases",
-    "Added test case considerations",
-    "Specified exact matching conditions",
-    "Provided complete solution approach"
-  ]
-}
+------------------------------------------------------------
+2025-05-29 02:24:15,413 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-29 02:24:35,132 - self_healing_agents.agents - INFO - ✅ CRITIC 'Critic': Test cases generated successfully
+2025-05-29 02:24:35,133 - self_healing_agents.agents - INFO - 🧪 CRITIC TEST GENERATION OUTPUT:
+------------------------------------------------------------
+{'function_to_test': 'nextPermutation', 'test_cases': [{'test_case_name': 'test_simple_increment', 'inputs': {'nums': [1, 2, 3]}, 'expected_output': [1, 3, 2]}, {'test_case_name': 'test_wrap_around', 'inputs': {'nums': [3, 2, 1]}, 'expected_output': [1, 2, 3]}, {'test_case_name': 'test_single_increment', 'inputs': {'nums': [1, 1, 5]}, 'expected_output': [1, 5, 1]}, {'test_case_name': 'test_single_element', 'inputs': {'nums': [1]}, 'expected_output': [1]}, {'test_case_name': 'test_all_equal_elements', 'inputs': {'nums': [2, 2, 2]}, 'expected_output': [2, 2, 2]}, {'test_case_name': 'test_larger_array', 'inputs': {'nums': [1, 3, 5, 4, 2]}, 'expected_output': [1, 4, 2, 3, 5]}, {'test_case_name': 'test_no_pivot_found', 'inputs': {'nums': [5, 4, 3, 2, 1]}, 'expected_output': [1, 2, 3, 4, 5]}]}
+------------------------------------------------------------
+2025-05-29 02:24:35,133 - self_healing_agents.agents - INFO - 🔧 CRITIC 'Critic': Formatting code for testing compatibility...
+2025-05-29 02:24:35,134 - self_healing_agents.agents - INFO - 🔧 CRITIC CODE FORMATTING SYSTEM PROMPT:
+------------------------------------------------------------
+You are a Python code formatter. Output only raw Python code without any explanations or markdown formatting.
+------------------------------------------------------------
+2025-05-29 02:24:35,134 - self_healing_agents.agents - INFO - 👤 CRITIC CODE FORMATTING USER PROMPT:
+------------------------------------------------------------
+You are a code formatter. Given a function that modifies data in-place, modify it to ALSO return the modified data so it can be tested properly.
+
+Original task: 
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+
+For example, the next permutation of arr = [1,2,3] is [1,3,2].
+Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+Given an array of integers nums, find the next permutation of nums.
+
+The replacement must be in place and use only constant extra memory.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: [1,3,2]
+
+Example 2:
+Input: nums = [3,2,1]
+Output: [1,2,3]
+
+Example 3:
+Input: nums = [1,1,5]
+Output: [1,5,1]
+
+
+
+
+Original code:
+```python
+```python
+def nextPermutation(nums):
+    n = len(nums)
+    pivot = -1
+    
+    # Step 1: Find the pivot
+    for i in range(n - 1, 0, -1):
+        if nums[i - 1] < nums[i]:
+            pivot = i - 1
+            break
+    
+    if pivot == -1:
+        nums.reverse()
+        return
+    
+    # Step 2: Find the smallest element greater than nums[pivot] from the end
+    for i in range(n - 1, pivot, -1):
+        if nums[i] > nums[pivot]:
+            nums[pivot], nums[i] = nums[i], nums[pivot]
+            break
+    
+    # Step 3: Reverse the subarray after pivot
+    left, right = pivot + 1, n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
+```
 ```
 
-Key improvements:
-1. Specific algorithm choice (dynamic programming) with clear implementation steps
-2. Detailed handling of all special cases ('.', '*')
-3. Clear initialization and table filling procedures
-4. Complete solution approach that covers all edge cases
-5. Added test case considerations to verify implementation
-6. Removed vague language and replaced with concrete implementation details
+The function `nextPermutation` appears to modify data in-place but needs to return the modified data for testing.
 
-This plan provides enough detail to directly implement a working solution while maintaining flexibility for optimization or alternative approaches. (Original: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
+Rules:
+1. Keep the original in-place modification logic exactly the same
+2. Add a return statement at the end to return the modified data
+3. Do NOT change the core algorithm or logic
+4. Output ONLY the modified Python code without any explanations or markdown formatting
+5. Ensure the function works both in-place AND returns the result
 
-```json
-{
-  "steps": [
-    "1. Define a function `isMatch(s: str, p: str) -> bool` that implements the regex matching",
-    "2. Implement dynamic programming approach with a 2D table dp[i][j] where dp[i][j] is True if s[0..i] matches p[0..j]",
-    "3. Initialize dp[0][0] = True (empty string matches empty pattern)",
-    "4. Handle initialization of first row (empty string case) accounting for patterns with '*' that can match zero characters",
-    "5. Fill the DP table by comparing characters and handling special cases:",
-    "   a. If p[j] == s[i] or p[j] == '.': dp[i][j] = dp[i-1][j-1]",
-    "   b. If p[j] == '*':",
-    "      i. Consider zero occurrences: dp[i][j] = dp[i][j-2]",
-    "      ii. Consider one or more occurrences if preceding character matches: dp[i][j] = dp[i][j] or (dp[i-1][j] if s[i] == p[j-1] or p[j-1] == '.')",
-    "6. Return dp[len(s)][len(p)] as the final result",
-    "7. Add test cases to verify implementation:",
-    "   a. Exact matches",
-    "   b. '.' matches",
-    "   c. '*' matches with zero and multiple repetitions",
-    "   d. Edge cases (empty string, patterns ending with '*')"
-  ],
-  "requirements": [
-    "No special imports needed for basic implementation",
-    "Python 3.x for type hints"
-  ],
-  "approach": "Dynamic programming solution that builds a 2D table to store intermediate match results, handling all special cases systematically",
-  "improvements_made": [
-    "Replaced vague steps with specific DP implementation details",
-    "Added clear initialization and filling procedures",
-    "Included detailed handling of '*' cases",
-    "Added test case considerations",
-    "Specified exact matching conditions",
-    "Provided complete solution approach"
-  ]
-}
+Example transformation:
+```
+# Before:
+def modify_array(arr):
+    arr[0] = arr[0] * 2
+
+# After:
+def modify_array(arr):
+    arr[0] = arr[0] * 2
+    return arr
 ```
 
-Key improvements:
-1. Specific algorithm choice (dynamic programming) with clear implementation steps
-2. Detailed handling of all special cases ('.', '*')
-3. Clear initialization and table filling procedures
-4. Complete solution approach that covers all edge cases
-5. Added test case considerations to verify implementation
-6. Removed vague language and replaced with concrete implementation details
-
-This plan provides enough detail to directly implement a working solution while maintaining flexibility for optimization or alternative approaches.)
-2025-05-23 21:52:31,654 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
-{'steps': ['Implement step: Implement step: Check the strings somehow', 'Implement step: Implement step: Handle the dots and stars in a way', 'Implement step: Implement step: Maybe compare characters or something', 'Implement step: Implement step: Return true or false based on if it matches', "Implement step: Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
-2025-05-23 21:52:31,658 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
-2025-05-23 21:52:31,941 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:52:43,851 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:53:05,821 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
-2025-05-23 21:53:05,822 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
-2025-05-23 21:53:05,822 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
------ Healing Iteration 3/3 -----
-2025-05-23 21:53:05,823 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
-2025-05-23 21:53:05,823 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
-2025-05-23 21:53:06,128 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
-2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
-2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
-2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
-2025-05-23 21:53:24,947 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's output is extremely vague and lacks any specific algorithmic approach or detailed steps for implementing regular expression matching
-2025-05-23 21:53:24,947 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan contains redundant phrases like 'Implement step: Implement step:' and provides no concrete guidance on how to handle pattern matching cases
-2025-05-23 21:53:24,948 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - Despite the vague plan, the executor produced a reasonable implementation using memoization and recursion, suggesting the execution was not the primary issue
-2025-05-23 21:53:24,948 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The test failures indicate logical errors in pattern matching (star operator and character matching), which stem from inadequate planning of the matching algorithm
-2025-05-23 21:53:24,948 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
-2025-05-23 21:53:24,948 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
-2025-05-23 21:53:24,948 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
-2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
-2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's output is extremely vague and lacks any specific algorithmic approach or detailed steps for implementing regular expression matching
-2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan contains redundant phrases like 'Implement step: Implement step:' and provides no concrete guidance on how to handle pattern matching cases
-2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - Despite the vague plan, the executor produced a reasonable implementation using memoization and recursion, suggesting the execution was not the primary issue
-2025-05-23 21:53:24,950 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The test failures indicate logical errors in pattern matching (star operator and character matching), which stem from inadequate planning of the matching algorithm
-2025-05-23 21:53:24,950 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
-2025-05-23 21:53:24,950 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
-2025-05-23 21:53:25,248 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:53:52,596 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
-
-```json
-{
-  "steps": [
-    "1. Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching states",
-    "2. Set DP[0][0] = True (empty string matches empty pattern)",
-    "3. Handle the initial row (empty string) by checking for patterns with '*' that can match empty string",
-    "4. Iterate through the DP table row by row (string characters) and column by column (pattern characters):",
-    "   a. If current pattern character is '*':",
-    "      i. Check for zero occurrences of preceding character (DP[i][j-2])",
-    "      ii. Check for one or more occurrences if preceding character matches (DP[i-1][j] and (s[i-1] == p[j-2] or p[j-2] == '.'))",
-    "   b. Else if current pattern character is '.' or matches current string character:",
-    "      i. Carry over the match from previous state (DP[i-1][j-1])",
-    "5. The result will be in DP[len(s)][len(p)]",
-    "6. Return the final matching result"
-  ],
-  "requirements": [
-    "Python standard library (no additional imports needed)"
-  ],
-  "approach": "Dynamic programming solution that builds a 2D table of matching states, handling '*' cases by considering both zero and one-or-more occurrences of the preceding character, and '.' as wildcard",
-  "improvements_made": [
-    "Replaced vague steps with specific DP implementation details",
-    "Added clear initialization and base case handling",
-    "Detailed the iteration logic for pattern matching",
-    "Specified exact conditions for '*' and '.' handling",
-    "Added concrete return value specification",
-    "Removed unnecessary error handling (not needed for this constrained problem)"
-  ]
-}
-```
-
-Key improvements:
-1. Specific algorithm choice (dynamic programming) with clear implementation steps
-2. Detailed DP table initialization and base case handling
-3. Precise logic for handling '*' (both zero and one-or-more cases)
-4. Clear handling of '.' wildcard character
-5. Concrete return value specification
-6. Removed vague language ("somehow", "maybe", "in a way")
-7. Added specific dimensions for the DP table
-8. Included exact conditions for character matching
-
-This plan provides enough detail to directly implement a working solution that will pass all test cases for the regex matching problem. (Original: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
-
-```json
-{
-  "steps": [
-    "1. Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching states",
-    "2. Set DP[0][0] = True (empty string matches empty pattern)",
-    "3. Handle the initial row (empty string) by checking for patterns with '*' that can match empty string",
-    "4. Iterate through the DP table row by row (string characters) and column by column (pattern characters):",
-    "   a. If current pattern character is '*':",
-    "      i. Check for zero occurrences of preceding character (DP[i][j-2])",
-    "      ii. Check for one or more occurrences if preceding character matches (DP[i-1][j] and (s[i-1] == p[j-2] or p[j-2] == '.'))",
-    "   b. Else if current pattern character is '.' or matches current string character:",
-    "      i. Carry over the match from previous state (DP[i-1][j-1])",
-    "5. The result will be in DP[len(s)][len(p)]",
-    "6. Return the final matching result"
-  ],
-  "requirements": [
-    "Python standard library (no additional imports needed)"
-  ],
-  "approach": "Dynamic programming solution that builds a 2D table of matching states, handling '*' cases by considering both zero and one-or-more occurrences of the preceding character, and '.' as wildcard",
-  "improvements_made": [
-    "Replaced vague steps with specific DP implementation details",
-    "Added clear initialization and base case handling",
-    "Detailed the iteration logic for pattern matching",
-    "Specified exact conditions for '*' and '.' handling",
-    "Added concrete return value specification",
-    "Removed unnecessary error handling (not needed for this constrained problem)"
-  ]
-}
-```
-
-Key improvements:
-1. Specific algorithm choice (dynamic programming) with clear implementation steps
-2. Detailed DP table initialization and base case handling
-3. Precise logic for handling '*' (both zero and one-or-more cases)
-4. Clear handling of '.' wildcard character
-5. Concrete return value specification
-6. Removed vague language ("somehow", "maybe", "in a way")
-7. Added specific dimensions for the DP table
-8. Included exact conditions for character matching
-
-This plan provides enough detail to directly implement a working solution that will pass all test cases for the regex matching problem.)
-2025-05-23 21:53:52,597 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
-{'steps': ['Implement step: Implement step: Implement step: Check the strings somehow', 'Implement step: Implement step: Implement step: Handle the dots and stars in a way', 'Implement step: Implement step: Implement step: Maybe compare characters or something', 'Implement step: Implement step: Implement step: Return true or false based on if it matches', "Implement step: Implement step: Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
-2025-05-23 21:53:52,597 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
-2025-05-23 21:53:52,909 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:54:03,163 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
-2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
-2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
-================================================================================
-2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - ENHANCED MULTI-AGENT RESULTS:
-2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - ================================================================================
-2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Status: COMPLETED_MAX_HEALING_ITERATIONS
-2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Best Source: INITIAL
-2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Best Score: 0.65
-2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Total Healing Iterations: 3
-2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Planner Healings: 3
-2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Executor Healings: 0
-2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Direct Fix Attempts: 1
+Generate the modified code:
+------------------------------------------------------------
+2025-05-29 02:24:35,438 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-29 02:24:48,620 - self_healing_agents.agents - INFO - ✅ CRITIC 'Critic': Code formatted for testing compatibility
+2025-05-29 02:24:48,620 - self_healing_agents.agents - INFO - 💻 CRITIC CODE FORMATTING OUTPUT:
+------------------------------------------------------------
+def nextPermutation(nums):
+    n = len(nums)
+    pivot = -1
+    
+    # Step 1: Find the pivot
+    for i in range(n - 1, 0, -1):
+        if nums[i - 1] < nums[i]:
+            pivot = i - 1
+            break
+    
+    if pivot == -1:
+        nums.reverse()
+        return nums
+    
+    # Step 2: Find the smallest element greater than nums[pivot] from the end
+    for i in range(n - 1, pivot, -1):
+        if nums[i] > nums[pivot]:
+            nums[pivot], nums[i] = nums[i], nums[pivot]
+            break
+    
+    # Step 3: Reverse the subarray after pivot
+    left, right = pivot + 1, n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
+    
+    return nums
+------------------------------------------------------------
+2025-05-29 02:24:48,624 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFull Initial Critique:[0m
+{'status': 'SUCCESS', 'score': 1.0, 'execution_stdout': 'DEBUG: About to execute code:\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] < nums[i]:\n            pivot = i - 1\n            ...\n', 'execution_stderr': '', 'error_details': None, 'test_results': [{'name': 'test_simple_increment', 'inputs': {'nums': [1, 2, 3]}, 'expected_output_spec': [1, 3, 2], 'status': 'passed', 'actual_output': '[1, 3, 2]', 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] <...\nDEBUG_TEST_SCRIPT: Executing test: test_simple_increment\nDEBUG_TEST_SCRIPT: Inputs prepared as: nums=[1, 2, 3]\nDEBUG_TEST_SCRIPT: Expected output: [1, 3, 2]\n__TEST_RESULT_START__\ntest_case_name=test_simple_increment\ntest_passed=True\nactual_output=[1, 3, 2]\nexpected_output=[1, 3, 2]\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}, {'name': 'test_wrap_around', 'inputs': {'nums': [3, 2, 1]}, 'expected_output_spec': [1, 2, 3], 'status': 'passed', 'actual_output': '[1, 2, 3]', 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] <...\nDEBUG_TEST_SCRIPT: Executing test: test_wrap_around\nDEBUG_TEST_SCRIPT: Inputs prepared as: nums=[3, 2, 1]\nDEBUG_TEST_SCRIPT: Expected output: [1, 2, 3]\n__TEST_RESULT_START__\ntest_case_name=test_wrap_around\ntest_passed=True\nactual_output=[1, 2, 3]\nexpected_output=[1, 2, 3]\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}, {'name': 'test_single_increment', 'inputs': {'nums': [1, 1, 5]}, 'expected_output_spec': [1, 5, 1], 'status': 'passed', 'actual_output': '[1, 5, 1]', 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] <...\nDEBUG_TEST_SCRIPT: Executing test: test_single_increment\nDEBUG_TEST_SCRIPT: Inputs prepared as: nums=[1, 1, 5]\nDEBUG_TEST_SCRIPT: Expected output: [1, 5, 1]\n__TEST_RESULT_START__\ntest_case_name=test_single_increment\ntest_passed=True\nactual_output=[1, 5, 1]\nexpected_output=[1, 5, 1]\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}, {'name': 'test_single_element', 'inputs': {'nums': [1]}, 'expected_output_spec': [1], 'status': 'passed', 'actual_output': '[1]', 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] <...\nDEBUG_TEST_SCRIPT: Executing test: test_single_element\nDEBUG_TEST_SCRIPT: Inputs prepared as: nums=[1]\nDEBUG_TEST_SCRIPT: Expected output: [1]\n__TEST_RESULT_START__\ntest_case_name=test_single_element\ntest_passed=True\nactual_output=[1]\nexpected_output=[1]\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}, {'name': 'test_all_equal_elements', 'inputs': {'nums': [2, 2, 2]}, 'expected_output_spec': [2, 2, 2], 'status': 'passed', 'actual_output': '[2, 2, 2]', 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] <...\nDEBUG_TEST_SCRIPT: Executing test: test_all_equal_elements\nDEBUG_TEST_SCRIPT: Inputs prepared as: nums=[2, 2, 2]\nDEBUG_TEST_SCRIPT: Expected output: [2, 2, 2]\n__TEST_RESULT_START__\ntest_case_name=test_all_equal_elements\ntest_passed=True\nactual_output=[2, 2, 2]\nexpected_output=[2, 2, 2]\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}, {'name': 'test_larger_array', 'inputs': {'nums': [1, 3, 5, 4, 2]}, 'expected_output_spec': [1, 4, 2, 3, 5], 'status': 'passed', 'actual_output': '[1, 4, 2, 3, 5]', 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] <...\nDEBUG_TEST_SCRIPT: Executing test: test_larger_array\nDEBUG_TEST_SCRIPT: Inputs prepared as: nums=[1, 3, 5, 4, 2]\nDEBUG_TEST_SCRIPT: Expected output: [1, 4, 2, 3, 5]\n__TEST_RESULT_START__\ntest_case_name=test_larger_array\ntest_passed=True\nactual_output=[1, 4, 2, 3, 5]\nexpected_output=[1, 4, 2, 3, 5]\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}, {'name': 'test_no_pivot_found', 'inputs': {'nums': [5, 4, 3, 2, 1]}, 'expected_output_spec': [1, 2, 3, 4, 5], 'status': 'passed', 'actual_output': '[1, 2, 3, 4, 5]', 'stdout': 'DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef nextPermutation(nums):\n    n = len(nums)\n    pivot = -1\n    \n    # Step 1: Find the pivot\n    for i in range(n - 1, 0, -1):\n        if nums[i - 1] <...\nDEBUG_TEST_SCRIPT: Executing test: test_no_pivot_found\nDEBUG_TEST_SCRIPT: Inputs prepared as: nums=[5, 4, 3, 2, 1]\nDEBUG_TEST_SCRIPT: Expected output: [1, 2, 3, 4, 5]\n__TEST_RESULT_START__\ntest_case_name=test_no_pivot_found\ntest_passed=True\nactual_output=[1, 2, 3, 4, 5]\nexpected_output=[1, 2, 3, 4, 5]\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n', 'stderr': '', 'error_message': ''}], 'generated_test_specifications': [{'test_case_name': 'test_simple_increment', 'inputs': {'nums': [1, 2, 3]}, 'expected_output': [1, 3, 2]}, {'test_case_name': 'test_wrap_around', 'inputs': {'nums': [3, 2, 1]}, 'expected_output': [1, 2, 3]}, {'test_case_name': 'test_single_increment', 'inputs': {'nums': [1, 1, 5]}, 'expected_output': [1, 5, 1]}, {'test_case_name': 'test_single_element', 'inputs': {'nums': [1]}, 'expected_output': [1]}, {'test_case_name': 'test_all_equal_elements', 'inputs': {'nums': [2, 2, 2]}, 'expected_output': [2, 2, 2]}, {'test_case_name': 'test_larger_array', 'inputs': {'nums': [1, 3, 5, 4, 2]}, 'expected_output': [1, 4, 2, 3, 5]}, {'test_case_name': 'test_no_pivot_found', 'inputs': {'nums': [5, 4, 3, 2, 1]}, 'expected_output': [1, 2, 3, 4, 5]}], 'function_to_test': 'nextPermutation', 'summary': "Code executed successfully. All 7/7 tests passed for function 'nextPermutation'."}
+2025-05-29 02:24:48,624 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Status:[0m SUCCESS
+2025-05-29 02:24:48,625 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Score:[0m 1.0
+2025-05-29 02:24:48,625 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [92m  Initial solution passed! No need for healing.[0m

@@ -7,7 +7,7 @@ import logging
 import os
 from self_healing_agents.agents import Planner, Executor, Critic
 from self_healing_agents.llm_service import LLMService
-from self_healing_agents.prompts import BAD_PLANNER_PROMPT, DEFAULT_EXECUTOR_SYSTEM_PROMPT
+from self_healing_agents.prompts import BAD_PLANNER_PROMPT, DEFAULT_EXECUTOR_SYSTEM_PROMPT, PLANNER_SYSTEM_PROMPT
 from self_healing_agents.evaluation.enhanced_multi_agent_harness import run_enhanced_multi_agent_task
 from self_healing_agents.evaluation.enhanced_harness import TermColors
 
@@ -37,19 +37,23 @@ def main():
     
     # Initialize agents with targeted prompts  
     print(f"\n🔧 AGENT CONFIGURATION:")
-    print(f"   🤖 Planner: BAD_PLANNER_PROMPT (vague, unhelpful)")
+    print(f"   🤖 Planner: PLANNER_SYSTEM_PROMPT (vague, unhelpful)")
     print(f"   🔧 Executor: DEFAULT_EXECUTOR_SYSTEM_PROMPT (standard)")
     print(f"   🧐 Critic: Standard evaluation")
     print(f"   🤖 Classifier: LLM-based intelligent analysis")
     
-    planner = Planner("BadPlanner", llm_service, BAD_PLANNER_PROMPT)
+    planner = Planner("Planner", llm_service, PLANNER_SYSTEM_PROMPT)
     executor = Executor("Executor", llm_service, DEFAULT_EXECUTOR_SYSTEM_PROMPT)
     critic = Critic("Critic", llm_service)
     
     # Test with a complex task that requires good planning
     complex_task = {
         "id": "complex_data_processing",
-        "description": """Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n\n'.' Matches any single character.\n'*' Matches zero or more of the preceding element.\nThe matching should cover the entire input string (not partial).\n\nExample 1:\nInput: s = \"aa\", p = \"a\"\nOutput: false\nExplanation: \"a\" does not match the entire string \"aa\".\n\nExample 2:\nInput: s = \"aa\", p = \"a*\"\nOutput: true\nExplanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes \"aa\".\n\nExample 3:\nInput: s = \"ab\", p = \".*\"\nOutput: true\nExplanation: \".*\" means \"zero or more (*) of any character (.)\".\n\nConstraints:\n1 <= s.length <= 20\n1 <= p.length <= 20\ns contains only lowercase English letters.\np contains only lowercase English letters, '.', and '*'.\nIt is guaranteed for each appearance of the character '*', there will be a previous valid character to match.""",
+        "description": """
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.\n\nFor example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].\nThe next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).\n\nFor example, the next permutation of arr = [1,2,3] is [1,3,2].\nSimilarly, the next permutation of arr = [2,3,1] is [3,1,2].\nWhile the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.\nGiven an array of integers nums, find the next permutation of nums.\n\nThe replacement must be in place and use only constant extra memory.\n\nExample 1:\nInput: nums = [1,2,3]\nOutput: [1,3,2]\n\nExample 2:\nInput: nums = [3,2,1]\nOutput: [1,2,3]\n\nExample 3:\nInput: nums = [1,1,5]\nOutput: [1,5,1]
+
+
+""",
         "initial_executor_prompt": DEFAULT_EXECUTOR_SYSTEM_PROMPT
     }
     

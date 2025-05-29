@@ -108,7 +108,64 @@ CRITICAL: You MUST make a binary choice between PLANNER and EXECUTOR healing.
 - Choose EXECUTOR if the root cause is implementation issues (syntax errors, logic bugs, runtime failures)
 - When both have issues, choose the PRIMARY ROOT CAUSE that would prevent success
 
-Be specific and evidence-based in your reasoning."""
+Be specific and evidence-based in your reasoning.
+
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
+
+1. START IMMEDIATELY with { (opening brace)
+2. END IMMEDIATELY with } (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: \" for quotes, \\ for backslashes, \n for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+11. For confidence values: use decimal numbers between 0.0 and 1.0 (e.g., 0.85, not "0.85")
+12. For arrays: use proper JSON array syntax with square brackets
+13. For nested objects: ensure proper nesting and comma separation
+14. ALL string values must be properly quoted and escaped
+
+INVALID EXAMPLE (DO NOT DO THIS):
+```json
+{
+  "primary_failure_type": "EXECUTION_FAILURE",
+  "confidence": 0.9
+}
+```
+
+INVALID EXAMPLE (DO NOT DO THIS):
+Based on my analysis:
+{
+  "primary_failure_type": "EXECUTION_FAILURE",
+  "confidence": 0.9
+}
+
+VALID EXAMPLE (DO THIS):
+{
+  "primary_failure_type": "EXECUTION_FAILURE",
+  "recommended_healing_target": "EXECUTOR",
+  "confidence": 0.9,
+  "reasoning": [
+    "Code has syntax errors that prevent execution",
+    "Implementation does not follow algorithmic requirements"
+  ],
+  "specific_issues": {
+    "planning_issues": [],
+    "execution_issues": ["Syntax error on line 5", "Wrong logic in main loop"],
+    "critic_issues": [],
+    "other_issues": []
+  },
+  "healing_recommendations": [
+    "Improve syntax validation in code generation",
+    "Add better algorithmic guidance to executor prompt"
+  ],
+  "failure_severity": "HIGH"
+}
+
+Your response must be parseable by JSON.parse() without any preprocessing."""
 
     def classify_failure(
         self,

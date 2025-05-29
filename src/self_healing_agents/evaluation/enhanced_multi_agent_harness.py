@@ -336,25 +336,43 @@ def run_enhanced_multi_agent_task(
         healing_data["healing_target"] = healing_target
         
         if healing_target == "PLANNER":
-            # === PLANNER HEALING ===
+            # === PLANNER PROMPT HEALING ===
             logger.info(TermColors.color_text("  2. Planner Healing:", TermColors.HEADER))
             task_run_log["healing_breakdown"]["planner_healings"] += 1
             
             try:
-                improved_plan = planner_healer.heal_plan(
+                # Get the current planner's system prompt
+                original_planner_prompt = planner.system_prompt
+                
+                # Heal the planner's system prompt
+                improved_planner_prompt = planner_healer.heal_prompt(
+                    original_prompt=original_planner_prompt,
                     original_plan=current_plan,
                     failure_report=critique_for_classification,
                     task_description=task_description,
                     classification_result=classification_result
                 )
+                healing_data["improved_planner_prompt"] = improved_planner_prompt
+                logger.info(f"    {TermColors.color_text('Improved Planner Prompt:', TermColors.GREEN)}\n{improved_planner_prompt}")
+                
+                # Create a new planner with the improved prompt
+                improved_planner = Planner(
+                    name=f"{planner.name}_Healed_Iter{healing_iteration}",
+                    llm_service=planner.llm_service,
+                    system_prompt=improved_planner_prompt
+                )
+                
+                # Generate a new plan with the improved planner
+                logger.info(TermColors.color_text("  3. Re-planning with Improved Planner:", TermColors.HEADER))
+                improved_plan = improved_planner.run(task_description)
                 healing_data["improved_plan"] = improved_plan
-                logger.info(f"    {TermColors.color_text('Improved Plan:', TermColors.GREEN)}\n{improved_plan}")
+                logger.info(f"    {TermColors.color_text('New Plan from Improved Planner:', TermColors.GREEN)}\n{improved_plan}")
                 
                 # Update current plan
                 current_plan = improved_plan
                 
                 # Re-execute with improved plan
-                logger.info(TermColors.color_text("  3. Re-execution with Improved Plan:", TermColors.HEADER))
+                logger.info(TermColors.color_text("  4. Re-execution with New Plan:", TermColors.HEADER))
                 improved_code = executor.run(plan=current_plan, original_request=task_description)
                 healing_data["improved_code"] = improved_code
                 
@@ -392,25 +410,46 @@ def run_enhanced_multi_agent_task(
                         best_score = improved_score
                         best_source = f"PLANNER_HEALING_ITERATION_{healing_iteration}"
                         
+                    # Update the planner for future iterations if this was an improvement
+                    if improved_score > best_score * 0.9:  # Keep improved planner if reasonably good
+                        planner = improved_planner
+                        
             except Exception as e:
                 logger.error(f"Planner healing failed: {e}")
                 healing_data["planner_healing_error"] = str(e)
                 
         else:
-            # === EXECUTOR HEALING ===
+            # === EXECUTOR PROMPT HEALING ===
             logger.info(TermColors.color_text("  2. Executor Healing:", TermColors.HEADER))
             task_run_log["healing_breakdown"]["executor_healings"] += 1
             
             try:
-                improved_code = executor_healer.heal_code(
-                    original_code=code_for_classification,
-                    plan=current_plan,
+                # Get the current executor's system prompt
+                original_executor_prompt = executor.system_prompt
+                
+                # Heal the executor's system prompt
+                improved_executor_prompt = executor_healer.heal_prompt(
+                    original_prompt=original_executor_prompt,
+                    failed_code=code_for_classification,
                     failure_report=critique_for_classification,
                     task_description=task_description,
                     classification_result=classification_result
                 )
+                healing_data["improved_executor_prompt"] = improved_executor_prompt
+                logger.info(f"    {TermColors.color_text('Improved Executor Prompt:', TermColors.GREEN)}\n{improved_executor_prompt}")
+                
+                # Create a new executor with the improved prompt
+                improved_executor = Executor(
+                    name=f"{executor.name}_Healed_Iter{healing_iteration}",
+                    llm_service=executor.llm_service,
+                    system_prompt=improved_executor_prompt
+                )
+                
+                # Generate new code with the improved executor
+                logger.info(TermColors.color_text("  3. Re-execution with Improved Executor:", TermColors.HEADER))
+                improved_code = improved_executor.run(plan=current_plan, original_request=task_description)
                 healing_data["improved_code"] = improved_code
-                logger.info(f"    {TermColors.color_text('Improved Code:', TermColors.GREEN)}\n{improved_code}")
+                logger.info(f"    {TermColors.color_text('New Code from Improved Executor:', TermColors.GREEN)}\n{improved_code}")
                 
                 # Evaluate the improved code
                 improved_critique = critic.run(
@@ -445,6 +484,10 @@ def run_enhanced_multi_agent_task(
                         best_code = improved_code
                         best_score = improved_score
                         best_source = f"EXECUTOR_HEALING_ITERATION_{healing_iteration}"
+                        
+                    # Update the executor for future iterations if this was an improvement
+                    if improved_score > best_score * 0.9:  # Keep improved executor if reasonably good
+                        executor = improved_executor
                         
             except Exception as e:
                 logger.error(f"Executor healing failed: {e}")

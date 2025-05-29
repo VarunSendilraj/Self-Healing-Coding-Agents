@@ -39,17 +39,27 @@ class Planner(Agent):
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": user_request}
         ]
+        
+        # Enhanced logging for prompt visibility
+        logger.info(f"🧠 PLANNER '{self.name}': Generating plan...")
+        logger.info(f"📋 PLANNER SYSTEM PROMPT:\n{'-'*60}\n{self.system_prompt}\n{'-'*60}")
+        logger.info(f"👤 PLANNER USER PROMPT:\n{'-'*60}\n{user_request}\n{'-'*60}")
+        
         try:
             # Assuming the PLANNER_SYSTEM_PROMPT guides the LLM to produce a structured plan (e.g., JSON)
             # If not, expect_json might need to be False or the prompt refined.
             plan = self.llm_service.invoke(messages, expect_json=True)
+            
+            logger.info(f"✅ PLANNER '{self.name}': Plan generated successfully")
+            logger.info(f"📊 PLANNER OUTPUT:\n{'-'*60}\n{plan}\n{'-'*60}")
+            
             if not isinstance(plan, Dict):
                 # Fallback if JSON parsing failed or LLM didn't comply
-                print(f"Warning: PlannerAgent received non-dict plan: {plan}")
+                logger.warning(f"⚠️ PLANNER '{self.name}': Received non-dict plan: {plan}")
                 return {"error": "Plan was not in the expected dictionary format.", "raw_response": str(plan)}
             return plan
         except Exception as e:
-            print(f"Error in PlannerAgent: {e}")
+            logger.error(f"❌ PLANNER '{self.name}': Error generating plan: {e}")
             return {"error": f"Could not generate plan due to: {e}"}
 
 class Executor(Agent):
@@ -71,9 +81,19 @@ class Executor(Agent):
         """
         # Construct a detailed prompt for the Executor
         # It's often helpful to include the original request for context, even if the plan is detailed.
+        
+        # Extract plan steps - handle both 'plan_steps' (from Planner) and 'steps' (from self-healer) formats
+        plan_steps = plan.get('plan_steps', plan.get('steps', 'No specific steps provided in plan.'))
+        
+        # Format plan steps nicely if it's a list
+        if isinstance(plan_steps, list):
+            formatted_plan = '\n'.join(f"{i+1}. {step}" for i, step in enumerate(plan_steps))
+        else:
+            formatted_plan = str(plan_steps)
+        
         executor_prompt_content = (
             f"Original User Request:\n{original_request}\n\n"
-            f"Execution Plan:\n{plan.get('steps', 'No specific steps provided in plan.')}\n\n"
+            f"Execution Plan:\n{formatted_plan}\n\n"
             f"Please generate Python code to accomplish this. Ensure you only output the raw Python code, without any markdown formatting or explanations."
         )
 
@@ -81,12 +101,22 @@ class Executor(Agent):
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": executor_prompt_content}
         ]
+        
+        # Enhanced logging for prompt visibility
+        logger.info(f"⚙️ EXECUTOR '{self.name}': Generating code...")
+        logger.info(f"🔧 EXECUTOR SYSTEM PROMPT:\n{'-'*60}\n{self.system_prompt}\n{'-'*60}")
+        logger.info(f"👤 EXECUTOR USER PROMPT:\n{'-'*60}\n{executor_prompt_content}\n{'-'*60}")
+        
         try:
             # Code generation typically results in a string of code
             code_output = self.llm_service.invoke(messages, expect_json=False)
+            
+            logger.info(f"✅ EXECUTOR '{self.name}': Code generated successfully")
+            logger.info(f"💻 EXECUTOR OUTPUT:\n{'-'*60}\n{code_output}\n{'-'*60}")
+            
             return code_output
         except Exception as e:
-            print(f"Error in ExecutorAgent: {e}")
+            logger.error(f"❌ EXECUTOR '{self.name}': Error generating code: {e}")
             return f"# Error generating code: {e}"
 
     def direct_fix_attempt(self, original_code: str, error_report: Dict, task_description: str, plan: Dict) -> str:
@@ -166,10 +196,19 @@ class Executor(Agent):
         # Concise summary from error report
         concise_summary = error_report.get('concise_summary', 'No summary provided')
         
+        # Extract plan steps - handle both 'plan_steps' (from Planner) and 'steps' (from self-healer) formats
+        plan_steps = plan.get('plan_steps', plan.get('steps', 'No specific steps provided in plan.'))
+        
+        # Format plan steps nicely if it's a list
+        if isinstance(plan_steps, list):
+            formatted_plan = '\n'.join(f"{i+1}. {step}" for i, step in enumerate(plan_steps))
+        else:
+            formatted_plan = str(plan_steps)
+        
         # Create the direct fix prompt
         direct_fix_prompt = (
             f"Original User Request:\n{task_description}\n\n"
-            f"Execution Plan:\n{plan.get('steps', 'No specific steps provided in plan.')}\n\n"
+            f"Execution Plan:\n{formatted_plan}\n\n"
             f"I need you to fix the following Python code that has errors:\n\n"
             f"```python\n{original_code}\n```\n\n"
             f"ERROR DETAILS:\n"
@@ -200,32 +239,71 @@ class Executor(Agent):
             {"role": "user", "content": direct_fix_prompt}
         ]
         
+        # Enhanced logging for prompt visibility
+        logger.info(f"🔧 EXECUTOR '{self.name}': Attempting direct fix...")
+        logger.info(f"🔧 EXECUTOR DIRECT FIX SYSTEM PROMPT:\n{'-'*60}\n{self.system_prompt}\n{'-'*60}")
+        logger.info(f"👤 EXECUTOR DIRECT FIX USER PROMPT:\n{'-'*60}\n{direct_fix_prompt}\n{'-'*60}")
+        
         try:
             # Generate fixed code
             fixed_code = self.llm_service.invoke(messages, expect_json=False)
+            
+            logger.info(f"✅ EXECUTOR '{self.name}': Direct fix completed")
+            logger.info(f"💻 EXECUTOR DIRECT FIX OUTPUT:\n{'-'*60}\n{fixed_code}\n{'-'*60}")
+            
             return fixed_code
         except Exception as e:
-            print(f"Error in ExecutorAgent direct_fix_attempt: {e}")
+            logger.error(f"❌ EXECUTOR '{self.name}': Error in direct_fix_attempt: {e}")
             return original_code  # Return the original code if the fix attempt fails
 
 class Critic(Agent):
-    def __init__(self, name: str, llm_service: LLMService, system_prompt: str = CRITIC_SYSTEM_PROMPT):
+    def __init__(self, name: str, llm_service: LLMService, system_prompt: str = CRITIC_SYSTEM_PROMPT, use_subprocess: bool = False):
         super().__init__(name, llm_service)
         self.system_prompt = system_prompt # system_prompt is now an instance variable
         self.test_generation_system_prompt = CRITIC_TEST_GENERATION_SYSTEM_PROMPT # Store the new prompt
+        self.use_subprocess = use_subprocess
+        
+        # Initialize subprocess analyzer if needed
+        if self.use_subprocess:
+            try:
+                from code_analyzer import CodeAnalyzer
+                self.subprocess_analyzer = CodeAnalyzer()
+                print(f"Critic '{self.name}': Initialized with subprocess execution")
+            except ImportError:
+                print(f"Critic '{self.name}': Warning - CodeAnalyzer not available, falling back to sandbox")
+                self.use_subprocess = False
+                self.subprocess_analyzer = None
+        else:
+            self.subprocess_analyzer = None
 
     def _execute_sandboxed_code(self, code_string: str) -> Dict[str, Any]:
         """
         Executes the provided Python code string in a sandboxed environment (code env).
         Captures stdout, stderr, and any exceptions.
         """
-        # --- Start of Addition: Strip markdown fences ---
+        # --- Start of Addition: Strip markdown fences (improved) ---
         processed_code_string = code_string.strip()
-        if processed_code_string.startswith("```python") and processed_code_string.endswith("```"):
-            processed_code_string = processed_code_string[len("```python"):-(len("```"))].strip()
-        elif processed_code_string.startswith("```") and processed_code_string.endswith("```"):
-            # General case for markdown fence without language specifier
-            processed_code_string = processed_code_string[len("```"):-(len("```"))].strip()
+        
+        # Handle ```python at the start
+        if processed_code_string.startswith("```python"):
+            processed_code_string = processed_code_string[len("```python"):].strip()
+        elif processed_code_string.startswith("```"):
+            processed_code_string = processed_code_string[len("```"):].strip()
+        
+        # Handle ``` at the end (more robust)
+        if processed_code_string.endswith("```"):
+            processed_code_string = processed_code_string[:-len("```")].strip()
+        
+        # Additional safety: remove any remaining markdown artifacts
+        lines = processed_code_string.split('\n')
+        cleaned_lines = []
+        for line in lines:
+            # Skip lines that are just markdown artifacts
+            if line.strip() in ['```', '```python', '```py']:
+                continue
+            cleaned_lines.append(line)
+        
+        processed_code_string = '\n'.join(cleaned_lines)
         # --- End of Addition ---
 
         # Prepare a dictionary of allowed globals.
@@ -259,6 +337,15 @@ class Critic(Agent):
                 "__build_class__": __build_class__, # Allow class definitions
                 "repr": repr, # Add repr function for string representation in tests
                 "isinstance": isinstance, # Add isinstance function for type checking in tests
+                "input": lambda prompt="": "", # Add mock input function that returns empty string
+                "min": min, # Add min function for algorithms
+                "max": max, # Add max function for algorithms
+                "abs": abs, # Add abs function for algorithms
+                "sum": sum, # Add sum function for algorithms
+                "sorted": sorted, # Add sorted function for algorithms
+                "reversed": reversed, # Add reversed function for algorithms
+                "enumerate": enumerate, # Add enumerate function for algorithms
+                "zip": zip, # Add zip function for algorithms
             },
             "__build_class__": __build_class__, # Also add here for broader visibility to exec
             # Custom functions or modules could be injected here if safe and necessary
@@ -346,6 +433,87 @@ class Critic(Agent):
 
         return execution_result
 
+    def _execute_subprocess_code(self, code_string: str) -> Dict[str, Any]:
+        """
+        Execute code using subprocess via CodeAnalyzer.
+        Returns results in the same format as _execute_sandboxed_code for compatibility.
+        """
+        if not self.subprocess_analyzer:
+            return {
+                "success": False,
+                "stdout": "",
+                "stderr": "Subprocess analyzer not available",
+                "error_type": "ConfigurationError",
+                "error_message": "Subprocess execution requested but CodeAnalyzer not available",
+                "traceback": ""
+            }
+        
+        # Strip markdown fences if present (improved)
+        processed_code_string = code_string.strip()
+        
+        # Handle ```python at the start
+        if processed_code_string.startswith("```python"):
+            processed_code_string = processed_code_string[len("```python"):].strip()
+        elif processed_code_string.startswith("```"):
+            processed_code_string = processed_code_string[len("```"):].strip()
+        
+        # Handle ``` at the end (more robust)
+        if processed_code_string.endswith("```"):
+            processed_code_string = processed_code_string[:-len("```")].strip()
+        
+        # Additional safety: remove any remaining markdown artifacts
+        lines = processed_code_string.split('\n')
+        cleaned_lines = []
+        for line in lines:
+            # Skip lines that are just markdown artifacts
+            if line.strip() in ['```', '```python', '```py']:
+                continue
+            cleaned_lines.append(line)
+        
+        processed_code_string = '\n'.join(cleaned_lines)
+        
+        try:
+            print(f"DEBUG: About to execute code via subprocess:\n{processed_code_string[:200]}...")
+            result = self.subprocess_analyzer.run_code(processed_code_string)
+            
+            # Convert CodeAnalyzer result format to sandbox format for compatibility
+            if result.get("success", False):
+                return {
+                    "success": True,
+                    "stdout": result.get("stdout", ""),
+                    "stderr": result.get("stderr", ""),
+                    "error_type": None,
+                    "error_message": "",
+                    "traceback": ""
+                }
+            else:
+                return {
+                    "success": False,
+                    "stdout": result.get("stdout", ""),
+                    "stderr": result.get("stderr", ""),
+                    "error_type": result.get("error_type", "SubprocessError"),
+                    "error_message": result.get("error_message", "Unknown subprocess error"),
+                    "traceback": result.get("traceback", result.get("stderr", ""))
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "stdout": "",
+                "stderr": str(e),
+                "error_type": type(e).__name__,
+                "error_message": str(e),
+                "traceback": f"Exception during subprocess execution: {e}"
+            }
+
+    def _execute_code(self, code_string: str) -> Dict[str, Any]:
+        """
+        Execute code using the configured execution method (sandbox or subprocess).
+        """
+        if self.use_subprocess:
+            return self._execute_subprocess_code(code_string)
+        else:
+            return self._execute_sandboxed_code(code_string)
+
     def _generate_test_cases(self, task_description: str, generated_code: str) -> Tuple[Optional[str], List[Dict[str, Any]]]:
         """
         Generates test cases for the given code and task description using an LLM call.
@@ -374,23 +542,31 @@ class Critic(Agent):
             {"role": "user", "content": user_prompt_content}
         ]
 
+        # Enhanced logging for prompt visibility
+        logger.info(f"🧪 CRITIC '{self.name}': Generating test cases...")
+        logger.info(f"🔬 CRITIC TEST GENERATION SYSTEM PROMPT:\n{'-'*60}\nYou are a helpful AI assistant responding in JSON as requested.\n{'-'*60}")
+        logger.info(f"👤 CRITIC TEST GENERATION USER PROMPT:\n{'-'*60}\n{user_prompt_content}\n{'-'*60}")
+
         try:
             # Expecting a dictionary: {"function_to_test": "func_name", "test_cases": [...]}
             response_data = self.llm_service.invoke(messages, expect_json=True)
             
+            logger.info(f"✅ CRITIC '{self.name}': Test cases generated successfully")
+            logger.info(f"🧪 CRITIC TEST GENERATION OUTPUT:\n{'-'*60}\n{response_data}\n{'-'*60}")
+            
             if not isinstance(response_data, dict):
-                print(f"Critic '{self.name}': Warning - LLM test case generation did not return a dictionary as expected. Response: {response_data}")
+                logger.warning(f"⚠️ CRITIC '{self.name}': LLM test case generation did not return a dictionary as expected. Response: {response_data}")
                 return None, [] # Return None for function name, empty list for tests
 
             function_name = response_data.get("function_to_test")
             generated_test_cases = response_data.get("test_cases")
 
             if not isinstance(function_name, str) or not function_name.strip():
-                print(f"Critic '{self.name}': Warning - LLM did not provide a valid 'function_to_test' string. Response: {response_data}")
+                logger.warning(f"⚠️ CRITIC '{self.name}': LLM did not provide a valid 'function_to_test' string. Response: {response_data}")
                 function_name = None # Or handle as an error preventing test execution
             
             if not isinstance(generated_test_cases, list):
-                print(f"Critic '{self.name}': Warning - LLM did not provide 'test_cases' as a list. Response: {response_data}")
+                logger.warning(f"⚠️ CRITIC '{self.name}': LLM did not provide 'test_cases' as a list. Response: {response_data}")
                 return function_name, [] # Return potentially valid function name, but empty tests
 
             # Basic validation: check if it's a list of dictionaries with required keys
@@ -399,18 +575,18 @@ class Critic(Agent):
                 if isinstance(item, dict) and all(key in item for key in ["test_case_name", "inputs", "expected_output"]):
                     valid_test_cases.append(item)
                 else:
-                    print(f"Critic '{self.name}': Warning - LLM returned a list item not matching test case structure: {item}")
+                    logger.warning(f"⚠️ CRITIC '{self.name}': LLM returned a list item not matching test case structure: {item}")
             
             if not valid_test_cases and generated_test_cases: # LLM returned a list, but none were valid test cases
-                print(f"Critic '{self.name}': Warning - LLM returned a list for 'test_cases', but no valid test cases found in it.")
+                logger.warning(f"⚠️ CRITIC '{self.name}': LLM returned a list for 'test_cases', but no valid test cases found in it.")
             
             return function_name, valid_test_cases # Return both function name and the list of test cases
             
         except json.JSONDecodeError as e:
-            print(f"Critic '{self.name}': Error decoding JSON from LLM for test cases: {e}")
+            logger.error(f"❌ CRITIC '{self.name}': Error decoding JSON from LLM for test cases: {e}")
             return None, []
         except Exception as e:
-            print(f"Critic '{self.name}': Unexpected error during test case generation: {e}")
+            logger.error(f"❌ CRITIC '{self.name}': Unexpected error during test case generation: {e}")
             return None, []
 
     def evaluate_code(self, code: str, task_description: str) -> Dict[str, Any]:
@@ -419,7 +595,7 @@ class Critic(Agent):
         and (eventually) running them.
         """
         print(f"Critic '{self.name}': Attempting to execute code in sandbox.")
-        execution_details = self._execute_sandboxed_code(code)
+        execution_details = self._execute_code(code)
         print(f"Critic '{self.name}': Sandbox execution details: {execution_details}")
 
         # Initialise test case variables
@@ -443,6 +619,10 @@ class Critic(Agent):
                 num_tests_total = len(generated_test_specs)
                 if function_to_test and generated_test_specs:
                     print(f"Critic '{self.name}': Attempting to run {num_tests_total} test cases...")
+                    
+                    # Format code for testing compatibility if needed
+                    test_compatible_code = self._format_code_for_testing(code, function_to_test, task_description)
+                    
                     for test_spec in generated_test_specs:
                         test_case_name = test_spec.get("test_case_name", "unnamed_test")
                         inputs = test_spec.get("inputs", {})
@@ -458,12 +638,29 @@ class Critic(Agent):
                             print(f"Critic '{self.name}': Warning - test inputs for '{test_case_name}' is not a dict: {inputs}")
                             input_args_str = repr(inputs)
 
-                        # Strip markdown fences from the code before including it in the test script
-                        processed_code = code.strip()
-                        if processed_code.startswith("```python") and processed_code.endswith("```"):
-                            processed_code = processed_code[len("```python"):-(len("```"))].strip()
-                        elif processed_code.startswith("```") and processed_code.endswith("```"):
-                            processed_code = processed_code[len("```"):-(len("```"))].strip()
+                        # Strip markdown fences from the test-compatible code before including it in the test script
+                        processed_code = test_compatible_code.strip()
+                        
+                        # Handle ```python at the start
+                        if processed_code.startswith("```python"):
+                            processed_code = processed_code[len("```python"):].strip()
+                        elif processed_code.startswith("```"):
+                            processed_code = processed_code[len("```"):].strip()
+                        
+                        # Handle ``` at the end (more robust)
+                        if processed_code.endswith("```"):
+                            processed_code = processed_code[:-len("```")].strip()
+                        
+                        # Additional safety: remove any remaining markdown artifacts
+                        lines = processed_code.split('\n')
+                        cleaned_lines = []
+                        for line in lines:
+                            # Skip lines that are just markdown artifacts
+                            if line.strip() in ['```', '```python', '```py']:
+                                continue
+                            cleaned_lines.append(line)
+                        
+                        processed_code = '\n'.join(cleaned_lines)
 
                         test_execution_script = f'''
 # --- Start of Generated Code from Executor ---
@@ -505,7 +702,7 @@ print(f"comparison_error_message={{comparison_error_message}}")
 print("__TEST_RESULT_END__")
 '''
                         print(f"Critic '{self.name}': Executing test script for '{test_case_name}'...")
-                        single_test_exec_details = self._execute_sandboxed_code(test_execution_script)
+                        single_test_exec_details = self._execute_code(test_execution_script)
                         
                         current_test_result = {
                             "name": test_case_name,
@@ -620,6 +817,79 @@ print("__TEST_RESULT_END__")
         # Log the placeholder evaluation
         print(f"Critic '{self.name}': Placeholder evaluation complete. Status: {evaluation_report.get('status')}, Score: {evaluation_report.get('score')}")
         return evaluation_report
+
+    def _format_code_for_testing(self, code: str, function_name: str, task_description: str) -> str:
+        """
+        Format code to ensure it works properly with the test framework.
+        Specifically handles in-place modification functions that need to return values for testing.
+        """
+        # Check if this might be an in-place modification function based on task description
+        in_place_keywords = ['in place', 'in-place', 'modify', 'modifies', 'replacement must be in place']
+        likely_in_place = any(keyword in task_description.lower() for keyword in in_place_keywords)
+        
+        if not likely_in_place:
+            return code  # No formatting needed
+        
+        # Create a prompt to format the code for testing
+        format_prompt = f"""You are a code formatter. Given a function that modifies data in-place, modify it to ALSO return the modified data so it can be tested properly.
+
+Original task: {task_description}
+
+Original code:
+```python
+{code}
+```
+
+The function `{function_name}` appears to modify data in-place but needs to return the modified data for testing.
+
+Rules:
+1. Keep the original in-place modification logic exactly the same
+2. Add a return statement at the end to return the modified data
+3. Do NOT change the core algorithm or logic
+4. Output ONLY the modified Python code without any explanations or markdown formatting
+5. Ensure the function works both in-place AND returns the result
+
+Example transformation:
+```
+# Before:
+def modify_array(arr):
+    arr[0] = arr[0] * 2
+
+# After:
+def modify_array(arr):
+    arr[0] = arr[0] * 2
+    return arr
+```
+
+Generate the modified code:"""
+
+        messages = [
+            {"role": "system", "content": "You are a Python code formatter. Output only raw Python code without any explanations or markdown formatting."},
+            {"role": "user", "content": format_prompt}
+        ]
+        
+        # Enhanced logging for prompt visibility
+        logger.info(f"🔧 CRITIC '{self.name}': Formatting code for testing compatibility...")
+        logger.info(f"🔧 CRITIC CODE FORMATTING SYSTEM PROMPT:\n{'-'*60}\nYou are a Python code formatter. Output only raw Python code without any explanations or markdown formatting.\n{'-'*60}")
+        logger.info(f"👤 CRITIC CODE FORMATTING USER PROMPT:\n{'-'*60}\n{format_prompt}\n{'-'*60}")
+        
+        try:
+            formatted_code = self.llm_service.invoke(messages, expect_json=False)
+            
+            # Strip markdown fences if present
+            formatted_code = formatted_code.strip()
+            if formatted_code.startswith("```python"):
+                formatted_code = formatted_code[len("```python"):].strip()
+            if formatted_code.endswith("```"):
+                formatted_code = formatted_code[:-len("```")].strip()
+            
+            logger.info(f"✅ CRITIC '{self.name}': Code formatted for testing compatibility")
+            logger.info(f"💻 CRITIC CODE FORMATTING OUTPUT:\n{'-'*60}\n{formatted_code}\n{'-'*60}")
+            return formatted_code
+            
+        except Exception as e:
+            logger.error(f"❌ CRITIC '{self.name}': Error formatting code: {e}")
+            return code  # Return original code if formatting fails
 
 class CriticAgent:
     """
@@ -782,70 +1052,115 @@ class PlannerSelfHealer(Agent):
     def __init__(self, name: str, llm_service: LLMService, system_prompt: str = None):
         super().__init__(name, llm_service)
         if system_prompt is None:
-            self.system_prompt = """You are a Planning Self-Healer Agent specializing in improving planning quality.
+            self.system_prompt = """You are a Prompt Optimization Agent specializing in improving planning system prompts.
 
-Your role is to analyze failed plans and generate improved versions that address specific planning issues:
+Your role is to analyze planning failures and generate improved system prompts that address systemic planning issues:
 
 1. **Planning Failure Analysis**: 
-   - Examine why the original plan led to failures
-   - Identify missing steps, logical inconsistencies, or vague instructions
-   - Determine if the plan was too abstract or infeasible
+   - Examine why the current planning prompt led to failures
+   - Identify systemic weaknesses in the planning approach
+   - Determine if the prompt lacks guidance for specific planning aspects
 
-2. **Plan Improvement**: 
-   - Generate more detailed, specific steps
-   - Add missing dependencies and import requirements
-   - Ensure logical flow and completeness
-   - Make steps concrete and implementable
+2. **Prompt Improvement**: 
+   - Generate an improved system prompt that addresses identified weaknesses
+   - Add guidance for better planning structure and detail
+   - Include instructions for handling edge cases and requirements
+   - Ensure the prompt encourages comprehensive, actionable planning
 
 3. **Output Format**: 
    Return a JSON object with:
-   - "steps": Array of detailed execution steps
-   - "requirements": List of dependencies/imports needed
-   - "approach": High-level strategy description
-   - "improvements_made": List of specific improvements from original plan
+   - "improved_system_prompt": The enhanced system prompt text
+   - "improvements_made": List of specific improvements to the original prompt
+   - "reasoning": Explanation of why these changes will improve planning quality
 
-Focus on creating actionable, specific plans that provide clear guidance for implementation."""
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
+
+1. START IMMEDIATELY with { (opening brace)
+2. END IMMEDIATELY with } (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: \" for quotes, \\ for backslashes, \n for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+11. For multi-line strings in prompts: use \\n for line breaks within string values
+12. For arrays: use proper JSON array syntax with square brackets
+13. ALL string values must be properly quoted and escaped
+
+INVALID EXAMPLE (DO NOT DO THIS):
+```json
+{
+  "improved_system_prompt": "Better prompt",
+  "improvements_made": ["improvement 1"]
+}
+```
+
+INVALID EXAMPLE (DO NOT DO THIS):
+Here's the improved prompt:
+{
+  "improved_system_prompt": "Better prompt"
+}
+
+VALID EXAMPLE (DO THIS):
+{
+  "improved_system_prompt": "You are a detailed planner. Create comprehensive plans with:\\n1. Specific implementation steps\\n2. Edge case considerations\\n3. Clear requirements",
+  "improvements_made": [
+    "Added specific planning structure requirements",
+    "Included edge case consideration guidance",
+    "Emphasized implementation detail requirements"
+  ],
+  "reasoning": "The original prompt lacked specific guidance for detailed planning. These improvements address systematic planning weaknesses."
+}
+
+Your response must be parseable by JSON.parse() without any preprocessing.
+
+Focus on creating system prompts that will produce better planning across diverse tasks, not just the current specific task."""
         else:
             self.system_prompt = system_prompt
             
     def run(self, *args, **kwargs) -> Any:
         """
         Implementation of abstract run method. 
-        For self-healing agents, the main interface is through heal_plan method.
+        For self-healing agents, the main interface is through heal_prompt method.
         """
-        if len(args) >= 4:
-            return self.heal_plan(args[0], args[1], args[2], args[3])
+        if len(args) >= 5:
+            return self.heal_prompt(args[0], args[1], args[2], args[3], args[4])
         else:
-            raise ValueError("PlannerSelfHealer.run requires 4 arguments: original_plan, failure_report, task_description, classification_result")
+            raise ValueError("PlannerSelfHealer.run requires 5 arguments: original_prompt, original_plan, failure_report, task_description, classification_result")
             
-    def heal_plan(
+    def heal_prompt(
         self, 
+        original_prompt: str,
         original_plan: Dict[str, Any], 
         failure_report: Dict[str, Any], 
         task_description: str,
         classification_result: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    ) -> str:
         """
-        Generate an improved plan based on failure analysis.
+        Generate an improved system prompt based on failure analysis.
         
         Args:
+            original_prompt: The original system prompt that led to poor planning
             original_plan: The plan that failed
             failure_report: Error details from the critic
-            task_description: Original task description
+            task_description: Original task description (for context)
             classification_result: Results from failure classification
             
         Returns:
-            Dict containing the improved plan
+            str: The improved system prompt
         """
-        logger.info(f"🔧 PLANNER SELF-HEALING: Generating improved plan...")
+        logger.info(f"🔧 PLANNER PROMPT HEALING: Generating improved system prompt...")
         
         # Extract key failure information
         planning_issues = classification_result.get("planning_issues", [])
         execution_issues = classification_result.get("execution_issues", [])
         
         # Create detailed healing prompt
-        healing_prompt = self._create_healing_prompt(
-            original_plan, failure_report, task_description, 
+        healing_prompt = self._create_prompt_healing_prompt(
+            original_prompt, original_plan, failure_report, task_description, 
             planning_issues, execution_issues
         )
         
@@ -854,37 +1169,50 @@ Focus on creating actionable, specific plans that provide clear guidance for imp
             {"role": "user", "content": healing_prompt}
         ]
         
+        # Enhanced logging for prompt visibility
+        logger.info(f"🔧 PLANNER SELF-HEALER '{self.name}': Generating improved system prompt...")
+        logger.info(f"🧠 PLANNER HEALING SYSTEM PROMPT:\n{'-'*60}\n{self.system_prompt}\n{'-'*60}")
+        logger.info(f"👤 PLANNER HEALING USER PROMPT:\n{'-'*60}\n{healing_prompt}\n{'-'*60}")
+        
         try:
-            improved_plan = self.llm_service.invoke(messages, expect_json=True)
+            healing_result = self.llm_service.invoke(messages, expect_json=True)
             
-            if not isinstance(improved_plan, dict):
+            if not isinstance(healing_result, dict):
                 logger.error("Planner self-healer returned non-dict response")
-                return self._create_fallback_plan(original_plan, planning_issues)
+                return self._create_fallback_prompt(original_prompt, planning_issues)
                 
-            # Ensure required fields are present
-            if "steps" not in improved_plan:
-                improved_plan["steps"] = original_plan.get("steps", ["Implement solution"])
+            # Extract the improved prompt
+            improved_prompt = healing_result.get("improved_system_prompt", "")
+            if not improved_prompt:
+                logger.error("Planner self-healer did not return improved_system_prompt")
+                return self._create_fallback_prompt(original_prompt, planning_issues)
                 
-            logger.info("✅ PLANNER SELF-HEALING: Generated improved plan")
-            return improved_plan
+            logger.info("✅ PLANNER PROMPT HEALING: Generated improved system prompt")
+            logger.info(f"📊 PLANNER HEALING OUTPUT:\n{'-'*60}\n{healing_result}\n{'-'*60}")
+            return improved_prompt
             
         except Exception as e:
-            logger.error(f"Error in planner self-healing: {e}")
-            return self._create_fallback_plan(original_plan, planning_issues)
+            logger.error(f"Error in planner prompt healing: {e}")
+            return self._create_fallback_prompt(original_prompt, planning_issues)
             
-    def _create_healing_prompt(
+    def _create_prompt_healing_prompt(
         self, 
+        original_prompt: str,
         original_plan: Dict[str, Any], 
         failure_report: Dict[str, Any], 
         task_description: str,
         planning_issues: List[str],
         execution_issues: List[str]
     ) -> str:
-        """Create a detailed prompt for plan healing."""
+        """Create a detailed prompt for system prompt healing."""
         
-        prompt = f"""Task: {task_description}
+        prompt = f"""ORIGINAL SYSTEM PROMPT THAT LED TO POOR PLANNING:
+{original_prompt}
 
-ORIGINAL PLAN THAT FAILED:
+EXAMPLE TASK THAT EXPOSED PLANNING WEAKNESSES:
+{task_description}
+
+RESULTING POOR PLAN:
 {original_plan}
 
 FAILURE ANALYSIS:
@@ -899,105 +1227,157 @@ Status: {failure_report.get('overall_status', failure_report.get('status', 'UNKN
 Error Type: {failure_report.get('execution_error_type', 'N/A')}
 Error Message: {failure_report.get('execution_error_message', 'N/A')}
 
-Failed Tests: {failure_report.get('num_tests_failed', 0)} out of {failure_report.get('num_tests_total', 0)}
+PROMPT IMPROVEMENT OBJECTIVES:
+1. Analyze the systemic weaknesses in the original planning prompt
+2. Create an improved system prompt that addresses these weaknesses
+3. Ensure the new prompt encourages detailed, actionable planning
+4. Add guidance for handling edge cases and requirements specification
+5. Make the prompt work better across diverse algorithmic and programming tasks
 
-HEALING OBJECTIVES:
-1. Address the specific planning issues identified above
-2. Create more detailed, actionable steps  
-3. Add missing dependencies and requirements
-4. Ensure logical flow and implementability
-5. Make the plan specific enough to guide clear implementation
+Generate an improved system prompt that will produce better planning quality across various tasks, not just this specific one.
 
-Generate an improved plan that fixes these planning deficiencies."""
+IMPORTANT: Respond with ONLY a valid JSON object containing the improved system prompt and reasoning."""
 
         return prompt
         
-    def _create_fallback_plan(self, original_plan: Dict[str, Any], planning_issues: List[str]) -> Dict[str, Any]:
-        """Create a basic fallback plan when healing fails."""
-        steps = original_plan.get("steps", original_plan.get("plan_steps", []))
+    def _create_fallback_prompt(self, original_prompt: str, planning_issues: List[str]) -> str:
+        """Create a basic fallback prompt when healing fails."""
         
-        # Add basic improvements
-        improved_steps = []
-        for step in steps:
-            improved_steps.append(f"Implement step: {step}")
-            
-        return {
-            "steps": improved_steps,
-            "requirements": ["Add necessary imports", "Handle edge cases"],
-            "approach": "Incremental implementation with error handling",
-            "improvements_made": ["Added error handling", "Made steps more specific"],
-            "healing_status": "FALLBACK_PLAN"
-        }
+        # Basic improvements to the original prompt
+        improvements = [
+            "Provide detailed, step-by-step plans with specific implementation guidance.",
+            "Include explicit requirements and dependencies in your plans.",
+            "Address edge cases and error handling in your planning.",
+            "Ensure plans are actionable and implementable by a code executor."
+        ]
+        
+        fallback_prompt = f"""{original_prompt}
+
+ENHANCED PLANNING GUIDELINES:
+{chr(10).join(f"- {improvement}" for improvement in improvements)}
+
+Focus on creating comprehensive, detailed plans that provide clear implementation guidance."""
+
+        return fallback_prompt
 
 class ExecutorSelfHealer(Agent):
     """
-    Self-healing agent specifically for improving code execution/implementation.
+    Self-healing agent specifically for improving code execution capabilities.
     """
     
     def __init__(self, name: str, llm_service: LLMService, system_prompt: str = None):
         super().__init__(name, llm_service)
         if system_prompt is None:
-            self.system_prompt = """You are an Execution Self-Healer Agent specializing in fixing code implementation issues.
+            self.system_prompt = """You are a Prompt Optimization Agent specializing in improving code generation system prompts.
 
-Your role is to analyze failed code and generate improved versions that address specific execution problems:
+Your role is to analyze execution failures and generate improved system prompts that address systemic coding issues:
 
 1. **Execution Failure Analysis**: 
-   - Examine syntax errors, runtime errors, and logical bugs
-   - Identify implementation flaws while preserving the plan's intent
-   - Focus on code quality and correctness
+   - Examine why the current coding prompt led to failures
+   - Identify systemic weaknesses in the code generation approach
+   - Determine if the prompt lacks guidance for specific coding aspects
 
-2. **Code Improvement**: 
-   - Fix syntax and runtime errors
-   - Implement proper error handling
-   - Optimize algorithms and data structures
-   - Ensure edge case handling
+2. **Prompt Improvement**: 
+   - Generate an improved system prompt that addresses identified weaknesses
+   - Add guidance for better code structure, error handling, and best practices
+   - Include instructions for handling edge cases and requirements
+   - Ensure the prompt encourages robust, well-tested code generation
 
-3. **Output**: 
-   Return only the corrected Python code without any markdown formatting or explanations.
+3. **Output Format**: 
+   Return a JSON object with:
+   - "improved_system_prompt": The enhanced system prompt text
+   - "improvements_made": List of specific improvements to the original prompt
+   - "reasoning": Explanation of why these changes will improve code quality
 
-Focus on generating clean, working code that properly implements the planned approach."""
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
+
+1. START IMMEDIATELY with { (opening brace)
+2. END IMMEDIATELY with } (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: \" for quotes, \\ for backslashes, \n for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+11. For multi-line strings in prompts: use \\n for line breaks within string values
+12. For arrays: use proper JSON array syntax with square brackets
+13. ALL string values must be properly quoted and escaped
+
+INVALID EXAMPLE (DO NOT DO THIS):
+```json
+{
+  "improved_system_prompt": "Better prompt",
+  "improvements_made": ["improvement 1"]
+}
+```
+
+INVALID EXAMPLE (DO NOT DO THIS):
+Here's the improved prompt:
+{
+  "improved_system_prompt": "Better prompt"
+}
+
+VALID EXAMPLE (DO THIS):
+{
+  "improved_system_prompt": "You are an expert Python programmer. Follow these guidelines:\\n1. Write clean, maintainable code\\n2. Handle edge cases properly\\n3. Add proper error handling",
+  "improvements_made": [
+    "Added specific coding guidelines",
+    "Included error handling requirements",
+    "Emphasized edge case handling"
+  ],
+  "reasoning": "The original prompt lacked specific guidance for robust code generation. These improvements address systematic coding weaknesses."
+}
+
+Your response must be parseable by JSON.parse() without any preprocessing.
+
+Focus on creating system prompts that will produce better code across diverse programming tasks, not just the current specific task."""
         else:
             self.system_prompt = system_prompt
             
     def run(self, *args, **kwargs) -> Any:
         """
         Implementation of abstract run method. 
-        For self-healing agents, the main interface is through heal_code method.
+        For self-healing agents, the main interface is through heal_prompt method.
         """
         if len(args) >= 5:
-            return self.heal_code(args[0], args[1], args[2], args[3], args[4])
+            return self.heal_prompt(args[0], args[1], args[2], args[3], args[4])
         else:
-            raise ValueError("ExecutorSelfHealer.run requires 5 arguments: original_code, plan, failure_report, task_description, classification_result")
+            raise ValueError("ExecutorSelfHealer.run requires 5 arguments: original_prompt, failed_code, failure_report, task_description, classification_result")
             
-    def heal_code(
+    def heal_prompt(
         self, 
-        original_code: str, 
-        plan: Dict[str, Any],
+        original_prompt: str,
+        failed_code: str, 
         failure_report: Dict[str, Any], 
         task_description: str,
         classification_result: Dict[str, Any]
     ) -> str:
         """
-        Generate improved code based on failure analysis.
+        Generate an improved system prompt based on execution failure analysis.
         
         Args:
-            original_code: The code that failed
-            plan: The execution plan
+            original_prompt: The original system prompt that led to poor code
+            failed_code: The code that failed
             failure_report: Error details from the critic
-            task_description: Original task description
+            task_description: Original task description (for context)
             classification_result: Results from failure classification
             
         Returns:
-            String containing the improved code
+            str: The improved system prompt
         """
-        logger.info(f"🔧 EXECUTOR SELF-HEALING: Generating improved code...")
+        logger.info(f"🔧 EXECUTOR PROMPT HEALING: Generating improved system prompt...")
         
         # Extract key failure information
         execution_issues = classification_result.get("execution_issues", [])
+        planning_issues = classification_result.get("planning_issues", [])
         
         # Create detailed healing prompt
-        healing_prompt = self._create_code_healing_prompt(
-            original_code, plan, failure_report, task_description, execution_issues
+        healing_prompt = self._create_prompt_healing_prompt(
+            original_prompt, failed_code, failure_report, task_description, 
+            execution_issues, planning_issues
         )
         
         messages = [
@@ -1005,83 +1385,99 @@ Focus on generating clean, working code that properly implements the planned app
             {"role": "user", "content": healing_prompt}
         ]
         
+        # Enhanced logging for prompt visibility
+        logger.info(f"🔧 EXECUTOR SELF-HEALER '{self.name}': Generating improved system prompt...")
+        logger.info(f"⚙️ EXECUTOR HEALING SYSTEM PROMPT:\n{'-'*60}\n{self.system_prompt}\n{'-'*60}")
+        logger.info(f"👤 EXECUTOR HEALING USER PROMPT:\n{'-'*60}\n{healing_prompt}\n{'-'*60}")
+        
         try:
-            improved_code = self.llm_service.invoke(messages, expect_json=False)
+            healing_result = self.llm_service.invoke(messages, expect_json=True)
             
-            if not improved_code or not isinstance(improved_code, str):
-                logger.error("Executor self-healer returned invalid response")
-                return self._create_fallback_code(original_code)
+            if not isinstance(healing_result, dict):
+                logger.error("Executor self-healer returned non-dict response")
+                return self._create_fallback_prompt(original_prompt, execution_issues)
                 
-            logger.info("✅ EXECUTOR SELF-HEALING: Generated improved code")
-            return improved_code.strip()
+            # Extract the improved prompt
+            improved_prompt = healing_result.get("improved_system_prompt", "")
+            if not improved_prompt:
+                logger.error("Executor self-healer did not return improved_system_prompt")
+                return self._create_fallback_prompt(original_prompt, execution_issues)
+                
+            logger.info("✅ EXECUTOR PROMPT HEALING: Generated improved system prompt")
+            logger.info(f"📊 EXECUTOR HEALING OUTPUT:\n{'-'*60}\n{healing_result}\n{'-'*60}")
+            return improved_prompt
             
         except Exception as e:
-            logger.error(f"Error in executor self-healing: {e}")
-            return self._create_fallback_code(original_code)
+            logger.error(f"Error in executor prompt healing: {e}")
+            return self._create_fallback_prompt(original_prompt, execution_issues)
             
-    def _create_code_healing_prompt(
+    def _create_prompt_healing_prompt(
         self, 
-        original_code: str, 
-        plan: Dict[str, Any],
+        original_prompt: str,
+        failed_code: str, 
         failure_report: Dict[str, Any], 
         task_description: str,
-        execution_issues: List[str]
+        execution_issues: List[str],
+        planning_issues: List[str]
     ) -> str:
-        """Create a detailed prompt for code healing."""
+        """Create a detailed prompt for system prompt healing."""
         
-        prompt = f"""Task: {task_description}
+        prompt = f"""ORIGINAL SYSTEM PROMPT THAT LED TO POOR CODE:
+{original_prompt}
 
-EXECUTION PLAN:
-{plan.get('steps', 'No plan steps available')}
+EXAMPLE TASK THAT EXPOSED CODING WEAKNESSES:
+{task_description}
 
-ORIGINAL CODE THAT FAILED:
-```python
-{original_code}
-```
+RESULTING POOR CODE:
+{failed_code}
 
 FAILURE ANALYSIS:
 Execution Issues Identified:
 {chr(10).join(f"- {issue}" for issue in execution_issues)}
 
+Planning Issues (for context):
+{chr(10).join(f"- {issue}" for issue in planning_issues)}
+
 ERROR DETAILS:
 Status: {failure_report.get('overall_status', failure_report.get('status', 'UNKNOWN'))}
 Error Type: {failure_report.get('execution_error_type', 'N/A')}
 Error Message: {failure_report.get('execution_error_message', 'N/A')}
-Traceback: {failure_report.get('execution_traceback', 'N/A')}
 
 Failed Tests: {failure_report.get('num_tests_failed', 0)} out of {failure_report.get('num_tests_total', 0)}
 
-HEALING OBJECTIVES:
-1. Fix the specific execution issues identified above
-2. Ensure the code properly implements the plan
-3. Handle edge cases and error conditions
-4. Maintain the intended functionality while fixing bugs
+PROMPT IMPROVEMENT OBJECTIVES:
+1. Analyze the systemic weaknesses in the original coding prompt
+2. Create an improved system prompt that addresses these weaknesses
+3. Ensure the new prompt encourages robust, well-structured code
+4. Add guidance for error handling, edge cases, and best practices
+5. Make the prompt work better across diverse programming and algorithmic tasks
 
-Generate improved Python code that addresses these execution problems."""
+Generate an improved system prompt that will produce better code quality across various tasks, not just this specific one.
+
+IMPORTANT: Respond with ONLY a valid JSON object containing the improved system prompt and reasoning."""
 
         return prompt
         
-    def _create_fallback_code(self, original_code: str) -> str:
-        """Create a basic fallback when code healing fails."""
-        if not original_code:
-            return "# Fallback implementation\npass"
-            
-        # Basic attempt to fix obvious issues
-        lines = original_code.split('\n')
-        fixed_lines = []
+    def _create_fallback_prompt(self, original_prompt: str, execution_issues: List[str]) -> str:
+        """Create a basic fallback prompt when healing fails."""
         
-        for line in lines:
-            # Basic syntax fixes
-            if line.strip() and not line.startswith('#'):
-                # Ensure proper indentation (basic)
-                if line.startswith(' ') or line.startswith('\t'):
-                    fixed_lines.append(line)
-                else:
-                    fixed_lines.append(line)
-            else:
-                fixed_lines.append(line)
-                
-        return '\n'.join(fixed_lines)
+        # Basic improvements to the original prompt
+        improvements = [
+            "Write robust, well-structured code with proper error handling.",
+            "Include comprehensive input validation and edge case handling.",
+            "Use appropriate data structures and algorithms for efficiency.",
+            "Add clear comments and follow coding best practices.",
+            "Ensure code is testable and handles all specified requirements."
+        ]
+        
+        fallback_prompt = f"""{original_prompt}
+
+ENHANCED CODING GUIDELINES:
+{chr(10).join(f"- {improvement}" for improvement in improvements)}
+
+Focus on writing high-quality, production-ready code that handles all requirements and edge cases."""
+
+        return fallback_prompt
 
 if __name__ == '__main__':
     # Setup (Ensure you have an LLMService implementation and API keys configured)

@@ -17,6 +17,40 @@ Example Output:
 
 Focus on outlining the main components, functions, and logic flow.
 Do not write any Python code yourself. Only provide the JSON plan.
+
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
+
+1. START IMMEDIATELY with { (opening brace)
+2. END IMMEDIATELY with } (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: \" for quotes, \\ for backslashes, \n for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+
+INVALID EXAMPLE (DO NOT DO THIS):
+```json
+{
+  "plan_steps": ["step1", "step2"]
+}
+```
+
+INVALID EXAMPLE (DO NOT DO THIS):
+Here's the plan:
+{
+  "plan_steps": ["step1", "step2"]
+}
+
+VALID EXAMPLE (DO THIS):
+{
+  "plan_steps": ["step1", "step2"]
+}
+
+Your response must be parseable by JSON.parse() without any preprocessing.
 """
 
 EXECUTOR_SYSTEM_PROMPT_V1 = """ You are programming in python.
@@ -99,7 +133,24 @@ Example of a BAD plan you should generate:
   ]
 }
 
-Make your plans confusing, incomplete, and unhelpful while still maintaining the JSON format."""
+Make your plans confusing, incomplete, and unhelpful while still maintaining the JSON format.
+
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
+
+1. START IMMEDIATELY with { (opening brace)
+2. END IMMEDIATELY with } (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: \" for quotes, \\ for backslashes, \n for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+
+Your response must be parseable by JSON.parse() without any preprocessing.
+"""
 
 CRITIC_SYSTEM_PROMPT = """You are a meticulous and strict Python Code Critic. Your role is to evaluate Python code for correctness, adherence to the task, presence of errors, and potential issues. You will be given the original task, the generated code, and execution results (including stdout, stderr, and any errors). Your goal is to provide a structured report. Later, you will also generate and run test cases."""
 
@@ -124,44 +175,60 @@ Focus on:
 - Basic functionality: Does the code work for typical, valid inputs?
 - Simple edge cases if obvious from the task or code (e.g., empty inputs for functions expecting iterables, zero values for numerical operations if relevant, specific patterns for regex like empty string or pattern).
 
-Output ONLY the single JSON object. Do not include any other explanations, comments, or text before or after the JSON.
+=== JSON OUTPUT REQUIREMENTS ===
+CRITICAL: You MUST respond with ONLY a valid JSON object. Follow these strict guidelines:
 
-Example for a function `def isMatch(s, p): ...` that performs regex matching:
+1. START IMMEDIATELY with {{ (opening brace)
+2. END IMMEDIATELY with }} (closing brace)
+3. NO explanatory text before the JSON
+4. NO explanatory text after the JSON
+5. NO markdown formatting (no ```json or ``` tags)
+6. NO additional commentary or notes
+7. ONLY properly escaped JSON strings in values
+8. USE double quotes for all string values (not single quotes)
+9. ESCAPE special characters in strings: \" for quotes, \\ for backslashes, \n for newlines
+10. ENSURE all values are JSON-safe primitive types (string, number, boolean, null, array, object)
+11. For complex data in test inputs/outputs:
+    - Use null instead of None
+    - Use true/false instead of True/False
+    - Use numbers directly, not string representations
+    - For infinity, use the string "Infinity" instead of float('inf')
+    - For tuples in expected output, use arrays [1, 2] instead of (1, 2)
+12. Double-escape braces in format strings: {{{{ and }}}}
+
+INVALID EXAMPLE (DO NOT DO THIS):
+```json
+{{
+  "function_to_test": "test_func",
+  "test_cases": [...]
+}}
+```
+
+INVALID EXAMPLE (DO NOT DO THIS):
+Here are the test cases:
+{{
+  "function_to_test": "test_func", 
+  "test_cases": [...]
+}}
+
+VALID EXAMPLE (DO THIS):
 {{
   "function_to_test": "isMatch",
   "test_cases": [
     {{
       "test_case_name": "test_exact_match_simple",
       "inputs": {{"s": "aa", "p": "aa"}},
-      "expected_output": True
-    }},
-    {{
-      "test_case_name": "test_star_matches_zero_elements",
-      "inputs": {{"s": "a", "p": "ab*a"}},
-      "expected_output": True 
-    }},
-    {{
-      "test_case_name": "test_dot_matches_any_char",
-      "inputs": {{"s": "ab", "p": ".b"}},
-      "expected_output": True
-    }},
-    {{
-      "test_case_name": "test_complex_pattern_fail",
-      "inputs": {{"s": "mississippi", "p": "mis*is*p*."}},
-      "expected_output": False
+      "expected_output": true
     }},
     {{
       "test_case_name": "test_empty_string_empty_pattern",
       "inputs": {{"s": "", "p": ""}},
-      "expected_output": True
-    }},
-    {{
-      "test_case_name": "test_empty_string_with_star_pattern",
-      "inputs": {{"s": "", "p": "a*"}},
-      "expected_output": True
+      "expected_output": true
     }}
   ]
 }}
+
+Your response must be parseable by JSON.parse() without any preprocessing.
 """
 
 # EXTREMELY BAD EXECUTOR PROMPTS FOR TESTING
