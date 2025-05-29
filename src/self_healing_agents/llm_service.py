@@ -36,7 +36,7 @@ class LLMService:
         provider: SUPPORTED_PROVIDERS_LITERAL,
         model_name: str,
         api_key: str = None,
-        temperature: float = 0.7,
+        temperature: float = 0.0,
         max_tokens: int = 1024,
         # base_url: str = None, # Useful for self-hosted or non-standard OpenAI-compatible APIs
     ):
@@ -141,7 +141,8 @@ class LLMService:
                 # For a simpler approach here, we'll just invoke and try to parse.
                 # A more robust way is to pass a Pydantic model to with_structured_output.
                 # For now, this is a basic implementation.
-                response = self._client.invoke(lc_messages)
+                # TODO: Use the .with_structured_output() method if the Langchain model supports Pydantic models or JSON schema.
+                response = self._client.invoke(lc_messages) 
                 content = response.content
                 if isinstance(content, str):
                     import json

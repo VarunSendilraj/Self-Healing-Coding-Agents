@@ -1,16 +1,8 @@
-2025-05-22 21:50:43,678 - self_healing_agents.evaluation.enhanced_harness - INFO - Starting Enhanced Evaluation Harness at 2025-05-22 21:50:43
-2025-05-22 21:50:43,679 - self_healing_agents.evaluation.enhanced_harness - INFO - Using LLM provider: deepseek, model: deepseek-coder
-2025-05-22 21:50:43,831 - self_healing_agents.evaluation.enhanced_harness - INFO - LLM service initialized successfully.
-2025-05-22 21:50:43,831 - self_healing_agents.evaluation.enhanced_harness - INFO - 🏗️  CREATING AGENTS...
-2025-05-22 21:50:43,831 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ PLANNER CREATED: Planner
-2025-05-22 21:50:43,832 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ EXECUTOR CREATED: Executor with initial system_prompt: 'You are a complete beginner at Python who makes lots of mistakes. Write broken Python code with thes...'
-2025-05-22 21:50:43,832 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ CRITIC CREATED: Critic
-2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - Agents initialized successfully.
-2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - --- Starting Task: [95mWildcard Matching[0m ---
-2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - Description: [96mGiven an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*' where:
+2025-05-23 21:49:02,692 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - --- Starting Enhanced Multi-Agent Task: [95mcomplex_data_processing[0m ---
+2025-05-23 21:49:02,694 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Description: [96mGiven an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
 
-'?' Matches any single character.
-'*' Matches any sequence of characters (including the empty sequence).
+'.' Matches any single character.
+'*' Matches zero or more of the preceding element.
 The matching should cover the entire input string (not partial).
 
 Example 1:
@@ -19,251 +11,529 @@ Output: false
 Explanation: "a" does not match the entire string "aa".
 
 Example 2:
-Input: s = "aa", p = "*"
+Input: s = "aa", p = "a*"
 Output: true
-Explanation: '*' matches any sequence.
+Explanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes "aa".
 
 Example 3:
-Input: s = "cb", p = "?a"
-Output: false
-Explanation: '?' matches 'c', but the second letter is 'a', which does not match 'b'.
+Input: s = "ab", p = ".*"
+Output: true
+Explanation: ".*" means "zero or more (*) of any character (.)".
 
-            [0m
-2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are a complete beginner at Python who makes lots of mistakes. Write broken Python code with thes...
-2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - ✅ EXECUTOR PROMPT SET TO: You are a complete beginner at Python who makes lots of mistakes. Write broken Python code with thes...
-2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - 
-=== PHASE 1: Initial Run with Direct Fix for Task '[94mWildcard Matching[0m' ===
-2025-05-22 21:50:43,833 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  1. Planning:[0m
-2025-05-22 21:50:44,412 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-22 21:50:58,306 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mPlanner Output:[0m
-{'plan_steps': ['Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching results.', 'Set DP[0][0] to True since empty string matches empty pattern.', "Handle the case where pattern starts with '*' by setting DP[0][j] to True for all '*' prefixes in the pattern.", 'Iterate through each character in the string and pattern to fill the DP table.', "For each character in the string and pattern, check if the current pattern character is '?', '*', or a regular character.", "If the current pattern character is '?', match it with any single character in the string.", "If the current pattern character is '*', consider it matching zero or more characters in the string.", 'If the current pattern character is a regular character, check for an exact match with the string character.', 'Update the DP table based on the matching conditions above.', 'Return the value in DP[len(s)][len(p)] which indicates if the entire string matches the entire pattern.']}
-2025-05-22 21:50:58,306 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  2. Execution:[0m
-2025-05-22 21:50:58,598 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-22 21:51:12,280 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mExecutor Output (initial code):[0m
+Constraints:
+1 <= s.length <= 20
+1 <= p.length <= 20
+s contains only lowercase English letters.
+p contains only lowercase English letters, '.', and '*'.
+It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.[0m
+2025-05-23 21:49:02,696 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 🔧 SETTING INITIAL EXECUTOR PROMPT: You are an AI Python programmer. Output only the raw Python code....
+2025-05-23 21:49:02,696 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+=== PHASE 1: Initial Planning and Validation for Task '[94mcomplex_data_processing[0m' ===
+2025-05-23 21:49:02,696 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Planning:[0m
+2025-05-23 21:49:03,088 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:49:09,001 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlanner Output:[0m
+{'plan_steps': ['Check the strings somehow', 'Handle the dots and stars in a way', 'Maybe compare characters or something', 'Return true or false based on if it matches', "Don't forget about edge cases, maybe"]}
+2025-05-23 21:49:09,001 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Plan Validation:[0m
+2025-05-23 21:49:09,004 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Starting plan quality assessment...
+2025-05-23 21:49:09,005 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Quality Score: 0.79
+2025-05-23 21:49:09,005 - self_healing_agents.classifiers.plan_validator - INFO - 📋 PLAN VALIDATION: Valid: True
+2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mPlan Quality Score:[0m 0.79
+2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mPlan Valid:[0m True
+2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - WARNING -     [93mPlan Warnings:[0m ["Missing recommended fields: ['requirements', 'approach']", "Plan may not address: ['input handling', 'output specification']"]
+2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+=== PHASE 2: Execution and Initial Evaluation ===
+2025-05-23 21:49:09,005 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Execution:[0m
+2025-05-23 21:49:09,300 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:49:18,846 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mExecutor Output (initial code):[0m
 ```python
-def isMatch(s, p):
-    i = 0
-    j = 0
-    star = -1
-    match = 0
-    
-    while i < len(s):
-        if j < len(p) and (p[j] == '?' or p[j] == s[i]):
-            i += 1
-            j += 1
-        elif j < len(p) and p[j] == '*':
-            star = j
-            match = i
-            j += 1
-        elif star != -1:
-            j = star + 1
-            match += 1
-            i = match
-        else:
-            return False
-    
-    while j < len(p) and p[j] == '*':
-        j += 1
-    
-    return j = len(p)
+def isMatch(s: str, p: str) -> bool:
+    memo = {}
 
-def main():
-    print(isMatch("aa", "a"))  # Should be False
-    print(isMatch("aa", "*"))  # Should be True
-    print(isMatch("cb", "?a")) # Should be False
+    def dp(i, j):
+        if (i, j) not in memo:
+            if j == len(p):
+                ans = i == len(s)
+            else:
+                first_match = i < len(s) and p[j] in {s[i], '.'}
+                if j + 1 < len(p) and p[j+1] == '*':
+                    ans = dp(i, j+2) or (first_match and dp(i+1, j))
+                else:
+                    ans = first_match and dp(i+1, j+1)
+            memo[(i, j)] = ans
+        return memo[(i, j)]
 
-if __name__ == "__main__":
-    main()
+    return dp(0, 0)
 ```
-2025-05-22 21:51:12,280 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  3. Initial Evaluation:[0m
-2025-05-22 21:51:12,582 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-22 21:51:35,698 - self_healing_agents.evaluation.enhanced_harness - INFO -     Critique Keys: dict_keys(['status', 'score', 'summary', 'error_details', 'test_results', 'generated_code_for_report', 'execution_time_ms', 'memory_usage_mb', 'recommendations'])
-2025-05-22 21:51:35,698 - self_healing_agents.evaluation.enhanced_harness - INFO -     [96mFull Initial Critique:[0m
-{'status': 'FAILURE_EVALUATION', 'score': 0.0, 'summary': 'Failed 10 out of 10 test cases.', 'error_details': '', 'test_results': [{'test_case': 1, 'passed': False, 'input': {'s': 'aa', 'p': 'aa'}, 'expected': True, 'actual': None, 'execution_time_ms': 3.39, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 2, 'passed': False, 'input': {'s': 'aa', 'p': '*'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.93, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 3, 'passed': False, 'input': {'s': 'cb', 'p': '?b'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.96, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 4, 'passed': False, 'input': {'s': 'a', 'p': 'a*'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.98, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 5, 'passed': False, 'input': {'s': '', 'p': ''}, 'expected': True, 'actual': None, 'execution_time_ms': 2.98, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 6, 'passed': False, 'input': {'s': '', 'p': '*'}, 'expected': True, 'actual': None, 'execution_time_ms': 3.01, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 7, 'passed': False, 'input': {'s': 'aa', 'p': ''}, 'expected': False, 'actual': None, 'execution_time_ms': 2.95, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 8, 'passed': False, 'input': {'s': 'abcde', 'p': 'a*e'}, 'expected': True, 'actual': None, 'execution_time_ms': 3.01, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 9, 'passed': False, 'input': {'s': 'abc', 'p': 'a?c'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.99, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}, {'test_case': 10, 'passed': False, 'input': {'s': 'abc', 'p': 'a?*'}, 'expected': True, 'actual': None, 'execution_time_ms': 2.92, 'error': 'SyntaxError', 'stdout': '', 'stderr': ''}], 'generated_code_for_report': '```python\ndef isMatch(s, p):\n    i = 0\n    j = 0\n    star = -1\n    match = 0\n    \n    while i < len(s):\n        if j < len(p) and (p[j] == \'?\' or p[j] == s[i]):\n            i += 1\n            j += 1\n        elif j < len(p) and p[j] == \'*\':\n            star = j\n            match = i\n            j += 1\n        elif star != -1:\n            j = star + 1\n            match += 1\n            i = match\n        else:\n            return False\n    \n    while j < len(p) and p[j] == \'*\':\n        j += 1\n    \n    return j = len(p)\n\ndef main():\n    print(isMatch("aa", "a"))  # Should be False\n    print(isMatch("aa", "*"))  # Should be True\n    print(isMatch("cb", "?a")) # Should be False\n\nif __name__ == "__main__":\n    main()\n```', 'execution_time_ms': 0, 'memory_usage_mb': 0, 'recommendations': []}
-2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mCritic Status:[0m FAILURE_EVALUATION
-2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mCritic Score:[0m 0.0
-2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO - [95m  4. Direct Fix Attempt:[0m
-2025-05-22 21:51:35,699 - self_healing_agents.evaluation.enhanced_harness - INFO -     Attempting direct fix of code based on error report...
-2025-05-22 21:51:35,991 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-05-22 21:51:49,400 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mDirect Fix Output:[0m
+2025-05-23 21:49:18,846 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  4. Initial Evaluation:[0m
+2025-05-23 21:49:19,164 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:49:40,871 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFull Initial Critique:[0m
+{'status': 'FAILURE_LOGIC', 'score': 0.65, 'execution_stdout': 'DEBUG: About to execute code:\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i == len(s)\n            else:\n                fir...\n', 'execution_stderr': '', 'error_details': None, 'test_results': [{'name': 'test_exact_match_simple', 'inputs': {'s': 'aa', 'p': 'aa'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_exact_match_simple\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aa', p='aa'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_exact_match_simple\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_star_matches_zero_elements', 'inputs': {'s': 'a', 'p': 'ab*a'}, 'expected_output_spec': True, 'status': 'failed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_star_matches_zero_elements\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='a', p='ab*a'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_star_matches_zero_elements\ntest_passed=False\nactual_output=False\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=Expected: True, Got: False\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': 'Expected: True, Got: False'}, {'name': 'test_dot_matches_any_char', 'inputs': {'s': 'ab', 'p': '.b'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_dot_matches_any_char\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='ab', p='.b'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_dot_matches_any_char\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_complex_pattern_fail', 'inputs': {'s': 'mississippi', 'p': 'mis*is*p*.'}, 'expected_output_spec': False, 'status': 'passed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_complex_pattern_fail\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='mississippi', p='mis*is*p*.'\nDEBUG_TEST_SCRIPT: Expected output: False\n__TEST_RESULT_START__\ntest_case_name=test_complex_pattern_fail\ntest_passed=True\nactual_output=False\nexpected_output=False\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_empty_string_empty_pattern', 'inputs': {'s': '', 'p': ''}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_empty_string_empty_pattern\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='', p=''\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_empty_string_empty_pattern\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_empty_string_with_star_pattern', 'inputs': {'s': '', 'p': 'a*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_empty_string_with_star_pattern\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='', p='a*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_empty_string_with_star_pattern\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_star_matches_multiple_elements', 'inputs': {'s': 'aaa', 'p': 'a*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_star_matches_multiple_elements\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aaa', p='a*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_star_matches_multiple_elements\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_dot_star_matches_any_string', 'inputs': {'s': 'abc', 'p': '.*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_dot_star_matches_any_string\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='abc', p='.*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_dot_star_matches_any_string\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_partial_match_fails', 'inputs': {'s': 'aab', 'p': 'a'}, 'expected_output_spec': False, 'status': 'passed', 'actual_output': 'False', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_partial_match_fails\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='aab', p='a'\nDEBUG_TEST_SCRIPT: Expected output: False\n__TEST_RESULT_START__\ntest_case_name=test_partial_match_fails\ntest_passed=True\nactual_output=False\nexpected_output=False\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}, {'name': 'test_pattern_longer_than_string', 'inputs': {'s': 'a', 'p': 'a*b*c*'}, 'expected_output_spec': True, 'status': 'passed', 'actual_output': 'True', 'stdout': "DEBUG: About to execute code:\n# --- Start of Generated Code from Executor ---\ndef isMatch(s: str, p: str) -> bool:\n    memo = {}\n\n    def dp(i, j):\n        if (i, j) not in memo:\n            if j == len(p):\n                ans = i...\nDEBUG_TEST_SCRIPT: Executing test: test_pattern_longer_than_string\nDEBUG_TEST_SCRIPT: Inputs prepared as: s='a', p='a*b*c*'\nDEBUG_TEST_SCRIPT: Expected output: True\n__TEST_RESULT_START__\ntest_case_name=test_pattern_longer_than_string\ntest_passed=True\nactual_output=True\nexpected_output=True\nerror_occurred=False\nerror_message=\ncomparison_error_message=\n__TEST_RESULT_END__\n", 'stderr': '', 'error_message': ''}], 'generated_test_specifications': [{'test_case_name': 'test_exact_match_simple', 'inputs': {'s': 'aa', 'p': 'aa'}, 'expected_output': True}, {'test_case_name': 'test_star_matches_zero_elements', 'inputs': {'s': 'a', 'p': 'ab*a'}, 'expected_output': True}, {'test_case_name': 'test_dot_matches_any_char', 'inputs': {'s': 'ab', 'p': '.b'}, 'expected_output': True}, {'test_case_name': 'test_complex_pattern_fail', 'inputs': {'s': 'mississippi', 'p': 'mis*is*p*.'}, 'expected_output': False}, {'test_case_name': 'test_empty_string_empty_pattern', 'inputs': {'s': '', 'p': ''}, 'expected_output': True}, {'test_case_name': 'test_empty_string_with_star_pattern', 'inputs': {'s': '', 'p': 'a*'}, 'expected_output': True}, {'test_case_name': 'test_star_matches_multiple_elements', 'inputs': {'s': 'aaa', 'p': 'a*'}, 'expected_output': True}, {'test_case_name': 'test_dot_star_matches_any_string', 'inputs': {'s': 'abc', 'p': '.*'}, 'expected_output': True}, {'test_case_name': 'test_partial_match_fails', 'inputs': {'s': 'aab', 'p': 'a'}, 'expected_output': False}, {'test_case_name': 'test_pattern_longer_than_string', 'inputs': {'s': 'a', 'p': 'a*b*c*'}, 'expected_output': True}], 'function_to_test': 'isMatch', 'summary': "Code executed successfully, but 1/10 tests failed for function 'isMatch'."}
+2025-05-23 21:49:40,871 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Status:[0m FAILURE_LOGIC
+2025-05-23 21:49:40,871 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mCritic Score:[0m 0.65
+2025-05-23 21:49:40,881 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+=== PHASE 3: Direct Fix Attempt ===
+2025-05-23 21:49:40,881 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  Direct Fix Attempt:[0m
+2025-05-23 21:49:41,170 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:49:51,772 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Output:[0m
 ```python
-def isMatch(s, p):
-    i = 0
-    j = 0
-    star = -1
-    match = 0
-    
-    while i < len(s):
-        if j < len(p) and (p[j] == '?' or p[j] == s[i]):
-            i += 1
-            j += 1
-        elif j < len(p) and p[j] == '*':
-            star = j
-            match = i
-            j += 1
-        elif star != -1:
-            j = star + 1
-            match += 1
-            i = match
+def isMatch(s: str, p: str) -> bool:
+    memo = {}
+
+    def dp(i, j):
+        if (i, j) in memo:
+            return memo[(i, j)]
+        if j == len(p):
+            ans = i == len(s)
         else:
-            return False
-    
-    while j < len(p) and p[j] == '*':
-        j += 1
-    
-    return j == len(p)
+            first_match = i < len(s) and p[j] in {s[i], '.'}
+            if j + 1 < len(p) and p[j+1] == '*':
+                ans = dp(i, j+2) or (first_match and dp(i+1, j))
+            else:
+                ans = first_match and dp(i+1, j+1)
+        memo[(i, j)] = ans
+        return ans
 
-def main():
-    print(isMatch("aa", "a"))  # Should be False
-    print(isMatch("aa", "*"))  # Should be True
-    print(isMatch("cb", "?a")) # Should be False
-
-if __name__ == "__main__":
-    main()
+    return dp(0, 0)
 ```
-2025-05-22 21:51:49,400 - self_healing_agents.evaluation.enhanced_harness - INFO -     Re-evaluating directly fixed code...
-2025-05-22 21:51:49,785 - self_healing_agents.evaluation.enhanced_harness - INFO -     [96mFull Direct Fix Critique:[0m
-{'status': 'SUCCESS', 'score': 1.0, 'summary': 'All 10 test cases passed successfully.', 'error_details': '', 'test_results': [{'test_case': 1, 'passed': True, 'input': {'s': 'aa', 'p': 'aa'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 2, 'passed': True, 'input': {'s': 'aa', 'p': '*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.39, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 3, 'passed': True, 'input': {'s': 'cb', 'p': '?b'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 4, 'passed': True, 'input': {'s': 'a', 'p': 'a*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 5, 'passed': True, 'input': {'s': '', 'p': ''}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 6, 'passed': True, 'input': {'s': '', 'p': '*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 7, 'passed': True, 'input': {'s': 'aa', 'p': ''}, 'expected': False, 'actual': False, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'False\n', 'stderr': ''}, {'test_case': 8, 'passed': True, 'input': {'s': 'abcde', 'p': 'a*e'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.38, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 9, 'passed': True, 'input': {'s': 'abc', 'p': 'a?c'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'True\n', 'stderr': ''}, {'test_case': 10, 'passed': True, 'input': {'s': 'abc', 'p': 'a?*'}, 'expected': True, 'actual': True, 'execution_time_ms': 0.37, 'error': None, 'stdout': 'True\n', 'stderr': ''}], 'generated_code_for_report': '```python\ndef isMatch(s, p):\n    i = 0\n    j = 0\n    star = -1\n    match = 0\n    \n    while i < len(s):\n        if j < len(p) and (p[j] == \'?\' or p[j] == s[i]):\n            i += 1\n            j += 1\n        elif j < len(p) and p[j] == \'*\':\n            star = j\n            match = i\n            j += 1\n        elif star != -1:\n            j = star + 1\n            match += 1\n            i = match\n        else:\n            return False\n    \n    while j < len(p) and p[j] == \'*\':\n        j += 1\n    \n    return j == len(p)\n\ndef main():\n    print(isMatch("aa", "a"))  # Should be False\n    print(isMatch("aa", "*"))  # Should be True\n    print(isMatch("cb", "?a")) # Should be False\n\nif __name__ == "__main__":\n    main()\n```', 'execution_time_ms': 0, 'memory_usage_mb': 0, 'recommendations': []}
-2025-05-22 21:51:49,786 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mDirect Fix Status:[0m SUCCESS
-2025-05-22 21:51:49,786 - self_healing_agents.evaluation.enhanced_harness - INFO -     [92mDirect Fix Score:[0m 1.0
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - [92m  Direct fix successful! No need for self-healing.[0m
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - ERROR - [91m    ERROR: Unhandled generic exception during task execution: type object 'TermColors' has no attribute 'YELLOW'[0m
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - 
+2025-05-23 21:49:52,094 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:50:13,139 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Status:[0m FAILURE_LOGIC
+2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mDirect Fix Score:[0m 0.6
+2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+=== PHASE 4: Enhanced Multi-Agent Self-Healing ===
+2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+----- Healing Iteration 1/3 -----
+2025-05-23 21:50:13,140 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
+2025-05-23 21:50:13,140 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
+2025-05-23 21:50:13,450 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:50:35,490 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
+2025-05-23 21:50:35,491 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
+2025-05-23 21:50:35,491 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
+2025-05-23 21:50:35,491 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
+2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan is extremely vague and lacks any specific algorithmic approach or detailed steps to solve the regex matching problem
+2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan doesn't mention dynamic programming or memoization, which are key to solving this problem efficiently
+2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan fails to address critical edge cases and specific handling of '*' and '.' characters
+2025-05-23 21:50:35,492 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - While the implementation has some issues, they stem from following an inadequate plan rather than being pure execution errors
+2025-05-23 21:50:35,492 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
+2025-05-23 21:50:35,492 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
+2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
+2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
+2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan is extremely vague and lacks any specific algorithmic approach or detailed steps to solve the regex matching problem
+2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan doesn't mention dynamic programming or memoization, which are key to solving this problem efficiently
+2025-05-23 21:50:35,494 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan fails to address critical edge cases and specific handling of '*' and '.' characters
+2025-05-23 21:50:35,495 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - While the implementation has some issues, they stem from following an inadequate plan rather than being pure execution errors
+2025-05-23 21:50:35,495 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
+2025-05-23 21:50:35,495 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
+2025-05-23 21:50:35,788 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:51:04,984 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's the improved plan that addresses the deficiencies in the original plan:
+
+```json
+{
+  "steps": [
+    {
+      "step": 1,
+      "description": "Understand the problem requirements and constraints",
+      "details": [
+        "Need to implement full string matching (not partial)",
+        "Special characters: '.' matches any single character, '*' matches zero or more of preceding element",
+        "Both strings have length constraints (1-20)",
+        "Input strings have specific character restrictions"
+      ]
+    },
+    {
+      "step": 2,
+      "description": "Design a recursive solution approach",
+      "details": [
+        "Base case: if pattern is empty, return whether string is empty",
+        "Check first character match (direct match or '.')",
+        "Handle '*' cases: either skip the pattern (zero matches) or keep matching (one or more matches)",
+        "For non-'*' cases, simply move to next character in both strings"
+      ]
+    },
+    {
+      "step": 3,
+      "description": "Implement memoization for efficiency",
+      "details": [
+        "Create a memoization table to store already computed results",
+        "Key memoization by current string and pattern indices",
+        "Check memo table before computing to avoid redundant work"
+      ]
+    },
+    {
+      "step": 4,
+      "description": "Handle edge cases",
+      "details": [
+        "Empty string with empty pattern (should match)",
+        "Empty string with non-empty pattern (might match if pattern can match zero characters)",
+        "Single character matches with '.'",
+        "Multiple '*' patterns in sequence"
+      ]
+    },
+    {
+      "step": 5,
+      "description": "Implement the solution",
+      "details": [
+        "Write the recursive matching function",
+        "Add memoization logic",
+        "Handle all special cases in the implementation"
+      ]
+    },
+    {
+      "step": 6,
+      "description": "Test the implementation",
+      "details": [
+        "Test with provided examples",
+        "Test edge cases",
+        "Test with various combinations of '.' and '*'"
+      ]
+    }
+  ],
+  "requirements": [
+    "Python (or language of choice)",
+    "Memoization data structure (dictionary or 2D array)"
+  ],
+  "approach": "Use recursive backtracking with memoization to handle the pattern matching, carefully considering all special cases for '.' and '*' characters. The solution will check all possible ways the pattern could match the string by exploring both zero and one-or-more matches for '*' patterns.",
+  "improvements_made": [
+    "Added specific technical details about how to handle pattern matching",
+    "Included memoization strategy for efficiency",
+    "Detailed edge case handling",
+    "Broken down into clear implementation steps",
+    "Added requirements section",
+    "Provided high-level approach description",
+    "Made each step actionable and specific"
+  ]
+}
+``` (Original: Here's the improved plan that addresses the deficiencies in the original plan:
+
+```json
+{
+  "steps": [
+    {
+      "step": 1,
+      "description": "Understand the problem requirements and constraints",
+      "details": [
+        "Need to implement full string matching (not partial)",
+        "Special characters: '.' matches any single character, '*' matches zero or more of preceding element",
+        "Both strings have length constraints (1-20)",
+        "Input strings have specific character restrictions"
+      ]
+    },
+    {
+      "step": 2,
+      "description": "Design a recursive solution approach",
+      "details": [
+        "Base case: if pattern is empty, return whether string is empty",
+        "Check first character match (direct match or '.')",
+        "Handle '*' cases: either skip the pattern (zero matches) or keep matching (one or more matches)",
+        "For non-'*' cases, simply move to next character in both strings"
+      ]
+    },
+    {
+      "step": 3,
+      "description": "Implement memoization for efficiency",
+      "details": [
+        "Create a memoization table to store already computed results",
+        "Key memoization by current string and pattern indices",
+        "Check memo table before computing to avoid redundant work"
+      ]
+    },
+    {
+      "step": 4,
+      "description": "Handle edge cases",
+      "details": [
+        "Empty string with empty pattern (should match)",
+        "Empty string with non-empty pattern (might match if pattern can match zero characters)",
+        "Single character matches with '.'",
+        "Multiple '*' patterns in sequence"
+      ]
+    },
+    {
+      "step": 5,
+      "description": "Implement the solution",
+      "details": [
+        "Write the recursive matching function",
+        "Add memoization logic",
+        "Handle all special cases in the implementation"
+      ]
+    },
+    {
+      "step": 6,
+      "description": "Test the implementation",
+      "details": [
+        "Test with provided examples",
+        "Test edge cases",
+        "Test with various combinations of '.' and '*'"
+      ]
+    }
+  ],
+  "requirements": [
+    "Python (or language of choice)",
+    "Memoization data structure (dictionary or 2D array)"
+  ],
+  "approach": "Use recursive backtracking with memoization to handle the pattern matching, carefully considering all special cases for '.' and '*' characters. The solution will check all possible ways the pattern could match the string by exploring both zero and one-or-more matches for '*' patterns.",
+  "improvements_made": [
+    "Added specific technical details about how to handle pattern matching",
+    "Included memoization strategy for efficiency",
+    "Detailed edge case handling",
+    "Broken down into clear implementation steps",
+    "Added requirements section",
+    "Provided high-level approach description",
+    "Made each step actionable and specific"
+  ]
+}
+```)
+2025-05-23 21:51:04,984 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
+{'steps': ['Implement step: Check the strings somehow', 'Implement step: Handle the dots and stars in a way', 'Implement step: Maybe compare characters or something', 'Implement step: Return true or false based on if it matches', "Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
+2025-05-23 21:51:04,984 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
+2025-05-23 21:51:05,288 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:51:18,096 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:51:42,680 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
+2025-05-23 21:51:42,681 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
+2025-05-23 21:51:42,681 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+----- Healing Iteration 2/3 -----
+2025-05-23 21:51:42,684 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
+2025-05-23 21:51:42,684 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
+2025-05-23 21:51:42,977 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:52:02,054 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
+2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
+2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
+2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
+2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching
+2025-05-23 21:52:02,055 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - Key requirements like handling '*' and '.' patterns are not properly addressed in the planning steps
+2025-05-23 21:52:02,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan suggests 'check the strings somehow' and 'handle the dots and stars in a way' which are not actionable instructions
+2025-05-23 21:52:02,056 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The test failures show incorrect handling of star patterns and character matching, which stems from inadequate planning
+2025-05-23 21:52:02,056 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
+2025-05-23 21:52:02,056 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
+2025-05-23 21:52:02,056 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
+2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
+2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's output is extremely vague and lacks specific guidance for implementing regular expression matching
+2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - Key requirements like handling '*' and '.' patterns are not properly addressed in the planning steps
+2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan suggests 'check the strings somehow' and 'handle the dots and stars in a way' which are not actionable instructions
+2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The test failures show incorrect handling of star patterns and character matching, which stems from inadequate planning
+2025-05-23 21:52:02,057 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
+2025-05-23 21:52:02,057 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
+2025-05-23 21:52:02,350 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:52:31,654 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
+
+```json
+{
+  "steps": [
+    "1. Define a function `isMatch(s: str, p: str) -> bool` that implements the regex matching",
+    "2. Implement dynamic programming approach with a 2D table dp[i][j] where dp[i][j] is True if s[0..i] matches p[0..j]",
+    "3. Initialize dp[0][0] = True (empty string matches empty pattern)",
+    "4. Handle initialization of first row (empty string case) accounting for patterns with '*' that can match zero characters",
+    "5. Fill the DP table by comparing characters and handling special cases:",
+    "   a. If p[j] == s[i] or p[j] == '.': dp[i][j] = dp[i-1][j-1]",
+    "   b. If p[j] == '*':",
+    "      i. Consider zero occurrences: dp[i][j] = dp[i][j-2]",
+    "      ii. Consider one or more occurrences if preceding character matches: dp[i][j] = dp[i][j] or (dp[i-1][j] if s[i] == p[j-1] or p[j-1] == '.')",
+    "6. Return dp[len(s)][len(p)] as the final result",
+    "7. Add test cases to verify implementation:",
+    "   a. Exact matches",
+    "   b. '.' matches",
+    "   c. '*' matches with zero and multiple repetitions",
+    "   d. Edge cases (empty string, patterns ending with '*')"
+  ],
+  "requirements": [
+    "No special imports needed for basic implementation",
+    "Python 3.x for type hints"
+  ],
+  "approach": "Dynamic programming solution that builds a 2D table to store intermediate match results, handling all special cases systematically",
+  "improvements_made": [
+    "Replaced vague steps with specific DP implementation details",
+    "Added clear initialization and filling procedures",
+    "Included detailed handling of '*' cases",
+    "Added test case considerations",
+    "Specified exact matching conditions",
+    "Provided complete solution approach"
+  ]
+}
+```
+
+Key improvements:
+1. Specific algorithm choice (dynamic programming) with clear implementation steps
+2. Detailed handling of all special cases ('.', '*')
+3. Clear initialization and table filling procedures
+4. Complete solution approach that covers all edge cases
+5. Added test case considerations to verify implementation
+6. Removed vague language and replaced with concrete implementation details
+
+This plan provides enough detail to directly implement a working solution while maintaining flexibility for optimization or alternative approaches. (Original: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
+
+```json
+{
+  "steps": [
+    "1. Define a function `isMatch(s: str, p: str) -> bool` that implements the regex matching",
+    "2. Implement dynamic programming approach with a 2D table dp[i][j] where dp[i][j] is True if s[0..i] matches p[0..j]",
+    "3. Initialize dp[0][0] = True (empty string matches empty pattern)",
+    "4. Handle initialization of first row (empty string case) accounting for patterns with '*' that can match zero characters",
+    "5. Fill the DP table by comparing characters and handling special cases:",
+    "   a. If p[j] == s[i] or p[j] == '.': dp[i][j] = dp[i-1][j-1]",
+    "   b. If p[j] == '*':",
+    "      i. Consider zero occurrences: dp[i][j] = dp[i][j-2]",
+    "      ii. Consider one or more occurrences if preceding character matches: dp[i][j] = dp[i][j] or (dp[i-1][j] if s[i] == p[j-1] or p[j-1] == '.')",
+    "6. Return dp[len(s)][len(p)] as the final result",
+    "7. Add test cases to verify implementation:",
+    "   a. Exact matches",
+    "   b. '.' matches",
+    "   c. '*' matches with zero and multiple repetitions",
+    "   d. Edge cases (empty string, patterns ending with '*')"
+  ],
+  "requirements": [
+    "No special imports needed for basic implementation",
+    "Python 3.x for type hints"
+  ],
+  "approach": "Dynamic programming solution that builds a 2D table to store intermediate match results, handling all special cases systematically",
+  "improvements_made": [
+    "Replaced vague steps with specific DP implementation details",
+    "Added clear initialization and filling procedures",
+    "Included detailed handling of '*' cases",
+    "Added test case considerations",
+    "Specified exact matching conditions",
+    "Provided complete solution approach"
+  ]
+}
+```
+
+Key improvements:
+1. Specific algorithm choice (dynamic programming) with clear implementation steps
+2. Detailed handling of all special cases ('.', '*')
+3. Clear initialization and table filling procedures
+4. Complete solution approach that covers all edge cases
+5. Added test case considerations to verify implementation
+6. Removed vague language and replaced with concrete implementation details
+
+This plan provides enough detail to directly implement a working solution while maintaining flexibility for optimization or alternative approaches.)
+2025-05-23 21:52:31,654 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
+{'steps': ['Implement step: Implement step: Check the strings somehow', 'Implement step: Implement step: Handle the dots and stars in a way', 'Implement step: Implement step: Maybe compare characters or something', 'Implement step: Implement step: Return true or false based on if it matches', "Implement step: Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
+2025-05-23 21:52:31,658 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
+2025-05-23 21:52:31,941 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:52:43,851 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:53:05,821 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
+2025-05-23 21:53:05,822 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
+2025-05-23 21:53:05,822 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
+----- Healing Iteration 3/3 -----
+2025-05-23 21:53:05,823 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  1. Failure Classification:[0m
+2025-05-23 21:53:05,823 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🤖 LLM FAILURE CLASSIFICATION: Starting LLM-based failure analysis...
+2025-05-23 21:53:06,128 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 LLM CLASSIFICATION: PLANNING_FAILURE
+2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 CONFIDENCE: 0.90
+2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 RECOMMENDED TARGET: PLANNER
+2025-05-23 21:53:24,944 - self_healing_agents.classifiers.llm_failure_classifier - INFO - 🎯 REASONING:
+2025-05-23 21:53:24,947 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The planner's output is extremely vague and lacks any specific algorithmic approach or detailed steps for implementing regular expression matching
+2025-05-23 21:53:24,947 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The plan contains redundant phrases like 'Implement step: Implement step:' and provides no concrete guidance on how to handle pattern matching cases
+2025-05-23 21:53:24,948 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - Despite the vague plan, the executor produced a reasonable implementation using memoization and recursion, suggesting the execution was not the primary issue
+2025-05-23 21:53:24,948 - self_healing_agents.classifiers.llm_failure_classifier - INFO -    - The test failures indicate logical errors in pattern matching (star operator and character matching), which stem from inadequate planning of the matching algorithm
+2025-05-23 21:53:24,948 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mFailure Type:[0m PLANNING_FAILURE
+2025-05-23 21:53:24,948 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mConfidence:[0m 0.90
+2025-05-23 21:53:24,948 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [96mRecommended Target:[0m PLANNER
+2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [93mLLM Reasoning:[0m
+2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The planner's output is extremely vague and lacks any specific algorithmic approach or detailed steps for implementing regular expression matching
+2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The plan contains redundant phrases like 'Implement step: Implement step:' and provides no concrete guidance on how to handle pattern matching cases
+2025-05-23 21:53:24,949 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - Despite the vague plan, the executor produced a reasonable implementation using memoization and recursion, suggesting the execution was not the primary issue
+2025-05-23 21:53:24,950 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -       - The test failures indicate logical errors in pattern matching (star operator and character matching), which stem from inadequate planning of the matching algorithm
+2025-05-23 21:53:24,950 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  2. Planner Healing:[0m
+2025-05-23 21:53:24,950 - self_healing_agents.agents - INFO - 🔧 PLANNER SELF-HEALING: Generating improved plan...
+2025-05-23 21:53:25,248 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:53:52,596 - self_healing_agents.agents - ERROR - Error in planner self-healing: Error invoking LLM provider deepseek: Failed to parse LLM output as JSON: Expecting value: line 1 column 1 (char 0). Raw output: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
+
+```json
+{
+  "steps": [
+    "1. Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching states",
+    "2. Set DP[0][0] = True (empty string matches empty pattern)",
+    "3. Handle the initial row (empty string) by checking for patterns with '*' that can match empty string",
+    "4. Iterate through the DP table row by row (string characters) and column by column (pattern characters):",
+    "   a. If current pattern character is '*':",
+    "      i. Check for zero occurrences of preceding character (DP[i][j-2])",
+    "      ii. Check for one or more occurrences if preceding character matches (DP[i-1][j] and (s[i-1] == p[j-2] or p[j-2] == '.'))",
+    "   b. Else if current pattern character is '.' or matches current string character:",
+    "      i. Carry over the match from previous state (DP[i-1][j-1])",
+    "5. The result will be in DP[len(s)][len(p)]",
+    "6. Return the final matching result"
+  ],
+  "requirements": [
+    "Python standard library (no additional imports needed)"
+  ],
+  "approach": "Dynamic programming solution that builds a 2D table of matching states, handling '*' cases by considering both zero and one-or-more occurrences of the preceding character, and '.' as wildcard",
+  "improvements_made": [
+    "Replaced vague steps with specific DP implementation details",
+    "Added clear initialization and base case handling",
+    "Detailed the iteration logic for pattern matching",
+    "Specified exact conditions for '*' and '.' handling",
+    "Added concrete return value specification",
+    "Removed unnecessary error handling (not needed for this constrained problem)"
+  ]
+}
+```
+
+Key improvements:
+1. Specific algorithm choice (dynamic programming) with clear implementation steps
+2. Detailed DP table initialization and base case handling
+3. Precise logic for handling '*' (both zero and one-or-more cases)
+4. Clear handling of '.' wildcard character
+5. Concrete return value specification
+6. Removed vague language ("somehow", "maybe", "in a way")
+7. Added specific dimensions for the DP table
+8. Included exact conditions for character matching
+
+This plan provides enough detail to directly implement a working solution that will pass all test cases for the regex matching problem. (Original: Here's an improved plan that addresses the deficiencies in the original plan by providing specific, actionable steps and clear requirements:
+
+```json
+{
+  "steps": [
+    "1. Initialize a dynamic programming (DP) table with dimensions (len(s)+1) x (len(p)+1) to store matching states",
+    "2. Set DP[0][0] = True (empty string matches empty pattern)",
+    "3. Handle the initial row (empty string) by checking for patterns with '*' that can match empty string",
+    "4. Iterate through the DP table row by row (string characters) and column by column (pattern characters):",
+    "   a. If current pattern character is '*':",
+    "      i. Check for zero occurrences of preceding character (DP[i][j-2])",
+    "      ii. Check for one or more occurrences if preceding character matches (DP[i-1][j] and (s[i-1] == p[j-2] or p[j-2] == '.'))",
+    "   b. Else if current pattern character is '.' or matches current string character:",
+    "      i. Carry over the match from previous state (DP[i-1][j-1])",
+    "5. The result will be in DP[len(s)][len(p)]",
+    "6. Return the final matching result"
+  ],
+  "requirements": [
+    "Python standard library (no additional imports needed)"
+  ],
+  "approach": "Dynamic programming solution that builds a 2D table of matching states, handling '*' cases by considering both zero and one-or-more occurrences of the preceding character, and '.' as wildcard",
+  "improvements_made": [
+    "Replaced vague steps with specific DP implementation details",
+    "Added clear initialization and base case handling",
+    "Detailed the iteration logic for pattern matching",
+    "Specified exact conditions for '*' and '.' handling",
+    "Added concrete return value specification",
+    "Removed unnecessary error handling (not needed for this constrained problem)"
+  ]
+}
+```
+
+Key improvements:
+1. Specific algorithm choice (dynamic programming) with clear implementation steps
+2. Detailed DP table initialization and base case handling
+3. Precise logic for handling '*' (both zero and one-or-more cases)
+4. Clear handling of '.' wildcard character
+5. Concrete return value specification
+6. Removed vague language ("somehow", "maybe", "in a way")
+7. Added specific dimensions for the DP table
+8. Included exact conditions for character matching
+
+This plan provides enough detail to directly implement a working solution that will pass all test cases for the regex matching problem.)
+2025-05-23 21:53:52,597 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Plan:[0m
+{'steps': ['Implement step: Implement step: Implement step: Check the strings somehow', 'Implement step: Implement step: Implement step: Handle the dots and stars in a way', 'Implement step: Implement step: Implement step: Maybe compare characters or something', 'Implement step: Implement step: Implement step: Return true or false based on if it matches', "Implement step: Implement step: Implement step: Don't forget about edge cases, maybe"], 'requirements': ['Add necessary imports', 'Handle edge cases'], 'approach': 'Incremental implementation with error handling', 'improvements_made': ['Added error handling', 'Made steps more specific'], 'healing_status': 'FALLBACK_PLAN'}
+2025-05-23 21:53:52,597 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - [95m  3. Re-execution with Improved Plan:[0m
+2025-05-23 21:53:52,909 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:54:03,163 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Status:[0m FAILURE_LOGIC
+2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO -     [92mImproved Score:[0m 0.65
+2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - 
 ================================================================================
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - RESULTS:
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - ================================================================================
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Status: FAILURE_UNHANDLED_EXCEPTION
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Best Source: DIRECT_FIX
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Best Score: 1.0
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Direct Fix Attempts: 1
-2025-05-22 21:51:49,787 - self_healing_agents.evaluation.enhanced_harness - INFO - Direct Fix Success Rate: 100.00%
-2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - 
-Final Code:
-2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - ----------------------------------------
-2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - ```python
-```python
-def isMatch(s, p):
-    i = 0
-    j = 0
-    star = -1
-    match = 0
-    
-    while i < len(s):
-        if j < len(p) and (p[j] == '?' or p[j] == s[i]):
-            i += 1
-            j += 1
-        elif j < len(p) and p[j] == '*':
-            star = j
-            match = i
-            j += 1
-        elif star != -1:
-            j = star + 1
-            match += 1
-            i = match
-        else:
-            return False
-    
-    while j < len(p) and p[j] == '*':
-        j += 1
-    
-    return j == len(p)
-
-def main():
-    print(isMatch("aa", "a"))  # Should be False
-    print(isMatch("aa", "*"))  # Should be True
-    print(isMatch("cb", "?a")) # Should be False
-
-if __name__ == "__main__":
-    main()
-```
-```
-2025-05-22 21:51:49,788 - self_healing_agents.evaluation.enhanced_harness - INFO - ----------------------------------------
-2025-05-22 21:51:49,790 - self_healing_agents.evaluation.enhanced_harness - INFO - Enhanced Evaluation Harness completed at 2025-05-22 21:51:49
-2025-05-22 21:51:49,790 - self_healing_agents.evaluation.enhanced_harness - INFO - Results saved to enhanced_evaluation_harness.log
-sks: 1
-Successful tasks: 0 (0.00%)
-Direct fix attempts: 1
-Direct fix successes: 1 (100.00%)
-Tasks where direct fix was best: 1 (100.00%)
-Tasks where self-healing was best: 0 (0.00%)
-Tasks where initial code was best: 0 (0.00%)
-
-INDIVIDUAL TASK RESULTS:
---------------------------------------------------------------------------------
-Task 1: Wildcard Matching
-  Status: FAILURE_UNHANDLED_EXCEPTION
-  Score: 1.0
-  Best Source: DIRECT_FIX
-  Direct Fix: 1/1
-  Test Case Details (from final successful code):
-    Test Case 1: PASSED
-      Input: {'s': 'aa', 'p': 'aa'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 2: PASSED
-      Input: {'s': 'aa', 'p': '*'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 3: PASSED
-      Input: {'s': 'cb', 'p': '?b'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 4: PASSED
-      Input: {'s': 'a', 'p': 'a*'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 5: PASSED
-      Input: {'s': '', 'p': ''}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 6: PASSED
-      Input: {'s': '', 'p': '*'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 7: PASSED
-      Input: {'s': 'aa', 'p': ''}
-      Expected: False
-      Actual: False
-      Stdout: False
-
-      Stderr: 
-    Test Case 8: PASSED
-      Input: {'s': 'abcde', 'p': 'a*e'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 9: PASSED
-      Input: {'s': 'abc', 'p': 'a?c'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
-    Test Case 10: PASSED
-      Input: {'s': 'abc', 'p': 'a?*'}
-      Expected: True
-      Actual: True
-      Stdout: True
-
-      Stderr: 
---------------------------------------------------------------------------------
+2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - ENHANCED MULTI-AGENT RESULTS:
+2025-05-23 21:54:25,041 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - ================================================================================
+2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Status: COMPLETED_MAX_HEALING_ITERATIONS
+2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Best Source: INITIAL
+2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Best Score: 0.65
+2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Total Healing Iterations: 3
+2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Planner Healings: 3
+2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Executor Healings: 0
+2025-05-23 21:54:25,042 - self_healing_agents.evaluation.enhanced_multi_agent_harness - INFO - Direct Fix Attempts: 1
