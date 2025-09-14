@@ -21,6 +21,9 @@ The overarching goal of v1 is to investigate:
 3. **Closed-Loop Adaptation:** Can a system iteratively refine itself with minimal human intervention, using coding tasks as a controlled sandbox?
 4. **Scalability & Generalization:** How well does this framework extend from simple algorithms to more complex computational problems?
 
+
+<img width="735" height="625" alt="image" src="https://github.com/user-attachments/assets/b2d0498f-3c6c-408e-9408-692c7b3313c3" />
+
 ---
 
 ## Project Structure
@@ -151,18 +154,6 @@ We evaluated the v1 system on a broad range of algorithmic tasks, from beginner-
 * **Multi-Agent Advantage:** Planner/Executor/Critic separation improved interpretability and targeted repair.
 * **Prompt Healing Works:** The loop salvaged several failing runs with minimal compute cost.
 * **Scaling Challenge:** Hard problems require more than localized fixes — they demand higher-level reasoning or architecture changes.
-
----
-
-## Security Considerations
-
-Because arbitrary Python code is executed, safeguards include:
-
-1. Resource limits (execution time and memory)
-2. Subprocess isolation
-3. Exception and error capture
-
-⚠️ However, the system is not fully hardened against malicious inputs. Use cautiously with untrusted code.
 
 ---
 
