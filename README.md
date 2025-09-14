@@ -22,7 +22,8 @@ The overarching goal of v1 is to investigate:
 4. **Scalability & Generalization:** How well does this framework extend from simple algorithms to more complex computational problems?
 
 
-<img width="735" height="625" alt="image" src="https://github.com/user-attachments/assets/b2d0498f-3c6c-408e-9408-692c7b3313c3" />
+<img width="479" height="642" alt="image" src="https://github.com/user-attachments/assets/82459e97-4a89-4d2f-8ac8-871f9a14b6c8" />
+
 
 ---
 
