@@ -143,8 +143,8 @@ We evaluated the v1 system on a broad range of algorithmic tasks, from beginner-
 
 ### Sample Task Outcomes
 
-✅ Easy to Medium: arithmetic, string reversal, Fibonacci (memoized), palindrome detection, binary search, merge sort
-❌ Hard to Very Hard: graph BFS, stack implementation, cache systems, parsers, compiler lexer
+- ✅ Easy to Medium: arithmetic, string reversal, Fibonacci (memoized), palindrome detection, binary search, merge sort
+- ❌ Hard to Very Hard: graph BFS, stack implementation, cache systems, parsers, compiler lexer
 
 ### Key Insights
 
