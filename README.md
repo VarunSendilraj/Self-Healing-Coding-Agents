@@ -1,46 +1,64 @@
-# Self-Healing Agents System
+# Self-Healing Agent
 
-A multi-agent system for automatically fixing and improving Python code through self-healing capabilities.
+A multi-agent framework that explores **prompt optimization for coding tasks** by building a **self-healing loop**: a process where agents automatically detect failures, classify root causes, and update their own prompts to improve overall system performance.
 
-## Overview
+This project treats coding as a **deterministic testing ground** for studying how multi-agent systems can autonomously adapt and evolve their prompts, with the long-term goal of building **robust, self-correcting agent ecosystems**.
 
-This system provides:
-1. Multi-agent code analysis and healing
-2. Automatic error detection and correction
-3. Code execution in a controlled environment  
-4. Test case generation and validation
-5. Comprehensive evaluation harness
+---
+
+## Purpose of v1: Experiment Goals
+
+The first version of the Self-Healing Agents System (v1) serves as a **prototype** to test the viability of automated prompt optimization in a multi-agent environment. Coding tasks provide a uniquely suited domain for this research because they:
+
+* Allow for **deterministic validation** (unit tests, execution traces, correctness checks)
+* Generate **clear feedback signals** for success or failure
+* Enable **precise diagnosis** of error sources
+
+The overarching goal of v1 is to investigate:
+
+1. **Prompt Self-Healing:** Can agent prompts be automatically repaired based on failure evidence?
+2. **Multi-Agent Optimization:** Does distributing roles across Planner, Executor, and Critic agents improve performance compared to monolithic prompts?
+3. **Closed-Loop Adaptation:** Can a system iteratively refine itself with minimal human intervention, using coding tasks as a controlled sandbox?
+4. **Scalability & Generalization:** How well does this framework extend from simple algorithms to more complex computational problems?
+
+---
 
 ## Project Structure
 
 ```
 ├── src/                           # Main source code
 │   └── self_healing_agents/       # Core package
-│       ├── agents.py              # Main agent implementations
+│       ├── agents.py              # Agent implementations
 │       ├── llm_service.py         # LLM integration
 │       ├── orchestrator.py        # Agent orchestration
 │       ├── classifiers/           # Failure classification
 │       └── evaluation/            # Evaluation tools
 ├── tests/                         # Unit tests
 ├── Examples/                      # Example tasks and demos
-│   ├── twoSum/                   # TwoSum problem examples
-│   ├── *.md                      # Algorithm examples
-│   └── *.json                    # Task definitions
+│   ├── twoSum/                    # TwoSum problem examples
+│   ├── *.md                       # Algorithm examples
+│   └── *.json                     # Task definitions
 ├── demonstrate_self_healing.py    # Main demo script
-├── run_healing_tests.py          # Test runner
-└── requirements.txt              # Dependencies
+├── run_healing_tests.py           # Test runner
+└── requirements.txt               # Dependencies
 ```
+
+---
 
 ## Main Entry Points
 
-- `run_healing_tests.py` - Main test runner for the healing system
-- `demonstrate_self_healing.py` - Demonstration of self-healing functionality
+* `run_healing_tests.py` – Main test runner for the healing system
+* `demonstrate_self_healing.py` – Demonstration of self-healing functionality
+
+---
 
 ## Core Components
 
-- `src/code_analyzer.py`: Provides an API for running code and analyzing results
-- `src/code_runner.py`: Executes code in a controlled environment with resource limits
-- `src/self_healing_agents/`: Main package with agent implementations
+* **`src/code_analyzer.py`** – Runs code and analyzes results
+* **`src/code_runner.py`** – Executes code in a controlled, resource-limited environment
+* **`src/self_healing_agents/`** – Implements Planner, Executor, Critic, and self-healing logic
+
+---
 
 ## Usage
 
@@ -65,10 +83,8 @@ python demonstrate_self_healing.py
 ```python
 from src.code_analyzer import CodeAnalyzer
 
-# Initialize the analyzer
 analyzer = CodeAnalyzer()
 
-# Execute a simple code snippet
 code = """
 def fibonacci(n):
     if n <= 1:
@@ -89,7 +105,6 @@ print(f"Output: {result['stdout']}")
 ### Running Test Cases
 
 ```python
-# Define a function to test
 code = """
 def twoSum(nums, target):
     seen = {}
@@ -101,44 +116,67 @@ def twoSum(nums, target):
     return []
 """
 
-# Define test cases
 test_cases = [
-    {
-        "function_name": "twoSum",
-        "inputs": {"nums": [2, 7, 11, 15], "target": 9},
-        "expected": [0, 1]
-    },
-    {
-        "function_name": "twoSum",
-        "inputs": {"nums": [3, 2, 4], "target": 6},
-        "expected": [1, 2]
-    }
+    {"function_name": "twoSum", "inputs": {"nums": [2, 7, 11, 15], "target": 9}, "expected": [0, 1]},
+    {"function_name": "twoSum", "inputs": {"nums": [3, 2, 4], "target": 6}, "expected": [1, 2]}
 ]
 
-# Run the tests
 results = analyzer.test_with_cases(code, test_cases)
 
 print(f"Tests passed: {results['tests_passed']}/{results['tests_total']}")
 print(f"Pass percentage: {results['pass_percentage']}%")
 ```
 
+---
+
+## Experimental Results (v1)
+
+We evaluated the v1 system on a broad range of algorithmic tasks, from beginner-friendly exercises to advanced problems. Each run was scored against generated test cases, and the **self-healing loop** was triggered when failures occurred.
+
+### Results Overview
+
+* **Tasks attempted:** 25+
+* **Initial success rate:** \~60%
+* **Improvement via self-healing:** modest increases, often recovering simple/medium tasks but struggling with advanced system-level challenges
+* **Strengths:** Deterministic validation, clear improvements on modular problems
+* **Weaknesses:** Limited gains on complex, multi-step algorithmic tasks
+
+### Sample Task Outcomes
+
+✅ Easy to Medium: arithmetic, string reversal, Fibonacci (memoized), palindrome detection, binary search, merge sort
+❌ Hard to Very Hard: graph BFS, stack implementation, cache systems, parsers, compiler lexer
+
+### Key Insights
+
+* **Multi-Agent Advantage:** Planner/Executor/Critic separation improved interpretability and targeted repair.
+* **Prompt Healing Works:** The loop salvaged several failing runs with minimal compute cost.
+* **Scaling Challenge:** Hard problems require more than localized fixes — they demand higher-level reasoning or architecture changes.
+
+---
+
 ## Security Considerations
 
-This system executes arbitrary Python code, which can be dangerous. It implements several safeguards:
+Because arbitrary Python code is executed, safeguards include:
 
-1. Resource limits (memory and execution time)
-2. Execution in a subprocess
-3. Capture of exceptions and error output
+1. Resource limits (execution time and memory)
+2. Subprocess isolation
+3. Exception and error capture
 
-However, it is not completely secure against all types of attacks. Use with caution, especially with untrusted code.
+⚠️ However, the system is not fully hardened against malicious inputs. Use cautiously with untrusted code.
+
+---
 
 ## Requirements
 
-- Python 3.6+
-- Standard library modules only
+* Python 3.6+
+* Standard library modules only
+
+---
 
 ## Future Improvements
 
-- Add support for executing code in Docker containers for improved isolation
-- Implement more advanced code analysis features
-- Add support for other programming languages 
+* Docker-based runtime isolation for security
+* More advanced error classification for complex task recovery
+* Multi-language support beyond Python
+* Genetic prompt evolution for structured prompt optimization
+* Larger-scale benchmarking to evaluate generalization and robustness
