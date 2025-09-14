@@ -1,26 +1,69 @@
-# Code Execution and Analysis System
+# Self-Healing Agents System
 
-A system for safely executing and analyzing Python code snippets.
+A multi-agent system for automatically fixing and improving Python code through self-healing capabilities.
 
 ## Overview
 
-This system provides a way to:
-1. Execute Python code in a controlled environment
-2. Capture execution results, including stdout, stderr, and performance metrics
-3. Run test cases against functions and analyze the results
-4. Provide recommendations for code optimization and error correction
+This system provides:
+1. Multi-agent code analysis and healing
+2. Automatic error detection and correction
+3. Code execution in a controlled environment  
+4. Test case generation and validation
+5. Comprehensive evaluation harness
 
-## Components
+## Project Structure
 
-- `code_runner.py`: Executes code in a controlled environment with resource limits
-- `code_analyzer.py`: Provides an API for running code and analyzing results
+```
+├── src/                           # Main source code
+│   └── self_healing_agents/       # Core package
+│       ├── agents.py              # Main agent implementations
+│       ├── llm_service.py         # LLM integration
+│       ├── orchestrator.py        # Agent orchestration
+│       ├── classifiers/           # Failure classification
+│       └── evaluation/            # Evaluation tools
+├── tests/                         # Unit tests
+├── Examples/                      # Example tasks and demos
+│   ├── twoSum/                   # TwoSum problem examples
+│   ├── *.md                      # Algorithm examples
+│   └── *.json                    # Task definitions
+├── demonstrate_self_healing.py    # Main demo script
+├── run_healing_tests.py          # Test runner
+└── requirements.txt              # Dependencies
+```
+
+## Main Entry Points
+
+- `run_healing_tests.py` - Main test runner for the healing system
+- `demonstrate_self_healing.py` - Demonstration of self-healing functionality
+
+## Core Components
+
+- `src/code_analyzer.py`: Provides an API for running code and analyzing results
+- `src/code_runner.py`: Executes code in a controlled environment with resource limits
+- `src/self_healing_agents/`: Main package with agent implementations
 
 ## Usage
 
-### Basic Execution
+### Running the System
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run quick demo
+python run_healing_tests.py quick
+
+# Run comprehensive tests  
+python run_healing_tests.py comprehensive
+
+# Run demonstration
+python demonstrate_self_healing.py
+```
+
+### Basic Code Analysis
 
 ```python
-from code_analyzer import CodeAnalyzer
+from src.code_analyzer import CodeAnalyzer
 
 # Initialize the analyzer
 analyzer = CodeAnalyzer()

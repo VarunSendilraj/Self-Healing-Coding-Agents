@@ -15,7 +15,7 @@ if src_dir not in sys.path:
 
 def patch_code_analyzer():
     """Patch the CodeAnalyzer class to use the correct runner path."""
-    from code_analyzer import CodeAnalyzer
+    from src.code_analyzer import CodeAnalyzer
     
     # Store the original __init__ method
     original_init = CodeAnalyzer.__init__
@@ -23,7 +23,7 @@ def patch_code_analyzer():
     # Define a new __init__ method that uses the correct runner path
     def patched_init(self, runner_path=None):
         if runner_path is None:
-            runner_path = os.path.join(current_dir, "code_runner.py")
+            runner_path = os.path.join(current_dir, "src", "code_runner.py")
         original_init(self, runner_path)
     
     # Apply the patch
